@@ -135,15 +135,24 @@ a {
   min-width: 200px;
   box-shadow: var(--shadow-lg);
   border-radius: var(--radius-sm);
-  z-index: 1000;
+  z-index: 2000; /* High z-index to overlay above all content */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: var(--glass-border);
   padding: 0.5rem 0;
-  top: 150%;
+  top: 100%; /* Positioned directly below the button to prevent hover gaps */
   left: 50%;
   transform: translateX(-50%) translateY(10px);
-  transition: all 0.3s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+/* Hover support on desktop viewports */
+@media (hover: hover) {
+  .dropdown:hover .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 .dropdown-content a {
