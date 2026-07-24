@@ -116,6 +116,10 @@ a {
   position: relative;
 }
 
+.nav-links a.active {
+  color: var(--primary);
+}
+
 /* Dropdown Menu Setup */
 .dropdown {
   position: relative;
@@ -127,7 +131,7 @@ a {
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  background-color: var(--glass-bg);
+  background-color: var(--surface);
   min-width: 200px;
   box-shadow: var(--shadow-lg);
   border-radius: var(--radius-sm);
@@ -147,7 +151,7 @@ a {
   display: block;
   font-size: 1rem;
   font-weight: 400;
-  color: var(--text-light);
+  color: var(--text);
   font-family: 'Inter', sans-serif;
 }
 
@@ -595,7 +599,7 @@ footer {
   min-width: 320px;
   max-height: 400px;
   overflow-y: auto;
-  background: var(--glass-bg);
+  background: var(--surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: var(--glass-border);
@@ -692,7 +696,7 @@ footer {
   top: 130%;
   right: 0;
   min-width: 220px;
-  background: var(--glass-bg);
+  background: var(--surface);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: var(--glass-border);
