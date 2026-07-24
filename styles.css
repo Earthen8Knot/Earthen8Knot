@@ -1194,15 +1194,17 @@ footer {
     gap: 0.5rem;
   }
 
-  /* Hide "Sign In" text on very small screens, show icon only */
+  /* Show "Sign In" text on mobile for clear navigation */
   .user-btn-label {
-    display: none;
+    display: inline !important;
+    font-size: 0.82rem;
   }
 
   .user-btn {
-    padding: 0.4rem 0.6rem;
+    padding: 0.4rem 0.65rem !important;
     border: 1px solid rgba(108, 120, 92, 0.25);
-    border-radius: 10px;
+    border-radius: 12px;
+    gap: 0.3rem !important;
   }
 
   h1 {
