@@ -293,34 +293,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Handle dropdown inside mobile menu
-    const dropdownContainers = document.querySelectorAll('.dropdown');
-    dropdownContainers.forEach(drop => {
-      const dropBtn = drop.querySelector('.dropbtn');
-      if (dropBtn) {
-        dropBtn.addEventListener('click', (e) => {
-          if (window.innerWidth <= 850) {
-            e.preventDefault();
-            drop.classList.toggle('open');
-          }
-        });
-      }
-    });
   }
   
-  // Dropdown Menu Click Toggle
+  // Dropdown Menu Click Toggle (Handles both Desktop & Mobile)
   const dropBtns = document.querySelectorAll('.dropbtn');
   dropBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      // Close all other open dropdowns first (if any)
-      document.querySelectorAll('.dropdown-content.show').forEach(el => {
-        if (el !== btn.nextElementSibling) el.classList.remove('show');
-      });
-      // Toggle current
+      e.stopPropagation();
       const dropdownContent = btn.nextElementSibling;
       if (dropdownContent && dropdownContent.classList.contains('dropdown-content')) {
-        dropdownContent.classList.toggle('show');
+        const isShown = dropdownContent.classList.toggle('show');
+        // Close all other open dropdowns first (if any)
+        document.querySelectorAll('.dropdown-content.show').forEach(el => {
+          if (el !== dropdownContent) el.classList.remove('show');
+        });
       }
     });
   });

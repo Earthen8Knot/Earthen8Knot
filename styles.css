@@ -1142,7 +1142,7 @@ footer {
     border-radius: var(--radius-sm);
   }
 
-  .dropdown.open .dropdown-content {
+  .dropdown-content.show {
     display: block;
   }
 
