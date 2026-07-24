@@ -521,7 +521,7 @@ function renderProductPage() {
 
     container.innerHTML = `
       <div style="max-width: 720px; margin: 0 auto; margin-bottom: 4rem;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.8rem;">
+        <div class="product-header">
           <h1 style="font-size: 2.2rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 500; margin: 0;">${product.name}</h1>
           <button id="zoom-toggle-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm);">🔍 Enable Zoom</button>
         </div>
@@ -532,7 +532,7 @@ function renderProductPage() {
           ${thumbnailsHTML}
         </div>
         
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); text-align: left;">
+        <div class="product-action-bar-responsive" style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); text-align: left;">
           <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
             ${product.originalPrice ? `<span style="font-size: 1.25rem; color: var(--text-light); text-decoration: line-through; opacity: 0.75;">${product.originalPrice}</span>` : ''}
             <p style="font-size: 1.8rem; color: var(--primary); font-weight: 700; margin: 0;">${product.price}</p>
