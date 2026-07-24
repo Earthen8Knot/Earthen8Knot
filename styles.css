@@ -1153,6 +1153,7 @@ footer {
 
   .dropdown-content.show {
     display: block;
+    transform: none !important;
   }
 
   .dropdown-content a {
