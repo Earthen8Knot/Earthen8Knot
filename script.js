@@ -115,7 +115,7 @@ function showCartWarningToast(message) {
       padding: 14px 22px;
       border-radius: 14px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Quicksand', sans-serif;
       font-size: 0.95rem;
       z-index: 10000;
       transform: translateY(100px);
@@ -159,7 +159,7 @@ function showCartToast(itemName) {
       padding: 14px 22px;
       border-radius: 14px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Quicksand', sans-serif;
       font-size: 0.95rem;
       z-index: 10000;
       display: flex;
@@ -558,7 +558,7 @@ function renderProductPage() {
     container.innerHTML = `
       <div style="max-width: 720px; margin: 0 auto; margin-bottom: 4rem;">
         <div class="product-header">
-          <h1 style="font-size: 2.2rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 500; margin: 0;">${product.name}</h1>
+          <h1 style="font-size: 2.2rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 500; margin: 0;">${product.name}</h1>
           <button id="zoom-toggle-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm);">🔍 Enable Zoom</button>
         </div>
         <div class="product-gallery" style="margin-bottom: 3rem;">
@@ -589,37 +589,37 @@ function renderProductPage() {
       </div>
 
       <div class="product-bio-wrapper" style="max-width: 800px; margin: 0 auto; padding: 3rem 0; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
-        <h2 style="font-size: 2rem; margin-bottom: 2rem; color: var(--primary-dark); font-family: 'Outfit', sans-serif; font-weight: 600;">The Story Behind It</h2>
+        <h2 style="font-size: 2rem; margin-bottom: 2rem; color: var(--primary-dark); font-family: 'Quicksand', sans-serif; font-weight: 600;">The Story Behind It</h2>
         <div class="story-text" style="text-align: left; font-size: 1.2rem; line-height: 1.7; color: var(--text-light);">${product.story}</div>
         
         <!-- Artisan Craftsmanship Details -->
         <div style="background: var(--bg-secondary); border-radius: 16px; padding: 2.5rem; margin-top: 3.5rem; text-align: left; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.03);">
-          <h3 style="font-size: 1.35rem; color: var(--primary-dark); font-family: 'Outfit', sans-serif; font-weight: 600; margin-top: 0; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.65rem;">
+          <h3 style="font-size: 1.35rem; color: var(--primary-dark); font-family: 'Quicksand', sans-serif; font-weight: 600; margin-top: 0; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.65rem;">
             <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2;" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-7.3 16.8M12 22a10 10 0 0 0 7.3-16.8"/><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4z"/></svg>
             Artisan Craftsmanship Details
           </h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;">
             <div>
               <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Active Stitches</span>
-              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 600;">${product.stitchCount || '12,000 loops'}</strong>
+              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.stitchCount || '12,000 loops'}</strong>
             </div>
             <div>
               <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Stitching Labor</span>
-              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 600;">${product.stitchTime || '10 hours'}</strong>
+              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.stitchTime || '10 hours'}</strong>
             </div>
             <div>
               <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Hook Utilized</span>
-              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 600;">${product.hookSize || '4.5mm hook'}</strong>
+              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.hookSize || '4.5mm hook'}</strong>
             </div>
             <div>
               <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Natural Fiber</span>
-              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 600;">${product.fiberType || '100% Organic Cotton'}</strong>
+              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.fiberType || '100% Organic Cotton'}</strong>
             </div>
           </div>
         </div>
         
         ${product.videoUrl ? `
-        <h2 style="font-size: 2rem; margin: 4rem 0 2rem 0; color: var(--primary-dark); font-family: 'Outfit', sans-serif; font-weight: 600;">The Making Of</h2>
+        <h2 style="font-size: 2rem; margin: 4rem 0 2rem 0; color: var(--primary-dark); font-family: 'Quicksand', sans-serif; font-weight: 600;">The Making Of</h2>
         <div class="video-container short" style="margin: 0 auto;">
           <iframe src="${product.videoUrl}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>

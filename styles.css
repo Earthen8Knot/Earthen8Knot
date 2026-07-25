@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&family=Quicksand:wght@400;500;600;700&display=swap');
 
 :root {
   /* Earthy Color Palette - Warmed up for cozy ambiance */
@@ -34,7 +34,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.6;
@@ -92,7 +92,7 @@ body::after {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 500;
   color: var(--text);
 }
@@ -139,7 +139,7 @@ a {
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
   letter-spacing: -0.5px;
@@ -211,7 +211,7 @@ a {
   font-size: 1rem;
   font-weight: 400;
   color: var(--text);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .dropdown-content a::after {
@@ -305,7 +305,7 @@ a {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   border: transparent;
 }
 
@@ -461,7 +461,7 @@ footer {
 }
 
 .footer-logo {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--primary-dark);
@@ -635,7 +635,7 @@ footer {
   padding: 0;
   border: none;
   background: transparent;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 1rem;
   color: var(--text);
   outline: none;
@@ -731,7 +731,7 @@ footer {
   border-radius: 20px;
   transition: background 0.3s ease, color 0.3s ease;
   color: var(--text);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .user-btn:hover {
@@ -802,7 +802,7 @@ footer {
   text-align: left;
   font-size: 0.95rem;
   color: var(--secondary);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
 }
@@ -820,7 +820,7 @@ footer {
   text-align: left;
   font-size: 0.95rem;
   color: var(--text);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
   display: block;
@@ -940,7 +940,7 @@ footer {
   background: var(--surface);
   font-size: 0.95rem;
   color: var(--text);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -1035,7 +1035,7 @@ footer {
   border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
@@ -1467,7 +1467,7 @@ footer {
 
 .collection-note-title {
   color: var(--secondary);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 600;
   font-size: 1.1rem;
   display: block;
