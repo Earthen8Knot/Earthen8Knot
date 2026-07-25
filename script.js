@@ -396,6 +396,9 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('click', (e) => e.stopPropagation());
     searchResults.addEventListener('click', (e) => e.stopPropagation());
   }
+
+  // Initialize Product Reactions
+  initProductReactions();
 });
 
 // Product Stories Data
@@ -557,9 +560,12 @@ function renderProductPage() {
 
     container.innerHTML = `
       <div style="max-width: 720px; margin: 0 auto; margin-bottom: 4rem;">
-        <div class="product-header">
+        <div class="product-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
           <h1 style="font-size: 2.2rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 500; margin: 0;">${product.name}</h1>
-          <button id="zoom-toggle-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm);">🔍 Enable Zoom</button>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <button id="product-reaction-btn" class="reaction-btn-detail" data-id="${productId}" style="padding: 0.5rem 1.1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08); background: var(--surface); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm); display:flex; align-items:center; gap:6px; font-family:'Quicksand',sans-serif; font-weight:600;"></button>
+            <button id="zoom-toggle-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm);">🔍 Enable Zoom</button>
+          </div>
         </div>
         <div class="product-gallery" style="margin-bottom: 3rem;">
           <div class="main-image-container" id="main-image-container">
@@ -704,4 +710,154 @@ function initGalleryZoom() {
       mainImage.style.transform = 'scale(1)';
     });
   }
+}
+
+// Initialize and handle Product Reactions
+function initProductReactions() {
+  const defaultReactions = {
+    'ivory-lace-crochet-pillow': 24,
+    'macrame-weave-crochet-pillow': 18,
+    'striped-crochet-sweatshirt': 42,
+    'lavender-fringe-crochet-scarf': 35,
+    'midnight-mesh-crochet-top': 29,
+    'blossom-striped-crochet-sweater': 47,
+    'sweetheart-crochet-pouch': 15,
+    'gray-cream-beanie': 12,
+    'gray-ribbed-beanie': 9,
+    'ivory-beanie': 14,
+    'scrunchies-set': 21
+  };
+
+  let reactionStore = {};
+  try {
+    const saved = localStorage.getItem('earthenknot_reactions');
+    if (saved) {
+      reactionStore = JSON.parse(saved);
+    } else {
+      reactionStore = { ...defaultReactions };
+      localStorage.setItem('earthenknot_reactions', JSON.stringify(reactionStore));
+    }
+  } catch (e) {
+    reactionStore = { ...defaultReactions };
+  }
+
+  let userReactions = [];
+  try {
+    const savedUser = localStorage.getItem('earthenknot_user_reactions');
+    if (savedUser) userReactions = JSON.parse(savedUser);
+  } catch (e) {}
+
+  function triggerHeartBurst(x, y) {
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.left = `${x}px`;
+    container.style.top = `${y}px`;
+    container.style.pointerEvents = 'none';
+    container.style.zIndex = '99999';
+    document.body.appendChild(container);
+
+    const emojis = ['❤️', '💖', '🧶', '✨'];
+    for (let i = 0; i < 4; i++) {
+      const p = document.createElement('span');
+      p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      p.style.position = 'absolute';
+      p.style.fontSize = `${14 + Math.random() * 8}px`;
+      p.style.transition = 'all 0.8s ease-out';
+      p.style.transform = 'translate(-50%, -50%)';
+      container.appendChild(p);
+
+      const angle = (Math.random() * Math.PI * 1.5) - Math.PI * 0.75;
+      const dist = 30 + Math.random() * 40;
+      const tx = Math.cos(angle) * dist;
+      const ty = Math.sin(angle) * dist - 30;
+
+      setTimeout(() => {
+        p.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0.2)`;
+        p.style.opacity = '0';
+      }, 20);
+    }
+    setTimeout(() => container.remove(), 1000);
+  }
+
+  window.toggleReaction = function(productId, e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    const index = userReactions.indexOf(productId);
+    const hasReacted = index !== -1;
+
+    if (hasReacted) {
+      userReactions.splice(index, 1);
+      reactionStore[productId] = Math.max(0, (reactionStore[productId] || 0) - 1);
+    } else {
+      userReactions.push(productId);
+      reactionStore[productId] = (reactionStore[productId] || 0) + 1;
+      
+      if (e) {
+        triggerHeartBurst(e.clientX, e.clientY);
+      }
+    }
+
+    localStorage.setItem('earthenknot_reactions', JSON.stringify(reactionStore));
+    localStorage.setItem('earthenknot_user_reactions', JSON.stringify(userReactions));
+
+    syncAllReactionButtons();
+  };
+
+  function syncAllReactionButtons() {
+    const cards = document.querySelectorAll('.product-card');
+    cards.forEach(card => {
+      const link = card.querySelector('a[href*="product.html?id="]');
+      if (!link) return;
+      
+      let productId = '';
+      try {
+        const url = new URL(link.href, window.location.href);
+        productId = url.searchParams.get('id');
+      } catch(err) {
+        // Fallback for relative/unparseable links
+        const match = link.href.match(/id=([^&]+)/);
+        if (match) productId = match[1];
+      }
+      
+      if (!productId) return;
+
+      let btn = card.querySelector('.reaction-btn-card');
+      if (!btn) {
+        btn = document.createElement('button');
+        btn.className = 'reaction-btn-card';
+        btn.onclick = (e) => toggleReaction(productId, e);
+        card.appendChild(btn);
+      }
+
+      const reacted = userReactions.includes(productId);
+      const count = reactionStore[productId] || 0;
+      btn.innerHTML = `${reacted ? '❤️' : '🤍'} ${count}`;
+      btn.className = `reaction-btn-card ${reacted ? 'active' : ''}`;
+    });
+
+    const detailBtn = document.getElementById('product-reaction-btn');
+    if (detailBtn) {
+      const productId = detailBtn.getAttribute('data-id');
+      if (productId) {
+        const reacted = userReactions.includes(productId);
+        const count = reactionStore[productId] || 0;
+        detailBtn.innerHTML = `${reacted ? '❤️ Loved' : '🤍 Love'} (${count})`;
+        detailBtn.onclick = (e) => toggleReaction(productId, e);
+        detailBtn.className = `reaction-btn-detail ${reacted ? 'active' : ''}`;
+        detailBtn.style.borderColor = reacted ? 'rgba(239, 68, 68, 0.25)' : 'rgba(0,0,0,0.08)';
+        detailBtn.style.background = reacted ? '#fff5f5' : 'var(--surface)';
+        detailBtn.style.color = reacted ? '#ef4444' : 'var(--text)';
+      }
+    }
+  }
+
+  syncAllReactionButtons();
+
+  const observer = new MutationObserver(() => {
+    syncAllReactionButtons();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
 }

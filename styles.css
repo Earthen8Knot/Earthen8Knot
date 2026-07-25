@@ -1621,3 +1621,36 @@ section,
   transform-origin: center 52px;
 }
 
+/* Reaction Button styling */
+.reaction-btn-card {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 0.35rem 0.65rem;
+  border-radius: 20px;
+  cursor: pointer;
+  z-index: 10;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+  outline: none;
+}
+
+.reaction-btn-card:hover {
+  transform: scale(1.08);
+  background: white;
+}
+
+.reaction-btn-card.active {
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+  background: #fff5f5;
+}
+
