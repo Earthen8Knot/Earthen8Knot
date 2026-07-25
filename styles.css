@@ -1589,3 +1589,35 @@ section,
   }
 }
 
+/* Animated Cozy Cat in welcome banner */
+@keyframes catBob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes catBlink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+.welcome-cozy-cat {
+  animation: catBob 2.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.welcome-cozy-cat .cat-eye-left,
+.welcome-cozy-cat .cat-eye-right,
+.welcome-cozy-cat .cat-eye-shine-left,
+.welcome-cozy-cat .cat-eye-shine-right {
+  animation: catBlink 4s ease-in-out infinite;
+  transform-origin: center 52px;
+}
+

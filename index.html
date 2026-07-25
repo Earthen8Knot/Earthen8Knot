@@ -94,35 +94,42 @@
 
     <!-- Personalize Welcoming Banner (Very Small & Minimal Inline Layout) -->
     <section id="homepage-welcome-banner" style="display: none; align-items: center; justify-content: center; gap: 0.6rem; margin: 3.5rem auto 2.5rem auto; text-align: center; padding: 0.4rem; max-width: 500px; animation: fadeIn 0.6s ease;">
-      <!-- Leafy Face Sticker SVG (Small) -->
-      <svg viewBox="0 0 100 100" style="width: 36px; height: 36px; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(108, 120, 92, 0.15)); display: inline-block; vertical-align: middle;">
-        <!-- Leaf Body (Chubby, round organic leaf) -->
-        <path d="M50,12 C72,25 82,52 68,78 C56,92 44,92 32,78 C18,52 28,25 50,12 Z" fill="#A7D7C5" stroke="#4A5844" stroke-width="2.5" stroke-linejoin="round" />
+      <!-- Cozy Cat Face Sticker SVG (Small & Animated) -->
+      <svg class="welcome-cozy-cat" viewBox="0 0 100 100" style="width: 38px; height: 38px; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(144, 118, 97, 0.2)); display: inline-block; vertical-align: middle;">
+        <!-- Ears -->
+        <!-- Left Ear -->
+        <path d="M15 45 L25 15 L40 35 Z" fill="#907661" stroke="#332d29" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M20 40 L26 22 L33 34 Z" fill="#FFAAA6"/>
+        <!-- Right Ear -->
+        <path d="M85 45 L75 15 L60 35 Z" fill="#907661" stroke="#332d29" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M80 40 L74 22 L67 34 Z" fill="#FFAAA6"/>
         
-        <!-- Leaf Center Line (Soft vein) -->
-        <path d="M50,15 L50,85" stroke="#4A5844" stroke-width="1.8" stroke-linecap="round" opacity="0.3" />
+        <!-- Cat Head (chubby round face) -->
+        <circle cx="50" cy="55" r="32" fill="#EAD9CE" stroke="#332d29" stroke-width="2.5"/>
         
-        <!-- Shiny Anime Eyes (Big circles with double highlights) -->
-        <circle cx="38" cy="52" r="5" fill="#2C3531" />
-        <circle cx="36.5" cy="50" r="1.8" fill="#FFFFFF" />
-        <circle cx="39.5" cy="54" r="0.8" fill="#FFFFFF" />
-        
-        <circle cx="62" cy="52" r="5" fill="#2C3531" />
-        <circle cx="60.5" cy="50" r="1.8" fill="#FFFFFF" />
-        <circle cx="63.5" cy="54" r="0.8" fill="#FFFFFF" />
+        <!-- Cute Eyes (blinking anime eyes) -->
+        <!-- Left Eye -->
+        <ellipse class="cat-eye-left" cx="38" cy="52" rx="4.5" ry="4" fill="#332d29"/>
+        <circle class="cat-eye-shine-left" cx="36.5" cy="50" r="1.5" fill="#FFFFFF"/>
+        <!-- Right Eye -->
+        <ellipse class="cat-eye-right" cx="62" cy="52" rx="4.5" ry="4" fill="#332d29"/>
+        <circle class="cat-eye-shine-right" cx="60.5" cy="50" r="1.5" fill="#FFFFFF"/>
         
         <!-- Rosy Blush Cheeks -->
-        <ellipse cx="30" cy="58" rx="4.5" ry="3" fill="#FFAAA6" opacity="0.9" />
-        <ellipse cx="70" cy="58" rx="4.5" ry="3" fill="#FFAAA6" opacity="0.9" />
+        <ellipse cx="28" cy="60" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
+        <ellipse cx="72" cy="60" rx="4" ry="2.5" fill="#FFAAA6" opacity="0.8"/>
         
-        <!-- Happy Open Smile with Tongue -->
-        <path d="M45,58 Q50,65 55,58" fill="#FF8B94" stroke="#2C3531" stroke-width="2" stroke-linecap="round" />
+        <!-- Cat Nose & Cute Mouth (W-shape smile) -->
+        <path d="M50 56 L47 54 L53 54 Z" fill="#FFAAA6" stroke="#332d29" stroke-width="1"/>
+        <path class="cat-mouth" d="M44 58 Q47 62 50 58 Q53 62 56 58" fill="none" stroke="#332d29" stroke-width="2" stroke-linecap="round"/>
         
-        <!-- Cute Stem Sprout on top -->
-        <path d="M50,12 Q53,4 46,3" stroke="#4A5844" stroke-width="2" stroke-linecap="round" fill="none" />
-        
-        <!-- Little Happy Sparkle Star -->
-        <path d="M78,25 L80,29 L84,30 L80,31 L78,35 L76,31 L72,30 L76,29 Z" fill="#FCE38A" />
+        <!-- Whiskers -->
+        <!-- Left Whiskers -->
+        <line x1="20" y1="58" x2="8" y2="57" stroke="#332d29" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="20" y1="62" x2="6" y2="63" stroke="#332d29" stroke-width="1.8" stroke-linecap="round"/>
+        <!-- Right Whiskers -->
+        <line x1="80" y1="58" x2="92" y2="57" stroke="#332d29" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="80" y1="62" x2="94" y2="63" stroke="#332d29" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
       <span id="welcome-greeting" style="font-size: 1.15rem; color: var(--primary-dark); font-family: 'Outfit', sans-serif; margin: 0; font-weight: 600; letter-spacing: 0.3px;">Hello!</span>
     </section>
