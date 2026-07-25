@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap');
 
 :root {
-  /* Earthy Color Palette */
+  /* Earthy Color Palette - Warmed up for cozy ambiance */
   --primary: #6c785c; /* Muted olive/sage green */
   --primary-dark: #4a543e;
   --secondary: #907661; /* Warm mocha brown */
   --secondary-light: #bbaa9c;
   --accent: #d2bba0; /* Soft beige/sand */
-  --bg: #f9f8f6; /* Off-white warm background */
-  --bg-secondary: #f0eee8;
+  --bg: #faf7f2; /* Warm cream background */
+  --bg-secondary: #f3ede2; /* Warm sand secondary background */
   --text: #332d29; /* Dark brown/black for text */
   --text-light: #706863;
   --surface: #ffffff;
@@ -38,6 +38,56 @@ body {
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.6;
+  position: relative;
+}
+
+/* Tactile Paper/Linen Texture Overlay */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.035;
+  z-index: 99999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Cozy Crochet Wavy Loop Divider */
+.crochet-divider {
+  width: 100%;
+  max-width: 1200px;
+  height: 24px;
+  margin: 3.5rem auto;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,5 C5,9 10,9 15,5 C20,1 25,1 30,5 C35,9 40,9 45,5 C50,1 55,1 60,5 C65,9 70,9 75,5 C80,1 85,1 90,5 C95,9 100,9 105,5' fill='none' stroke='%236c785c' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: 80px 24px;
+  opacity: 0.35;
+  border: none;
+}
+
+/* Rolling Yarn Ball Toast Animation */
+@keyframes yarnRoll {
+  0% {
+    transform: translateX(-50px) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+.toast-yarn-ball {
+  animation: yarnRoll 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  flex-shrink: 0;
+  transform-origin: center;
+}
   overflow-x: hidden;
 }
 

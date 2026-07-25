@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Orders - EarthenKnot</title>
   <meta name="description" content="View your order history, delivery details, and order tour status on EarthenKnot.">
-  <link rel="stylesheet" href="styles.css?v=1.5">
+  <link rel="stylesheet" href="styles.css?v=1.6">
   <style>
     .order-card {
       background: var(--glass-bg);
@@ -320,6 +320,12 @@
               </div>
             ` : ''}
 
+            ${order.isGift ? `
+              <div style="margin-top:0.75rem; display:flex; align-items:center; gap:0.5rem; background:rgba(144, 118, 97, 0.08); color:var(--secondary); padding:0.65rem 0.95rem; border-radius:10px; font-size:0.85rem; font-weight:500; border:1px dashed rgba(144, 118, 97, 0.35); text-align: left;">
+                <span>🎁 <strong>Cozy Gift Parcel:</strong> Handwritten card note: <span style="font-style:italic;">"${order.giftMessage}"</span></span>
+              </div>
+            ` : ''}
+
             <!-- Cancellation Trigger -->
             <div style="margin-top:1rem; display:flex; justify-content:flex-end;">
               ${canCancel ? `
@@ -336,6 +342,6 @@
     }
   </script>
   
-  <script src="script.js?v=1.5"></script>
+  <script src="script.js?v=1.6"></script>
 </body>
 </html>

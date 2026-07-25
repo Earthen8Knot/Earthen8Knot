@@ -174,8 +174,13 @@ function showCartToast(itemName) {
     document.body.appendChild(toast);
   }
   toast.innerHTML = `
-    <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:#A3B18A;stroke-width:2.5;">
-      <polyline points="20 6 9 17 4 12"></polyline>
+    <svg class="toast-yarn-ball" viewBox="0 0 100 100" style="width:26px;height:26px;fill:none;stroke:#A3B18A;stroke-width:4;margin-right:4px;">
+      <circle cx="50" cy="50" r="30"/>
+      <path d="M25 35 Q40 60 70 35" />
+      <path d="M30 65 Q50 35 75 60" />
+      <path d="M50 20 Q50 50 50 80" />
+      <path d="M20 50 Q50 50 80 50" />
+      <path d="M78 60 Q90 65 95 80" stroke-width="2.5" />
     </svg>
     <span>Added <strong>${itemName}</strong> to cart!</span>
     <a href="checkout.html" style="color:#A3B18A;font-weight:600;margin-left:8px;text-decoration:underline;">View Cart</a>
@@ -401,6 +406,10 @@ const productsData = {
     originalPrice: '₹1,899.00',
     image: 'assets/pillow-1.jpg',
     images: ['assets/pillow-1.jpg', 'assets/pillow-2.jpg', 'assets/pillow-3.jpg'],
+    stitchCount: '14,200 hand loops',
+    stitchTime: '12 hours of craft',
+    hookSize: '4.5mm bamboo hook',
+    fiberType: '100% Organic Cotton',
     story: "Handcrafted with intricate vintage lace motifs in natural ivory cotton yarn, this artisan crochet cushion cover brings timeless texture and warmth to your living sanctuary. Each pillow cover features exquisite shell stitches, dimensional floral clusters, and delicate openwork lacework inspired by heirloom crochet artistry. Soft to the touch yet beautifully structured with a crisp cotton lining, it adds instant cozy elegance to any sofa, armchair, or bedroom retreat."
   },
   'macrame-weave-crochet-pillow': {
@@ -409,6 +418,10 @@ const productsData = {
     originalPrice: '₹1,899.00',
     image: 'assets/pillow-crochet-1.jpg',
     images: ['assets/pillow-crochet-1.jpg', 'assets/pillow-crochet-2.jpg'],
+    stitchCount: '8,900 hand loops',
+    stitchTime: '8 hours of craft',
+    hookSize: '5.0mm wooden hook',
+    fiberType: '100% Natural Cotton Cord',
     story: "A stunning handcrafted pillow cover woven in a delicate open-grid macramé pattern using soft natural ivory cotton yarn. Each knot is tied by hand, creating a beautifully textured lattice that lets light filter through the weave. The subtle cream tones and organic cotton feel make it a versatile piece that complements any bohemian, minimal, or nature-inspired interior. A cozy, artisan touch for your sofa, bed, or reading nook."
   },
   'striped-crochet-sweatshirt': {
@@ -417,6 +430,10 @@ const productsData = {
     originalPrice: '₹1,899.00',
     image: 'assets/sweatshirt-1.jpg',
     images: ['assets/sweatshirt-1.jpg', 'assets/sweatshirt-2.jpg'],
+    stitchCount: '34,500 hand loops',
+    stitchTime: '24 hours of craft',
+    hookSize: '4.0mm bamboo hook',
+    fiberType: '80% Cotton, 20% Milk Fiber',
     story: "Handcrafted with soft ocean blue and cream cotton yarn, this striped crochet sweatshirt blends relaxed coastal charm with heirloom craftsmanship. Designed with an effortless drop-shoulder silhouette and airy open-weave stitches, it is perfect for layering year-round. Featuring ribbed trim and artisanal stitching throughout, each sweatshirt is woven with meticulous attention to detail."
   },
   'lavender-fringe-crochet-scarf': {
@@ -425,6 +442,10 @@ const productsData = {
     originalPrice: '₹1,899.00',
     image: 'assets/lavender-fringe-crochet-scarf.jpg',
     soldOut: true,
+    stitchCount: '18,600 hand loops',
+    stitchTime: '15 hours of craft',
+    hookSize: '5.5mm aluminum hook',
+    fiberType: '70% Wool, 30% Acrylic',
     story: "Handcrafted with a wonderfully soft acrylic and wool blend yarn in beautiful gradient lavender and violet hues. This scarf features an intricate openwork chevron-lace stitch pattern that provides both warmth and a lightweight, flowing drape. Finished with a lush, hand-knotted fringe at both ends, it brings a pop of artisanal charm and cozy color to any chilly day outfit."
   },
   'midnight-mesh-crochet-top': {
@@ -434,6 +455,10 @@ const productsData = {
     image: 'assets/black-crochet-top-1.jpg',
     images: ['assets/black-crochet-top-1.jpg', 'assets/black-crochet-top-2.jpg'],
     soldOut: true,
+    stitchCount: '22,400 hand loops',
+    stitchTime: '18 hours of craft',
+    hookSize: '3.5mm steel hook',
+    fiberType: '100% Egyptian Cotton',
     story: "A beautifully detailed sleeveless crochet crop top handcrafted in deep midnight black cotton yarn. Featuring an open-mesh grid pattern across the upper chest and shoulders, transitioning into a dense, beautifully textured solid stitch bodice. Designed with a clean-cut scoop neck and a subtle open-knit border at the hem, this lightweight knit brings an effortless, sophisticated artisanal touch to any warm-weather style."
   },
   'blossom-striped-crochet-sweater': {
@@ -443,6 +468,10 @@ const productsData = {
     image: 'assets/pink-striped-sweater-1.jpg',
     images: ['assets/pink-striped-sweater-1.jpg', 'assets/pink-striped-sweater-2.jpg'],
     soldOut: true,
+    stitchCount: '38,000 hand loops',
+    stitchTime: '28 hours of craft',
+    hookSize: '4.0mm bamboo hook',
+    fiberType: '85% Cotton, 15% Milk Fiber',
     story: "A cozy and charming long-sleeve striped pullover handcrafted in soft bubblegum pink and ivory white premium cotton yarn. Woven in a beautiful openwork trellis crochet stitch that balances warmth with breathability, this sweater features a relaxed boat neckline, drop shoulders, and elegant solid ribbed borders at the cuffs and hem. Its cheerful colors and intricate stitchwork make it a standout artisan piece for any modern knitwear collection."
   },
   'sweetheart-crochet-pouch': {
@@ -450,6 +479,10 @@ const productsData = {
     price: '₹899.00',
     image: 'assets/heart-pouch.jpg',
     soldOut: true,
+    stitchCount: '3,400 hand loops',
+    stitchTime: '3.5 hours of craft',
+    hookSize: '3.5mm steel hook',
+    fiberType: '100% Organic Cotton',
     story: "A charming, handcrafted heart-pattern pouch woven with soft premium cotton yarn. Features a contrast lavender heart motif on a warm cream background, complete with a secure wood button closure at the top. Perfect as an artisan coin purse, makeup pouch, or style accessory."
   },
   'gray-cream-beanie': {
@@ -457,6 +490,10 @@ const productsData = {
     price: '₹899.00',
     image: 'assets/gray-cream-beanie.jpg',
     soldOut: true,
+    stitchCount: '6,200 hand loops',
+    stitchTime: '5 hours of craft',
+    hookSize: '5.0mm aluminum hook',
+    fiberType: '60% Acrylic, 40% Merino Wool',
     story: "A cozy, double-knit ribbed beanie handcrafted with premium acrylic wool blend. Features a modern split color scheme with a heather-gray crown and a wide, folded cream brim. Elastic fit ensures warmth and comfort for chilly weather."
   },
   'gray-ribbed-beanie': {
@@ -464,6 +501,10 @@ const productsData = {
     price: '₹899.00',
     image: 'assets/gray-ribbed-beanie.jpg',
     soldOut: true,
+    stitchCount: '5,800 hand loops',
+    stitchTime: '4.5 hours of craft',
+    hookSize: '5.0mm aluminum hook',
+    fiberType: '60% Acrylic, 40% Merino Wool',
     story: "A classic ribbed-stitch beanie crocheted in a beautiful slate gray color. Handcrafted with thick, insulating acrylic-wool yarn, it features a thick folded brim and high elasticity for a comfortable, everyday fit."
   },
   'ivory-beanie': {
@@ -471,6 +512,10 @@ const productsData = {
     price: '₹899.00',
     image: 'assets/ivory-beanie.jpg',
     soldOut: true,
+    stitchCount: '5,800 hand loops',
+    stitchTime: '4.5 hours of craft',
+    hookSize: '4.5mm bamboo hook',
+    fiberType: '100% Premium Cotton',
     story: "A classic ribbed beanie handcrafted in a warm ivory-cream cotton yarn. Featuring a comfortable folded brim and a stretchy ribbed knit pattern, this beanie is perfect for everyday winter styling and outdoor coziness."
   },
   'scrunchies-set': {
@@ -478,6 +523,10 @@ const productsData = {
     price: '₹899.00',
     image: 'assets/scrunchies-set.jpg',
     soldOut: true,
+    stitchCount: '1,800 hand loops',
+    stitchTime: '2 hours of craft',
+    hookSize: '3.5mm steel hook',
+    fiberType: '100% Combed Cotton',
     story: "A beautiful set of three handmade crochet scrunchies, including two cream and one dusty rose/mauve scrunchie. Soft, gentle on hair, and handcrafted using premium organic cotton yarn."
   }
 };
@@ -541,7 +590,33 @@ function renderProductPage() {
 
       <div class="product-bio-wrapper" style="max-width: 800px; margin: 0 auto; padding: 3rem 0; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
         <h2 style="font-size: 2rem; margin-bottom: 2rem; color: var(--primary-dark); font-family: 'Outfit', sans-serif; font-weight: 600;">The Story Behind It</h2>
-        <div class="story-text" style="text-align: left; font-size: 1.2rem;">${product.story}</div>
+        <div class="story-text" style="text-align: left; font-size: 1.2rem; line-height: 1.7; color: var(--text-light);">${product.story}</div>
+        
+        <!-- Artisan Craftsmanship Details -->
+        <div style="background: var(--bg-secondary); border-radius: 16px; padding: 2.5rem; margin-top: 3.5rem; text-align: left; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.03);">
+          <h3 style="font-size: 1.35rem; color: var(--primary-dark); font-family: 'Outfit', sans-serif; font-weight: 600; margin-top: 0; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.65rem;">
+            <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2;" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-7.3 16.8M12 22a10 10 0 0 0 7.3-16.8"/><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4z"/></svg>
+            Artisan Craftsmanship Details
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;">
+            <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Active Stitches</span>
+              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 600;">${product.stitchCount || '12,000 loops'}</strong>
+            </div>
+            <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Stitching Labor</span>
+              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 600;">${product.stitchTime || '10 hours'}</strong>
+            </div>
+            <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Hook Utilized</span>
+              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 600;">${product.hookSize || '4.5mm hook'}</strong>
+            </div>
+            <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Natural Fiber</span>
+              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 600;">${product.fiberType || '100% Organic Cotton'}</strong>
+            </div>
+          </div>
+        </div>
         
         ${product.videoUrl ? `
         <h2 style="font-size: 2rem; margin: 4rem 0 2rem 0; color: var(--primary-dark); font-family: 'Outfit', sans-serif; font-weight: 600;">The Making Of</h2>

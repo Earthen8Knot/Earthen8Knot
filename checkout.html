@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - EarthenKnot</title>
-  <link rel="stylesheet" href="styles.css?v=1.5">
+  <link rel="stylesheet" href="styles.css?v=1.6">
   <style>
     .checkout-grid {
       display: flex;
@@ -275,6 +275,23 @@
                 </span>
               </label>
             </div>
+
+            <!-- Gifting & Personalization Option -->
+            <div style="padding: 1.25rem 1rem; border-radius: 12px; background: rgba(144, 118, 97, 0.05); border: 1.5px solid rgba(144, 118, 97, 0.15); margin-top: 1rem; text-align: left;">
+              <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="order-is-gift" style="margin-top: 0.25rem; width: 16px; height: 16px; accent-color: var(--secondary); cursor: pointer;">
+                <span style="font-size: 0.88rem; color: var(--text); line-height: 1.45; font-weight: 500; width: 100%;">
+                  <strong style="color: var(--secondary); font-size: 0.92rem; display: block; margin-bottom: 0.15rem;">🎁 Send as a cozy gift to someone special?</strong>
+                  Check this box if this is a gift. We will hide the pricing invoice sheet and wrap it with extra decorative jute twine. You can also write a warm message below to be handwritten on our premium kraft card stock (free).
+                </span>
+              </label>
+              
+              <!-- Gift message text area, slides open when checked -->
+              <div id="gift-message-container" style="display: none; margin-top: 1rem; border-top: 1px dashed rgba(144, 118, 97, 0.25); padding-top: 1rem;">
+                <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem;">Your Handwritten Card Message (Free):</label>
+                <textarea id="order-gift-message" rows="3" placeholder="Dear Emma, hope this cozy hand-knitted wrap keeps you warm on cold evenings! Love, David." style="width: 100%; padding: 0.75rem; border: 1px solid var(--secondary-light); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.9rem; background: var(--surface); resize: vertical; outline: none; transition: border 0.3s;" onfocus="this.style.borderColor='var(--secondary)'" onblur="this.style.borderColor='var(--secondary-light)'"></textarea>
+              </div>
+            </div>
           </div>
  
           <!-- STEP 3: SELECT PAYMENT METHOD & ORDER PLACEMENT -->
@@ -430,7 +447,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.5"></script>
+  <script src="script.js?v=1.6"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -451,6 +468,25 @@
         orderForm.addEventListener('submit', (e) => {
           e.preventDefault();
           processOrderSubmission();
+        });
+      }
+
+      // Gift options form interaction logic
+      const giftCheckbox = document.getElementById('order-is-gift');
+      const giftMsgContainer = document.getElementById('gift-message-container');
+      const giftMsgTextarea = document.getElementById('order-gift-message');
+      if (giftCheckbox && giftMsgContainer) {
+        giftCheckbox.addEventListener('change', () => {
+          if (giftCheckbox.checked) {
+            giftMsgContainer.style.display = 'block';
+            if (giftMsgTextarea) giftMsgTextarea.required = true;
+          } else {
+            giftMsgContainer.style.display = 'none';
+            if (giftMsgTextarea) {
+              giftMsgTextarea.required = false;
+              giftMsgTextarea.value = '';
+            }
+          }
         });
       }
     });
@@ -609,6 +645,8 @@
       const formattedPaymentMethod = window.currentPaymentMethod === 'cod' ? 'Cash on Delivery (COD)' : `UPI QR Code (Ref ID: ${upiTxId})`;
       const totalAmount = window._currentCartTotal || 3499;
       const orderTourChecked = document.getElementById('request-order-tour')?.checked || false;
+      const orderIsGiftChecked = document.getElementById('order-is-gift')?.checked || false;
+      const orderGiftMessageVal = orderIsGiftChecked ? (document.getElementById('order-gift-message')?.value.trim() || '') : '';
 
       const newOrder = {
         id: orderId,
@@ -620,6 +658,8 @@
         upiTransactionId: upiTxId,
         status: window.currentPaymentMethod === 'upi' ? 'Pending Payment Verification' : 'Confirmed',
         requestOrderTour: orderTourChecked,
+        isGift: orderIsGiftChecked,
+        giftMessage: orderGiftMessageVal,
         customerEmailSent: true,
         merchantEmailSent: true
       };
@@ -857,6 +897,7 @@
               <strong>Order ID:</strong> ${order.id}<br>
               <strong>Estimated Delivery:</strong> 10-12 days (lovingly handmade)<br>
               <strong>WhatsApp Quality Tour:</strong> ${order.requestOrderTour ? '<span style="color:var(--primary); font-weight:600;">Requested ✓</span>' : 'Not Requested'}<br>
+              ${order.isGift ? `<strong>Gift Package:</strong> Yes 🎁<br><strong>Card Note:</strong> <span style="font-style:italic; color:var(--secondary); font-weight:600;">"${order.giftMessage}"</span><br>` : ''}
               <span style="font-size: 0.82rem; color: var(--secondary); font-weight: 600; display: block; margin-top: 0.4rem;">⚠️ Non-Refundable & Non-Exchangeable</span>
             </p>
           </div>
