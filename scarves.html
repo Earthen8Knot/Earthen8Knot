@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Scarves & Wraps - EarthenKnot</title>
-  <link rel="stylesheet" href="styles.css?v=1.7">
+  <link rel="stylesheet" href="styles.css?v=1.8">
   <style>
     .search-container {
       max-width: 600px;
@@ -116,6 +116,11 @@
         </button>
         <div class="user-dropdown" id="user-dropdown"></div>
       </div>
+      <button class="wishlist-nav-btn" onclick="window.location.href='wishlist.html'" aria-label="View Wishlist" style="background: none; border: none; cursor: pointer; color: var(--text); padding: 0.5rem; transition: color 0.3s ease; position: relative; display: flex; align-items: center;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='var(--text)'">
+        <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2;">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </button>
       <button class="cart-btn" onclick="window.location.href='checkout.html'" aria-label="View Cart">
         <svg viewBox="0 0 24 24">
           <circle cx="9" cy="21" r="1"></circle>
@@ -174,7 +179,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.7"></script>
+  <script src="script.js?v=1.8"></script>
   <script type="module" src="firebase-config.js"></script>
 </body>
 </html>

@@ -97,6 +97,10 @@ onAuthStateChanged(auth, (user) => {
     welcomeText.textContent = `${greeting}!`;
     welcomeBanner.style.display = 'flex';
   }
+
+  // Dispatch custom event to notify other scripts of auth changes
+  const authEvent = new CustomEvent('auth-state-changed', { detail: { user } });
+  window.dispatchEvent(authEvent);
 });
 
 // Close user dropdown when clicking outside
@@ -106,3 +110,7 @@ document.addEventListener('click', (e) => {
     userDropdown.classList.remove('show');
   }
 });
+
+// Export instances globally for non-module script access
+window.firebaseAuth = auth;
+window.firebaseDb = db;

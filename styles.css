@@ -1621,36 +1621,78 @@ section,
   transform-origin: center 52px;
 }
 
-/* Reaction Button styling */
-.reaction-btn-card {
+/* Wishlist Favorites Heart Button */
+.wishlist-btn {
   position: absolute;
   top: 15px;
   right: 15px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 0.35rem 0.65rem;
-  border-radius: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   cursor: pointer;
   z-index: 10;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.2s, background 0.2s, color 0.2s;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   outline: none;
+  padding: 0;
 }
 
-.reaction-btn-card:hover {
-  transform: scale(1.08);
-  background: white;
+.wishlist-btn:hover {
+  transform: scale(1.12);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(108, 120, 92, 0.25);
 }
 
-.reaction-btn-card.active {
-  color: #ef4444;
-  border-color: rgba(239, 68, 68, 0.2);
-  background: #fff5f5;
+.wishlist-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(144, 118, 97, 0.45);
+  border-color: var(--secondary);
+}
+
+.wishlist-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text);
+  fill: none;
+  stroke-width: 2.2;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.wishlist-btn.active svg {
+  stroke: #e05a47;
+  fill: #e05a47;
+  transform: scale(1.15);
+}
+
+/* Loading spinner feedback during cloud database sync */
+.wishlist-btn.loading svg {
+  opacity: 0.15;
+}
+
+.wishlist-btn.loading::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(144, 118, 97, 0.25);
+  border-top-color: var(--secondary);
+  border-radius: 50%;
+  animation: wishlistSpin 0.6s linear infinite;
+}
+
+@keyframes wishlistSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Ensure the product card supports relative positioning */
+.product-card {
+  position: relative;
 }
 

@@ -712,41 +712,19 @@ function initGalleryZoom() {
   }
 }
 
-// Initialize and handle Product Reactions
-function initProductReactions() {
-  const defaultReactions = {
-    'ivory-lace-crochet-pillow': 24,
-    'macrame-weave-crochet-pillow': 18,
-    'striped-crochet-sweatshirt': 42,
-    'lavender-fringe-crochet-scarf': 35,
-    'midnight-mesh-crochet-top': 29,
-    'blossom-striped-crochet-sweater': 47,
-    'sweetheart-crochet-pouch': 15,
-    'gray-cream-beanie': 12,
-    'gray-ribbed-beanie': 9,
-    'ivory-beanie': 14,
-    'scrunchies-set': 21
-  };
-
-  let reactionStore = {};
+// Initialize and handle Favorite/Wishlist System
+function initWishlistSystem() {
+  let wishlist = [];
+  
+  // Load initial local guest wishlist
   try {
-    const saved = localStorage.getItem('earthenknot_reactions');
-    if (saved) {
-      reactionStore = JSON.parse(saved);
-    } else {
-      reactionStore = { ...defaultReactions };
-      localStorage.setItem('earthenknot_reactions', JSON.stringify(reactionStore));
-    }
+    const saved = localStorage.getItem('earthenknot_favorites');
+    if (saved) wishlist = JSON.parse(saved);
   } catch (e) {
-    reactionStore = { ...defaultReactions };
+    wishlist = [];
   }
 
-  let userReactions = [];
-  try {
-    const savedUser = localStorage.getItem('earthenknot_user_reactions');
-    if (savedUser) userReactions = JSON.parse(savedUser);
-  } catch (e) {}
-
+  // Helper to trigger floating emoji particles (tactile micro-interaction)
   function triggerHeartBurst(x, y) {
     const container = document.createElement('div');
     container.style.position = 'fixed';
@@ -756,7 +734,7 @@ function initProductReactions() {
     container.style.zIndex = '99999';
     document.body.appendChild(container);
 
-    const emojis = ['❤️', '💖', '🧶', '✨'];
+    const emojis = ['❤️', '💖', '✨'];
     for (let i = 0; i < 4; i++) {
       const p = document.createElement('span');
       p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
@@ -779,85 +757,215 @@ function initProductReactions() {
     setTimeout(() => container.remove(), 1000);
   }
 
-  window.toggleReaction = function(productId, e) {
+  // Toast feedback helper
+  function showFeedbackToast(msg, isError = false) {
+    let toast = document.getElementById('wishlist-feedback-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'wishlist-feedback-toast';
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 25px;
+        left: 25px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        color: #fff;
+        font-family: 'Quicksand', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        z-index: 10001;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: var(--shadow-md);
+        transition: all 0.35s ease;
+        transform: translateY(100px);
+        opacity: 0;
+      `;
+      document.body.appendChild(toast);
+    }
+    toast.style.background = isError ? '#ef4444' : 'var(--secondary)';
+    toast.innerHTML = isError ? `⚠️ ${msg}` : `❤️ ${msg}`;
+    
+    setTimeout(() => {
+      toast.style.transform = 'translateY(0)';
+      toast.style.opacity = '1';
+    }, 10);
+
+    clearTimeout(window._wishlistToastTimer);
+    window._wishlistToastTimer = setTimeout(() => {
+      toast.style.transform = 'translateY(100px)';
+      toast.style.opacity = '0';
+    }, 2800);
+  }
+
+  // Toggle favorite trigger
+  window.toggleFavorite = async function(productId, e) {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
 
-    const index = userReactions.indexOf(productId);
-    const hasReacted = index !== -1;
+    const index = wishlist.indexOf(productId);
+    const hasFav = index !== -1;
+    const targets = document.querySelectorAll(`[data-fav-id="${productId}"]`);
 
-    if (hasReacted) {
-      userReactions.splice(index, 1);
-      reactionStore[productId] = Math.max(0, (reactionStore[productId] || 0) - 1);
+    // Set buttons to loading status locally
+    targets.forEach(el => el.classList.add('loading'));
+
+    if (hasFav) {
+      wishlist.splice(index, 1);
     } else {
-      userReactions.push(productId);
-      reactionStore[productId] = (reactionStore[productId] || 0) + 1;
-      
-      if (e) {
-        triggerHeartBurst(e.clientX, e.clientY);
-      }
+      wishlist.push(productId);
+      if (e) triggerHeartBurst(e.clientX, e.clientY);
     }
 
-    localStorage.setItem('earthenknot_reactions', JSON.stringify(reactionStore));
-    localStorage.setItem('earthenknot_user_reactions', JSON.stringify(userReactions));
+    // Save to LocalStorage
+    localStorage.setItem('earthenknot_favorites', JSON.stringify(wishlist));
 
-    syncAllReactionButtons();
+    // Firebase Firestore Sync
+    const auth = window.firebaseAuth;
+    const db = window.firebaseDb;
+    const user = auth ? auth.currentUser : null;
+
+    if (user && db) {
+      try {
+        const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js");
+        const docRef = doc(db, "users", user.uid);
+        await setDoc(docRef, { favorites: wishlist }, { merge: true });
+        showFeedbackToast(hasFav ? "Removed from your account" : "Saved to your account");
+      } catch (err) {
+        console.error("Firestore sync failed:", err);
+        showFeedbackToast("Failed to sync with account. Saving locally.", true);
+        // Revert local state
+        if (hasFav) {
+          wishlist.push(productId);
+        } else {
+          const revertIdx = wishlist.indexOf(productId);
+          if (revertIdx !== -1) wishlist.splice(revertIdx, 1);
+        }
+        localStorage.setItem('earthenknot_favorites', JSON.stringify(wishlist));
+      }
+    } else {
+      showFeedbackToast(hasFav ? "Removed from wishlist" : "Saved to wishlist");
+    }
+
+    // Remove loading indicators and refresh active classes
+    targets.forEach(el => el.classList.remove('loading'));
+    syncAllHeartButtons();
+
+    // If we are on the wishlist page, re-render it dynamically!
+    if (typeof renderWishlistPage === 'function') {
+      renderWishlistPage();
+    }
   };
 
-  function syncAllReactionButtons() {
+  function syncAllHeartButtons() {
     const cards = document.querySelectorAll('.product-card');
     cards.forEach(card => {
       const link = card.querySelector('a[href*="product.html?id="]');
       if (!link) return;
-      
+
       let productId = '';
       try {
         const url = new URL(link.href, window.location.href);
         productId = url.searchParams.get('id');
-      } catch(err) {
-        // Fallback for relative/unparseable links
+      } catch (err) {
         const match = link.href.match(/id=([^&]+)/);
         if (match) productId = match[1];
       }
-      
+
       if (!productId) return;
 
-      let btn = card.querySelector('.reaction-btn-card');
+      let btn = card.querySelector('.wishlist-btn');
       if (!btn) {
         btn = document.createElement('button');
-        btn.className = 'reaction-btn-card';
-        btn.onclick = (e) => toggleReaction(productId, e);
+        btn.className = 'wishlist-btn';
+        btn.setAttribute('tabindex', '0');
+        btn.onclick = (e) => toggleFavorite(productId, e);
+        
+        const titleEl = card.querySelector('h3');
+        const productName = titleEl ? titleEl.textContent : 'Product';
+        btn.setAttribute('data-fav-id', productId);
+        btn.setAttribute('data-product-name', productName);
+        
+        btn.innerHTML = `
+          <svg viewBox="0 0 24 24">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        `;
         card.appendChild(btn);
       }
 
-      const reacted = userReactions.includes(productId);
-      const count = reactionStore[productId] || 0;
-      btn.innerHTML = `${reacted ? '❤️' : '🤍'} ${count}`;
-      btn.className = `reaction-btn-card ${reacted ? 'active' : ''}`;
+      const isFav = wishlist.includes(productId);
+      const productName = btn.getAttribute('data-product-name') || 'product';
+      btn.setAttribute('aria-label', isFav ? `Remove ${productName} from wishlist` : `Add ${productName} to wishlist`);
+      
+      if (isFav) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
     });
 
     const detailBtn = document.getElementById('product-reaction-btn');
     if (detailBtn) {
       const productId = detailBtn.getAttribute('data-id');
       if (productId) {
-        const reacted = userReactions.includes(productId);
-        const count = reactionStore[productId] || 0;
-        detailBtn.innerHTML = `${reacted ? '❤️ Loved' : '🤍 Love'} (${count})`;
-        detailBtn.onclick = (e) => toggleReaction(productId, e);
-        detailBtn.className = `reaction-btn-detail ${reacted ? 'active' : ''}`;
-        detailBtn.style.borderColor = reacted ? 'rgba(239, 68, 68, 0.25)' : 'rgba(0,0,0,0.08)';
-        detailBtn.style.background = reacted ? '#fff5f5' : 'var(--surface)';
-        detailBtn.style.color = reacted ? '#ef4444' : 'var(--text)';
+        const isFav = wishlist.includes(productId);
+        detailBtn.setAttribute('data-fav-id', productId);
+        detailBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:${isFav ? 'currentColor' : 'none'};stroke-width:2.2;transition:all 0.3s;vertical-align:middle;margin-right:4px;">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          <span>${isFav ? 'Wishlisted' : 'Add to Wishlist'}</span>
+        `;
+        detailBtn.onclick = (e) => toggleFavorite(productId, e);
+        detailBtn.style.borderColor = isFav ? 'rgba(224, 90, 71, 0.25)' : 'rgba(0,0,0,0.08)';
+        detailBtn.style.background = isFav ? '#fff5f5' : 'var(--surface)';
+        detailBtn.style.color = isFav ? '#e05a47' : 'var(--text)';
       }
     }
   }
 
-  syncAllReactionButtons();
+  window.addEventListener('auth-state-changed', async (e) => {
+    const user = e.detail.user;
+    const db = window.firebaseDb;
+
+    if (user && db) {
+      try {
+        const { doc, getDoc, setDoc } = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js");
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        let cloudFavs = [];
+        if (docSnap.exists() && docSnap.data().favorites) {
+          cloudFavs = docSnap.data().favorites;
+        }
+
+        const mergedFavs = Array.from(new Set([...cloudFavs, ...wishlist]));
+        wishlist = mergedFavs;
+
+        localStorage.setItem('earthenknot_favorites', JSON.stringify(wishlist));
+        await setDoc(docRef, { favorites: wishlist }, { merge: true });
+      } catch (err) {
+        console.error("Failed to load user favorites from Firestore:", err);
+      }
+    } else {
+      try {
+        const saved = localStorage.getItem('earthenknot_favorites');
+        wishlist = saved ? JSON.parse(saved) : [];
+      } catch (err) {
+        wishlist = [];
+      }
+    }
+    syncAllHeartButtons();
+  });
+
+  syncAllHeartButtons();
 
   const observer = new MutationObserver(() => {
-    syncAllReactionButtons();
+    syncAllHeartButtons();
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
