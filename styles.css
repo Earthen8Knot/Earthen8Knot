@@ -139,7 +139,7 @@ a {
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
   letter-spacing: -0.5px;
@@ -461,7 +461,7 @@ footer {
 }
 
 .footer-logo {
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--primary-dark);
