@@ -1,1 +1,1 @@
-https://pranjalighode8.github.io/Earthen_Knot/
+https://earthen8knot.github.io/Earthen8Knot/
