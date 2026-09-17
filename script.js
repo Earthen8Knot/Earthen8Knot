@@ -632,7 +632,7 @@ function renderProductPage() {
         ` : ''}
       </div>
     `;
-    document.title = `${product.name} - EarthenKnot`;
+    document.title = `${product.name} - Earthen8Knot`;
 
     // Initialize gallery and zoom functionality
     initGalleryZoom();

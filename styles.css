@@ -154,6 +154,32 @@ a {
   box-shadow: var(--shadow-sm);
 }
 
+.logo-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-leaf {
+  width: 24px;
+  height: 24px;
+  stroke: var(--primary);
+  fill: var(--primary);
+  fill-opacity: 0.25;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+  transition: transform 0.3s ease, fill-opacity 0.3s ease;
+  flex-shrink: 0;
+}
+
+.logo:hover .logo-leaf,
+.footer-logo:hover .logo-leaf {
+  transform: rotate(14deg) scale(1.15);
+  fill-opacity: 0.45;
+}
+
 .nav-links {
   display: flex;
   gap: 2.5rem;
@@ -465,6 +491,9 @@ footer {
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--primary-dark);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .social-links {
@@ -1248,6 +1277,11 @@ footer {
   .logo img {
     width: 38px !important;
     height: 38px !important;
+  }
+
+  .logo-leaf {
+    width: 18px;
+    height: 18px;
   }
 
   .nav-actions {
