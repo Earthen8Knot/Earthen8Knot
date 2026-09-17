@@ -529,6 +529,46 @@ footer {
   }
 }
 
+.footer-policy-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  font-size: 0.88rem;
+}
+
+.footer-policy-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.footer-policy-links a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.footer-policy-links .policy-dot {
+  color: rgba(0, 0, 0, 0.25);
+  user-select: none;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 640px) {
+  .footer-policy-links {
+    gap: 0.8rem;
+    font-size: 0.82rem;
+  }
+  .footer-policy-links .policy-dot {
+    display: none;
+  }
+}
+
 /* Base animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
