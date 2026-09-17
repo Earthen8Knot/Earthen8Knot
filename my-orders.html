@@ -268,7 +268,7 @@
         `).join('');
 
         let statusClass = 'status-pending';
-        if (order.status === 'Confirmed' || order.status === 'Delivered') {
+        if (order.status === 'Confirmed' || order.status === 'Delivered' || (order.status && order.status.includes('Paid'))) {
           statusClass = 'status-confirmed';
         } else if (order.status === 'Cancelled') {
           statusClass = 'status-cancelled';
@@ -308,6 +308,7 @@
                 <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-light); font-weight:600; display:block;">Payment & Delivery Info</span>
                 <p style="margin:0.25rem 0 0 0; line-height:1.45; color:var(--text);">
                   <strong>Method:</strong> ${order.paymentMethod || 'N/A'}<br>
+                  ${order.razorpayPaymentId ? `<strong>Payment Ref:</strong> <code style="font-size:0.8rem; background:rgba(108,120,92,0.1); padding:1px 5px; border-radius:4px;">${order.razorpayPaymentId}</code><br>` : ''}
                   <strong>Total Paid:</strong> ₹${Number(order.total || 0).toLocaleString('en-IN')}<br>
                   <strong>Delivery:</strong> ${isCancelled ? 'Cancelled' : '10-12 days (lovingly handmade)'}<br>
                   <span style="font-size: 0.8rem; color: var(--secondary); font-weight:600;">⚠️ Non-Refundable & Non-Exchangeable</span>

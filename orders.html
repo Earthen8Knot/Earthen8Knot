@@ -97,6 +97,7 @@
       transition: all 0.2s;
     }
     .status-Confirmed { background: #e8f5e9; color: #2e7d32; }
+    .status-Paid { background: #dcfce7; color: #166534; border-color: #86efac; font-weight: 700; }
     .status-Processing { background: #fff8e1; color: #f57f17; }
     .status-Shipped { background: #e3f2fd; color: #1565c0; }
     .status-Delivered { background: #f1f8e9; color: #33691e; }
@@ -365,7 +366,8 @@
             </span>
           </td>
           <td>
-            <select class="status-select status-${o.status}" onchange="changeOrderStatus('${o.id}', this.value)">
+            <select class="status-select ${(o.status && o.status.includes('Paid')) ? 'status-Paid' : 'status-' + o.status}" onchange="changeOrderStatus('${o.id}', this.value)">
+              <option value="Paid & Confirmed" ${o.status === 'Paid & Confirmed' ? 'selected' : ''}>Paid & Confirmed</option>
               <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
               <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
               <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
@@ -417,6 +419,11 @@
             <span style="color:var(--text-light); font-size:0.85rem;">Payment Mode</span>
             <strong>${order.paymentMethod}</strong>
           </div>
+          ${order.razorpayPaymentId ? `
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+            <span style="color:var(--text-light); font-size:0.85rem;">Razorpay ID</span>
+            <code style="font-size:0.85rem; background:rgba(108,120,92,0.15); color:var(--primary-dark); padding:2px 6px; border-radius:4px; font-weight:600;">${order.razorpayPaymentId}</code>
+          </div>` : ''}
           <div style="display:flex; justify-content:space-between;">
             <span style="color:var(--text-light); font-size:0.85rem;">Order Status</span>
             <strong style="color:var(--primary-dark);">${order.status}</strong>
