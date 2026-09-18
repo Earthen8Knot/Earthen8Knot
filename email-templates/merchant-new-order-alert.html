@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+  }
+  .email-wrapper {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border-top: 6px solid #d97706; /* Amber alert color for new orders */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .header {
+    padding: 25px 30px;
+    border-bottom: 1px solid #eeeeee;
+  }
+  .header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #92400e;
+  }
+  .content {
+    padding: 30px;
+    color: #333333;
+    line-height: 1.6;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #fef3c7;
+    color: #92400e;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .grid-2 {
+    display: table;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .col {
+    display: table-cell;
+    width: 50%;
+    vertical-align: top;
+    background: #f9fafb;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+  }
+  h3 {
+    margin-top: 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #6b7280;
+    letter-spacing: 0.5px;
+  }
+  .val {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+  }
+  .items-box {
+    background: #111827;
+    color: #10b981;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .total {
+    text-align: right;
+    font-size: 24px;
+    font-weight: bold;
+    color: #d97706;
+    margin-top: 20px;
+  }
+  .action-btn {
+    display: block;
+    text-align: center;
+    background-color: #111827;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+  <div class="email-wrapper">
+    <div class="header">
+      <h1>🚨 New Order Received!</h1>
+    </div>
+    <div class="content">
+      <div class="badge">Action Required: Fulfillment</div>
+      
+      <div class="grid-2">
+        <div class="col" style="border-right: none; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+          <h3>Order Details</h3>
+          <p class="val"><strong>ID:</strong> {{order_id}}</p>
+          <p class="val"><strong>Date:</strong> {{order_date}}</p>
+          <p class="val"><strong>Payment:</strong> {{payment_method}}</p>
+          <p class="val" style="color: #d97706;"><strong>WhatsApp Tour:</strong> {{whatsapp_order_tour}}</p>
+        </div>
+        <div class="col" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+          <h3>Customer Details</h3>
+          <p class="val"><strong>Name:</strong> {{customer_name}}</p>
+          <p class="val"><strong>Email:</strong> {{customer_email}}</p>
+          <p class="val"><strong>Phone:</strong> {{customer_phone}}</p>
+          <p class="val"><strong>Shipping:</strong> {{shipping_address}}</p>
+        </div>
+      </div>
+
+      <div class="items-box">
+        // ORDER ITEMS LIST<br><br>{{items}}
+      </div>
+      
+      <div class="total">
+        TOTAL VALUE: {{order_total}}
+      </div>
+      
+      <a href="https://earthenknot.github.io/EarthenKnot/orders.html" class="action-btn">Open Orders Dashboard</a>
+    </div>
+  </div>
+</body>
+</html>

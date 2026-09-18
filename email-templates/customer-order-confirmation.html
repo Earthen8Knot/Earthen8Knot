@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f7f9f6;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .email-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+  .header {
+    background-color: #6c785c;
+    color: #ffffff;
+    text-align: center;
+    padding: 35px 20px;
+  }
+  .header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+  .content {
+    padding: 40px 40px 20px 40px;
+    color: #333333;
+    line-height: 1.6;
+  }
+  .content h2 {
+    font-size: 20px;
+    color: #2b3124;
+    margin-top: 0;
+  }
+  .order-details {
+    background-color: #f4f6f1;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  .order-details p {
+    margin: 8px 0;
+    font-size: 15px;
+  }
+  .items-list {
+    white-space: pre-wrap;
+    font-family: monospace;
+    background: #ffffff;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #444;
+  }
+  .total-row {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2b3124;
+    margin-top: 15px;
+    border-top: 2px solid #6c785c;
+    padding-top: 15px;
+  }
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: #888888;
+    font-size: 13px;
+    background-color: #fcfdfb;
+    border-top: 1px solid #eeeeee;
+  }
+  .btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #6c785c;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+  <div class="email-wrapper">
+    <div class="header">
+      <h1>EarthenKnot</h1>
+    </div>
+    <div class="content">
+      <h2>Thank You For Your Order, {{customer_name}}!</h2>
+      <p>We've successfully received your order and our artisan team is already getting it ready for dispatch. We will notify you once it ships.</p>
+      
+      <div class="order-details">
+        <p><strong>Order ID:</strong> {{order_id}}</p>
+        <p><strong>Order Date:</strong> {{order_date}}</p>
+        <p><strong>Shipping Address:</strong><br>{{shipping_address}}</p>
+        <p><strong>Payment Method:</strong> {{payment_method}}</p>
+        
+        <h3 style="margin-top: 20px; margin-bottom: 10px; color: #2b3124;">Order Summary</h3>
+        <div class="items-list">{{items}}</div>
+        
+        <div class="total-row">
+          Total Paid: {{order_total}}
+        </div>
+      </div>
+      
+      <p>If you requested a WhatsApp Order Tour, our team will message you shortly at <strong>{{customer_phone}}</strong>.</p>
+      
+      <div style="text-align: center;">
+        <a href="https://earthenknot.github.io/EarthenKnot/" class="btn">Visit Our Store</a>
+      </div>
+    </div>
+    <div class="footer">
+      &copy; 2026 EarthenKnot. All rights reserved.<br>
+      Handcrafted with love.
+    </div>
+  </div>
+</body>
+</html>
