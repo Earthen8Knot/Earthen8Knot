@@ -274,70 +274,79 @@
               </h2>
             </div>
 
-            <!-- Single Payment Method: Online Payment (Razorpay) -->
-            <div style="background: rgba(108, 120, 92, 0.08); border: 1.5px solid rgba(108, 120, 92, 0.25); border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-              <div style="display: flex; align-items: center; gap: 0.75rem;">
-                <div style="width: 38px; height: 38px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-                  <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                </div>
-                <div>
-                  <strong style="font-size: 1.05rem; color: var(--primary-dark); display: block;">100% Secure Online Payment</strong>
-                  <span style="font-size: 0.82rem; color: var(--text-light);">UPI (Google Pay, PhonePe, Paytm), Cards, NetBanking</span>
-                </div>
-              </div>
-              <span style="background: #e8f5e9; color: #2e7d32; padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;">
-                <span style="width: 7px; height: 7px; background: #2e7d32; border-radius: 50%; display: inline-block;"></span> Powered by Razorpay
-              </span>
-            </div>
-
-            <!-- Online Payment via Razorpay -->
-            <div id="section-razorpay" class="payment-info-section" style="display: block;">
-              <div class="razorpay-card">
-                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; border-bottom: 1px solid rgba(108, 120, 92, 0.15); padding-bottom: 1rem; margin-bottom: 1rem;">
-                  <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="width: 44px; height: 44px; background: rgba(108, 120, 92, 0.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary);">
-                      <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    </div>
-                    <div>
-                      <strong style="font-size: 1.12rem; color: var(--primary-dark); display: block;">Automated Online Checkout</strong>
-                      <span style="font-size: 0.82rem; color: var(--text-light);">Instant payment confirmation powered by Razorpay</span>
-                    </div>
+            <!-- Interactive Payment Method Selection -->
+            <div id="payment-method-selection" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+              
+              <!-- Option 1: UPI -->
+              <label class="payment-option-label" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border-radius: 14px; border: 2px solid var(--primary); background: rgba(108, 120, 92, 0.05); cursor: pointer; transition: all 0.3s ease;">
+                <input type="radio" name="payment_method" value="upi" checked style="margin-top: 0.3rem; width: 18px; height: 18px; accent-color: var(--primary);">
+                <div style="flex: 1;">
+                  <strong style="font-size: 1.1rem; color: var(--primary-dark); display: block; margin-bottom: 0.25rem;">UPI (Google Pay, PhonePe, Paytm)</strong>
+                  <span style="font-size: 0.85rem; color: var(--text-light); display: block; margin-bottom: 0.75rem;">Pay instantly via your favorite UPI app</span>
+                  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <span style="background: #ffffff; border: 1px solid #e0e0e0; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; color: #5f6368;">GPay</span>
+                    <span style="background: #ffffff; border: 1px solid #e0e0e0; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; color: #5f259f;">PhonePe</span>
+                    <span style="background: #ffffff; border: 1px solid #e0e0e0; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; color: #00b9f5;">Paytm</span>
                   </div>
-                  <span style="background: #e8f5e9; color: #2e7d32; padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;">
-                    <span style="width: 7px; height: 7px; background: #2e7d32; border-radius: 50%; display: inline-block;"></span> 100% Safe & Secure
-                  </span>
                 </div>
+              </label>
 
-                <p style="font-size: 0.9rem; color: var(--text); line-height: 1.5; margin: 0 0 1rem 0;">
-                  Pay securely using any UPI app (Google Pay, PhonePe, Paytm), Debit/Credit Cards, or NetBanking. Your order will be verified and packed immediately without requiring any manual screenshot or transaction verification.
-                </p>
-
-                <!-- Supported payment badges -->
-                <div class="payment-badges-grid">
-                  <span class="payment-badge-chip">
-                    <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: currentColor;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                    Google Pay / PhonePe / Paytm / UPI
-                  </span>
-                  <span class="payment-badge-chip">
-                    <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                    Credit / Debit Cards
-                  </span>
-                  <span class="payment-badge-chip">
-                    <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    NetBanking (50+ Banks)
-                  </span>
-                  <span class="payment-badge-chip">
-                    <svg viewBox="0 0 24 24" style="width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2;"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
-                    Cred & Wallets
-                  </span>
+              <!-- Option 2: Cards -->
+              <label class="payment-option-label" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border-radius: 14px; border: 2px solid transparent; background: rgba(0,0,0,0.02); cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(108,120,92,0.03)'" onmouseout="if(!this.querySelector('input').checked) this.style.background='rgba(0,0,0,0.02)'">
+                <input type="radio" name="payment_method" value="card" style="margin-top: 0.3rem; width: 18px; height: 18px; accent-color: var(--primary);">
+                <div style="flex: 1;">
+                  <strong style="font-size: 1.1rem; color: var(--primary-dark); display: block; margin-bottom: 0.25rem;">Credit / Debit Cards</strong>
+                  <span style="font-size: 0.85rem; color: var(--text-light); display: block; margin-bottom: 0.75rem;">Visa, Mastercard, RuPay, Maestro</span>
+                  <div style="display: flex; gap: 0.5rem;">
+                    <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: none; stroke: #666; stroke-width: 1.5;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  </div>
                 </div>
+              </label>
 
-                <div id="razorpay-key-status-note" style="margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 10px; background: rgba(108, 120, 92, 0.08); font-size: 0.82rem; color: var(--primary-dark); display: flex; align-items: center; gap: 0.5rem;">
-                  <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                  <span>Clicking the button below opens the secure Razorpay payment modal to complete checkout in seconds.</span>
+              <!-- Option 3: Netbanking & Others -->
+              <label class="payment-option-label" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border-radius: 14px; border: 2px solid transparent; background: rgba(0,0,0,0.02); cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(108,120,92,0.03)'" onmouseout="if(!this.querySelector('input').checked) this.style.background='rgba(0,0,0,0.02)'">
+                <input type="radio" name="payment_method" value="netbanking" style="margin-top: 0.3rem; width: 18px; height: 18px; accent-color: var(--primary);">
+                <div style="flex: 1;">
+                  <strong style="font-size: 1.1rem; color: var(--primary-dark); display: block; margin-bottom: 0.25rem;">NetBanking, CRED & Wallets</strong>
+                  <span style="font-size: 0.85rem; color: var(--text-light); display: block;">Supports 50+ Banks, CRED Pay, Amazon Pay & more</span>
                 </div>
-              </div>
+              </label>
+
             </div>
+
+            <!-- Secure Processing Note -->
+            <div style="margin-bottom: 1rem; padding: 0.8rem 1rem; border-radius: 10px; background: rgba(108, 120, 92, 0.08); font-size: 0.82rem; color: var(--primary-dark); display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-align: center;">
+              <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: #2e7d32; stroke-width: 2;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>100% Safe & Secure payment processing via Razorpay. Your details are encrypted.</span>
+            </div>
+            
+            <script>
+              // Add interactivity to payment method radio selection
+              document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                  // Reset all labels
+                  document.querySelectorAll('.payment-option-label').forEach(label => {
+                    label.style.border = '2px solid transparent';
+                    label.style.background = 'rgba(0,0,0,0.02)';
+                  });
+                  // Highlight selected
+                  if(this.checked) {
+                    const parent = this.closest('.payment-option-label');
+                    parent.style.border = '2px solid var(--primary)';
+                    parent.style.background = 'rgba(108, 120, 92, 0.05)';
+                  }
+                  
+                  // Update button text subtly based on method
+                  const btn = document.getElementById('checkout-submit-btn');
+                  const total = window._currentCartTotal || 0;
+                  const totalFormatted = '₹' + total.toLocaleString('en-IN');
+                  
+                  if(this.value === 'upi') btn.textContent = `Pay ${totalFormatted} via UPI 🤎`;
+                  else if(this.value === 'card') btn.textContent = `Pay ${totalFormatted} securely 🤎`;
+                  else btn.textContent = `Pay ${totalFormatted} via Razorpay 🤎`;
+                });
+              });
+            </script>
 
             <!-- Return / Exchange Policy Note -->
             <div style="margin-top: 1.5rem; padding: 1rem; border-radius: 10px; background: rgba(144, 118, 97, 0.08); border: 1px dashed rgba(144, 118, 97, 0.3); display: flex; align-items: flex-start; gap: 0.6rem;">
