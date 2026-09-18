@@ -77,84 +77,10 @@
       margin-bottom: 1rem;
       font-size: 1.05rem;
     }
-    .payment-tabs {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.75rem;
-      background: rgba(0,0,0,0.04);
-      padding: 0.35rem;
-      border-radius: 14px;
-    }
-    .payment-tab-btn {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      border: none;
-      background: transparent;
-      border-radius: 10px;
-      font-family: 'Quicksand', sans-serif;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--text-light);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .payment-tab-btn.active {
-      background: white;
-      color: var(--primary-dark);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .qr-card {
-      background: rgba(255, 255, 255, 0.75);
-      border: 1px solid rgba(108, 120, 92, 0.25);
-      border-radius: 16px;
-      padding: 1.5rem;
-      margin-bottom: 1.75rem;
-      display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 1.5rem;
-      align-items: center;
-    }
-    .qr-image-box {
-      background: white;
-      padding: 0.75rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    .copy-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: rgba(108, 120, 92, 0.12);
-      color: var(--primary-dark);
-      border: 1px solid rgba(108, 120, 92, 0.25);
-      padding: 0.35rem 0.75rem;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .copy-pill:hover {
-      background: var(--primary);
-      color: white;
-    }
     @media (max-width: 900px) {
       .checkout-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
-      }
-      .qr-card {
-        grid-template-columns: 1fr;
-        text-align: center;
       }
     }
   </style>
@@ -348,32 +274,23 @@
               </h2>
             </div>
 
-            <!-- Payment Method Tabs -->
-            <div class="payment-tabs">
-              <button type="button" class="payment-tab-btn active" id="tab-btn-razorpay" onclick="selectPaymentMethod('razorpay')">
-                <span style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.95rem;">
-                  <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                  <strong>Online Payment</strong>
-                </span>
-                <span style="font-size: 0.76rem; opacity: 0.85;">UPI, Cards, NetBanking ⭐</span>
-              </button>
-              <button type="button" class="payment-tab-btn" id="tab-btn-upi" onclick="selectPaymentMethod('upi')">
-                <span style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.95rem;">
-                  <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                  <strong>Manual UPI QR</strong>
-                </span>
-                <span style="font-size: 0.76rem; opacity: 0.85;">Scan QR & Enter UTR</span>
-              </button>
-              <button type="button" class="payment-tab-btn" id="tab-btn-cod" onclick="selectPaymentMethod('cod')">
-                <span style="display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.95rem;">
-                  <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2;"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5H9.5a2.5 2.5 0 0 0 0 5h5a2.5 2.5 0 0 1 0 5H8"/></svg>
-                  <strong>Cash on Delivery</strong>
-                </span>
-                <span style="font-size: 0.76rem; opacity: 0.85;">Pay upon doorstep arrival</span>
-              </button>
+            <!-- Single Payment Method: Online Payment (Razorpay) -->
+            <div style="background: rgba(108, 120, 92, 0.08); border: 1.5px solid rgba(108, 120, 92, 0.25); border-radius: 14px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 38px; height: 38px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+                  <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                </div>
+                <div>
+                  <strong style="font-size: 1.05rem; color: var(--primary-dark); display: block;">100% Secure Online Payment</strong>
+                  <span style="font-size: 0.82rem; color: var(--text-light);">UPI (Google Pay, PhonePe, Paytm), Cards, NetBanking</span>
+                </div>
+              </div>
+              <span style="background: #e8f5e9; color: #2e7d32; padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;">
+                <span style="width: 7px; height: 7px; background: #2e7d32; border-radius: 50%; display: inline-block;"></span> Powered by Razorpay
+              </span>
             </div>
 
-            <!-- Section 1: Online Payment via Razorpay -->
+            <!-- Online Payment via Razorpay -->
             <div id="section-razorpay" class="payment-info-section" style="display: block;">
               <div class="razorpay-card">
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; border-bottom: 1px solid rgba(108, 120, 92, 0.15); padding-bottom: 1rem; margin-bottom: 1rem;">
@@ -419,60 +336,6 @@
                   <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                   <span>Clicking the button below opens the secure Razorpay payment modal to complete checkout in seconds.</span>
                 </div>
-              </div>
-            </div>
-
-            <!-- Section 2: Manual UPI QR Section -->
-            <div id="section-upi" class="payment-info-section" style="display: none;">
-              <div class="qr-card">
-                <div class="qr-image-box" style="background: white; padding: 6px; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.06);">
-                  <img id="upi-qr-image" src="" alt="Earthen8Knot Payment QR Code" style="width: 170px; height: 170px; object-fit: contain; border-radius: 10px;">
-                </div>
-                <div>
-                  <span style="font-size: 0.85rem; color: var(--text-light); display: block;">Official Account</span>
-                  <strong style="font-size: 1.35rem; color: var(--primary-dark);">Earthen8Knot Official</strong>
-                  <div style="margin-top: 0.4rem; display: inline-block; background: rgba(108, 120, 92, 0.12); padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.88rem; font-weight: 600; color: var(--primary-dark);">
-                    UPI ID: earthenknot11@okhdfcbank
-                  </div>
-                  <div id="upi-amount-label" style="margin-top: 0.6rem; font-size: 1.15rem; font-weight: 700; color: var(--primary-dark);">
-                    Amount to Pay: ₹0.00
-                  </div>
-                  <p style="font-size: 0.88rem; color: var(--text); margin: 0.6rem 0 0 0; line-height: 1.5;">
-                    Please pay the exact amount. Once paid, type your 12-digit transaction ID below. This helps us match your payment and start packing your order immediately! 🤎
-                  </p>
-                </div>
-              </div>
-
-              <!-- UPI Transaction Verification Input -->
-              <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(108, 120, 92, 0.15);">
-                <label for="upi-transaction-id" style="display: block; font-weight: 600; color: var(--primary-dark); font-size: 0.95rem; margin-bottom: 0.5rem;">
-                  UPI Transaction ID (12 digits) <span style="color: red;">*</span>
-                </label>
-                <div class="input-wrapper" style="max-width: 400px; position: relative; display: flex; align-items: center;">
-                  <svg class="input-icon" viewBox="0 0 24 24" style="position: absolute; left: 14px; width: 18px; height: 18px; fill: none; stroke: var(--text-light); stroke-width: 2;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                  <input type="text" id="upi-transaction-id" placeholder="Enter 12-digit UTR/Ref No." minlength="12" maxlength="12" pattern="\d{12}" style="width: 100%; padding: 0.85rem 1rem 0.85rem 2.8rem; border-radius: 12px; border: 1.5px solid rgba(0, 0, 0, 0.08); background: var(--surface); font-size: 0.95rem; color: var(--text); font-family: 'Quicksand', sans-serif; outline: none; transition: all 0.3s;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                </div>
-                <span style="font-size: 0.8rem; color: var(--text-light); display: block; margin-top: 0.4rem;">
-                  Scan the QR, pay the exact amount, and paste the 12-digit payment reference ID below.
-                </span>
-              </div>
-            </div>
-
-            <!-- Section 3: Cash on Delivery -->
-            <div id="section-cod" class="payment-info-section" style="display: none;">
-              <div style="background: rgba(255, 255, 255, 0.85); border: 2px dashed rgba(108, 120, 92, 0.35); border-radius: 16px; padding: 1.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                  <div style="width: 42px; height: 42px; background: rgba(144, 118, 97, 0.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--secondary);">
-                    <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2;"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5H9.5a2.5 2.5 0 0 0 0 5h5a2.5 2.5 0 0 1 0 5H8"/></svg>
-                  </div>
-                  <div>
-                    <strong style="font-size: 1.1rem; color: var(--primary-dark); display: block;">Cash on Delivery (Doorstep Payment)</strong>
-                    <span style="font-size: 0.82rem; color: var(--text-light);">Pay with cash or UPI when your parcel arrives</span>
-                  </div>
-                </div>
-                <p style="font-size: 0.88rem; color: var(--text); line-height: 1.5; margin: 0;">
-                  Our courier partners accept cash or QR scan on delivery. Because each piece is lovingly handcrafted upon order, our artisan coordinator will verify your order on WhatsApp before starting production.
-                </p>
               </div>
             </div>
 
@@ -601,39 +464,13 @@
   <script type="module" src="firebase-config.js"></script>
   <script>
     window.selectPaymentMethod = function(method) {
-      window.currentPaymentMethod = method;
-
-      ['razorpay', 'upi', 'cod'].forEach(m => {
-        const tabBtn = document.getElementById(`tab-btn-${m}`);
-        const sec = document.getElementById(`section-${m}`);
-        if (tabBtn) {
-          if (m === method) {
-            tabBtn.classList.add('active');
-          } else {
-            tabBtn.classList.remove('active');
-          }
-        }
-        if (sec) {
-          sec.style.display = m === method ? 'block' : 'none';
-        }
-      });
-
-      const upiInput = document.getElementById('upi-transaction-id');
-      if (upiInput) {
-        upiInput.required = (method === 'upi');
-      }
+      window.currentPaymentMethod = 'razorpay';
 
       const submitBtn = document.getElementById('checkout-submit-btn');
       if (submitBtn && getCheckoutItems().length > 0) {
         const total = window._currentCartTotal || 0;
         const totalFormatted = '₹' + total.toLocaleString('en-IN');
-        if (method === 'razorpay') {
-          submitBtn.textContent = `Pay ${totalFormatted} via Razorpay 🤎`;
-        } else if (method === 'upi') {
-          submitBtn.textContent = 'Confirm UPI & Place Order 🤎';
-        } else {
-          submitBtn.textContent = 'Place Cash on Delivery Order 🤎';
-        }
+        submitBtn.textContent = `Pay ${totalFormatted} via Razorpay 🤎`;
       }
     };
 
@@ -767,19 +604,6 @@
       document.getElementById('checkout-final-total').textContent = '₹' + total.toLocaleString('en-IN');
       window._currentCartTotal = total;
 
-      // Update dynamic UPI Amount label & QR Code
-      const upiAmtLabel = document.getElementById('upi-amount-label');
-      if (upiAmtLabel) {
-        upiAmtLabel.textContent = 'Amount to Pay: ₹' + total.toLocaleString('en-IN');
-      }
-      const qrImg = document.getElementById('upi-qr-image');
-      if (qrImg) {
-        const upiId = 'earthenknot11@okhdfcbank';
-        const merchantName = 'Earthen8Knot Official';
-        const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${total.toFixed(2)}&cu=INR&tn=EarthenKnot%20Order`;
-        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUrl)}`;
-      }
-
       // Update submit button states
       const submitBtn = document.getElementById('checkout-submit-btn');
       if (submitBtn) {
@@ -793,13 +617,7 @@
           submitBtn.style.opacity = '1';
           submitBtn.style.cursor = 'pointer';
           const totalFormatted = '₹' + total.toLocaleString('en-IN');
-          if (window.currentPaymentMethod === 'razorpay') {
-            submitBtn.textContent = `Pay ${totalFormatted} via Razorpay 🤎`;
-          } else if (window.currentPaymentMethod === 'upi') {
-            submitBtn.textContent = 'Confirm UPI & Place Order 🤎';
-          } else {
-            submitBtn.textContent = 'Place Cash on Delivery Order 🤎';
-          }
+          submitBtn.textContent = `Pay ${totalFormatted} via Razorpay 🤎`;
         }
       }
     }
@@ -930,44 +748,6 @@
             btn.style.opacity = '1';
           }
         }
-      } else if (window.currentPaymentMethod === 'upi') {
-        const upiTxId = document.getElementById('upi-transaction-id').value.trim();
-        if (!upiTxId || upiTxId.length !== 12) {
-          alert('Please enter your 12-digit UPI transaction reference ID before placing order.');
-          document.getElementById('upi-transaction-id').focus();
-          return;
-        }
-
-        btn.textContent = 'Wrapping up your treasures...';
-        btn.disabled = true;
-        btn.style.opacity = '0.7';
-
-        finalizeOrderPlacement({
-          orderId: orderId,
-          customer: customer,
-          items: items,
-          totalAmount: totalAmount,
-          paymentMethod: `UPI QR Code (Ref: ${upiTxId})`,
-          upiTransactionId: upiTxId,
-          razorpayPaymentId: '',
-          status: 'Pending Payment Verification'
-        });
-      } else {
-        // Cash on Delivery
-        btn.textContent = 'Wrapping up your treasures...';
-        btn.disabled = true;
-        btn.style.opacity = '0.7';
-
-        finalizeOrderPlacement({
-          orderId: orderId,
-          customer: customer,
-          items: items,
-          totalAmount: totalAmount,
-          paymentMethod: 'Cash on Delivery (COD)',
-          upiTransactionId: 'N/A',
-          razorpayPaymentId: '',
-          status: 'Confirmed (COD)'
-        });
       }
     }
 
