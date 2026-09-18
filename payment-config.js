@@ -9,7 +9,7 @@
 
 window.RAZORPAY_CONFIG = {
   // Replace this with your Razorpay Key ID (e.g., 'rzp_test_...' or 'rzp_live_...')
-  keyId: 'rzp_test_placeholder',
+  keyId: 'rzp_live_TdO9wjpeo1fyUX',
   
   // Store details displayed on the checkout modal
   merchantName: 'Earthen8Knot',
