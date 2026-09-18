@@ -249,45 +249,89 @@ document.addEventListener('DOMContentLoaded', () => {
   const animatedElements = document.querySelectorAll('.animate-on-scroll');
   animatedElements.forEach(el => observer.observe(el));
 
-  // ===== Responsive Mobile Navigation Toggle =====
+  // ===== Responsive Mobile Navigation Toggle & Drawer =====
   const navbar = document.getElementById('main-nav') || document.querySelector('.navbar');
   const navLinks = document.querySelector('.nav-links');
   const navActions = document.querySelector('.nav-actions');
 
-  if (navbar && navLinks && navActions && !document.querySelector('.mobile-menu-btn')) {
-    const menuBtn = document.createElement('button');
-    menuBtn.className = 'mobile-menu-btn';
-    menuBtn.setAttribute('aria-label', 'Toggle Navigation Menu');
-    menuBtn.innerHTML = `
-      <svg viewBox="0 0 24 24">
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    `;
-    navActions.appendChild(menuBtn);
+  if (navbar && navLinks) {
+    // 1. Ensure Backdrop exists in body
+    let backdrop = document.querySelector('.mobile-nav-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'mobile-nav-backdrop';
+      document.body.appendChild(backdrop);
+    }
 
-    menuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = navLinks.classList.toggle('open');
-      menuBtn.innerHTML = isOpen ? `
-        <svg viewBox="0 0 24 24">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      ` : `
+    // 2. Ensure Mobile Drawer Header exists inside navLinks
+    if (!navLinks.querySelector('.mobile-drawer-header')) {
+      const drawerHeader = document.createElement('div');
+      drawerHeader.className = 'mobile-drawer-header';
+      drawerHeader.innerHTML = `
+        <div class="mobile-drawer-brand">
+          <img src="assets/logo.png" alt="Earthen Knot">
+          <span>Earthen Knot</span>
+        </div>
+        <button class="mobile-drawer-close" aria-label="Close menu">
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      navLinks.insertBefore(drawerHeader, navLinks.firstChild);
+    }
+
+    // 3. Ensure Mobile Drawer Shortcuts Footer exists inside navLinks
+    if (!navLinks.querySelector('.mobile-drawer-footer')) {
+      const drawerFooter = document.createElement('div');
+      drawerFooter.className = 'mobile-drawer-footer';
+      drawerFooter.innerHTML = `
+        <div class="mobile-drawer-divider"></div>
+        <div class="mobile-drawer-section-label">Account & Orders</div>
+        <a href="my-orders.html" class="mobile-drawer-link">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          <span>My Orders</span>
+        </a>
+        <a href="wishlist.html" class="mobile-drawer-link">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          <span>Wishlist</span>
+        </a>
+        <a href="auth.html" class="mobile-drawer-link" id="mobile-drawer-auth-item">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span id="mobile-drawer-auth-text">Sign In / Account</span>
+        </a>
+        <a href="policies.html" class="mobile-drawer-link">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <span>Shipping & Policies</span>
+        </a>
+      `;
+      navLinks.appendChild(drawerFooter);
+    }
+
+    // 4. Ensure Mobile Hamburger Toggle Button exists in navActions
+    let menuBtn = document.getElementById('mobile-menu-btn') || document.querySelector('.mobile-menu-btn');
+    if (!menuBtn && navActions) {
+      menuBtn = document.createElement('button');
+      menuBtn.className = 'mobile-menu-btn';
+      menuBtn.id = 'mobile-menu-btn';
+      menuBtn.setAttribute('aria-label', 'Toggle Navigation Menu');
+      menuBtn.innerHTML = `
         <svg viewBox="0 0 24 24">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       `;
-    });
+      navActions.appendChild(menuBtn);
+    }
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.nav-links') && !e.target.closest('.mobile-menu-btn')) {
-        navLinks.classList.remove('open');
+    const closeMobileMenu = () => {
+      navLinks.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('active');
+      document.body.classList.remove('nav-menu-open');
+      if (menuBtn) {
+        menuBtn.setAttribute('aria-expanded', 'false');
         menuBtn.innerHTML = `
           <svg viewBox="0 0 24 24">
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -296,38 +340,91 @@ document.addEventListener('DOMContentLoaded', () => {
           </svg>
         `;
       }
-    });
+    };
 
-  }
-  
-  // Dropdown Menu Click Toggle (Handles both Desktop & Mobile)
-  const dropBtns = document.querySelectorAll('.dropbtn');
-  dropBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const dropdownContent = btn.nextElementSibling;
-      if (dropdownContent && dropdownContent.classList.contains('dropdown-content')) {
-        const isShown = dropdownContent.classList.toggle('show');
-        // Close all other open dropdowns first (if any)
-        document.querySelectorAll('.dropdown-content.show').forEach(el => {
-          if (el !== dropdownContent) el.classList.remove('show');
-        });
+    const openMobileMenu = () => {
+      navLinks.classList.add('open');
+      if (backdrop) backdrop.classList.add('active');
+      document.body.classList.add('nav-menu-open');
+      if (menuBtn) {
+        menuBtn.setAttribute('aria-expanded', 'true');
+        menuBtn.innerHTML = `
+          <svg viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        `;
       }
-    });
-  });
+    };
 
-  // Close dropdown if clicking outside
-  window.addEventListener('click', (e) => {
-    if (!e.target.matches('.dropbtn')) {
-      const dropdowns = document.querySelectorAll('.dropdown-content');
-      dropdowns.forEach(content => {
-        if (content.classList.contains('show')) {
-          content.classList.remove('show');
+    if (menuBtn) {
+      menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (navLinks.classList.contains('open')) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
         }
       });
     }
-  });
+
+    // Close button inside drawer
+    const drawerCloseBtn = navLinks.querySelector('.mobile-drawer-close');
+    if (drawerCloseBtn) {
+      drawerCloseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMobileMenu();
+      });
+    }
+
+    // Close menu when tapping on backdrop
+    if (backdrop) {
+      backdrop.addEventListener('click', closeMobileMenu);
+    }
+
+    // Close menu on ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+        closeMobileMenu();
+      }
+    });
+
+    // Close drawer when clicking any page navigation link inside drawer
+    navLinks.querySelectorAll('a:not(.dropbtn)').forEach(link => {
+      link.addEventListener('click', () => {
+        setTimeout(closeMobileMenu, 150);
+      });
+    });
+
+    // Dropdown Menu Click Toggle (Handles both Desktop & Mobile)
+    const dropBtns = document.querySelectorAll('.dropbtn');
+    dropBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const isMobile = window.innerWidth <= 850;
+        if (isMobile) {
+          e.preventDefault();
+          e.stopPropagation();
+          const dropdownContent = btn.nextElementSibling;
+          if (dropdownContent && dropdownContent.classList.contains('dropdown-content')) {
+            const isShown = dropdownContent.classList.toggle('show');
+            // Close all other open dropdowns first (if any)
+            document.querySelectorAll('.dropdown-content.show').forEach(el => {
+              if (el !== dropdownContent) el.classList.remove('show');
+            });
+          }
+        }
+      });
+    });
+
+    // Close dropdown if clicking outside dropdown
+    window.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-content.show').forEach(content => {
+          content.classList.remove('show');
+        });
+      }
+    });
+  }
 
   // ===== Global Search =====
   const searchBtn = document.getElementById('global-search-btn');

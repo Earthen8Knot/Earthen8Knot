@@ -46,7 +46,7 @@ onAuthStateChanged(auth, (user) => {
     // User is signed in
     const displayName = user.displayName || user.email.split('@')[0];
     userBtn.innerHTML = `
-      <svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--primary);stroke:var(--primary);stroke-width:1;">
+      <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:var(--primary);stroke:var(--primary);stroke-width:1;">
         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
       </svg>`;
@@ -54,6 +54,11 @@ onAuthStateChanged(auth, (user) => {
       e.stopPropagation();
       if (userDropdown) userDropdown.classList.toggle('show');
     };
+
+    const drawerAuthText = document.getElementById('mobile-drawer-auth-text');
+    if (drawerAuthText) drawerAuthText.textContent = displayName;
+    const drawerAuthItem = document.getElementById('mobile-drawer-auth-item');
+    if (drawerAuthItem) drawerAuthItem.setAttribute('href', 'my-orders.html');
     
     if (userDropdown) {
       userDropdown.innerHTML = `
@@ -76,8 +81,19 @@ onAuthStateChanged(auth, (user) => {
     }
   } else {
     // User is signed out
-    userBtn.innerHTML = `<span class="user-btn-label">Sign In</span>`;
+    userBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;vertical-align:middle;">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span class="user-btn-label">Sign In</span>`;
     userBtn.onclick = () => { window.location.href = 'auth.html'; };
+
+    const drawerAuthText = document.getElementById('mobile-drawer-auth-text');
+    if (drawerAuthText) drawerAuthText.textContent = 'Sign In / Account';
+    const drawerAuthItem = document.getElementById('mobile-drawer-auth-item');
+    if (drawerAuthItem) drawerAuthItem.setAttribute('href', 'auth.html');
+
     if (userDropdown) {
       userDropdown.classList.remove('show');
       userDropdown.innerHTML = '';
