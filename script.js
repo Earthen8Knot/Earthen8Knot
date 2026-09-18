@@ -1066,3 +1066,48 @@ function initWishlistSystem() {
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
+
+// ----------------------------------------------------
+// FLOATING WHATSAPP BUTTON (Applies globally to all pages)
+// ----------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+  const waBtn = document.createElement('a');
+  waBtn.href = "https://wa.me/917517592373?text=Hi EarthenKnot, I need help with my order!";
+  waBtn.target = "_blank";
+  waBtn.rel = "noopener noreferrer";
+  waBtn.setAttribute('aria-label', 'Chat with us on WhatsApp');
+  waBtn.style.cssText = `
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 58px;
+    height: 58px;
+    background-color: #25D366;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    z-index: 9999;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  `;
+  
+  waBtn.innerHTML = `
+    <svg viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: white;">
+      <path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/>
+    </svg>
+  `;
+
+  waBtn.onmouseover = () => {
+    waBtn.style.transform = 'scale(1.1)';
+    waBtn.style.boxShadow = '0 6px 20px rgba(37, 211, 102, 0.6)';
+  };
+  waBtn.onmouseout = () => {
+    waBtn.style.transform = 'scale(1)';
+    waBtn.style.boxShadow = '0 4px 15px rgba(37, 211, 102, 0.4)';
+  };
+
+  document.body.appendChild(waBtn);
+});
