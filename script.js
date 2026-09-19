@@ -255,6 +255,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const navActions = document.querySelector('.nav-actions');
 
   if (navbar && navLinks) {
+    // 0. Fix Stacking Context Bug on Mobile
+    // Move navLinks to body on mobile so it can overlay the navbar and backdrop correctly.
+    const handleNavReparenting = () => {
+      if (window.innerWidth <= 850) {
+        if (navLinks.parentElement !== document.body) {
+          document.body.appendChild(navLinks);
+        }
+      } else {
+        if (navLinks.parentElement !== navbar) {
+          navbar.insertBefore(navLinks, navActions);
+        }
+      }
+    };
+    handleNavReparenting();
+    window.addEventListener('resize', handleNavReparenting);
     // 1. Ensure Backdrop exists in body
     let backdrop = document.querySelector('.mobile-nav-backdrop');
     if (!backdrop) {
