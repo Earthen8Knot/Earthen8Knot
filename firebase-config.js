@@ -18,13 +18,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/11.7.1/firebase
 
 // ⚠️ REPLACE these with your real Firebase project config
 const firebaseConfig = {
-  apiKey: "AIzaSyA0-ryi8ikKZx_OKAWw6FcX_kNwAfNygFU",
-  authDomain: "earthenknot-aea69.firebaseapp.com",
-  projectId: "earthenknot-aea69",
-  storageBucket: "earthenknot-aea69.firebasestorage.app",
-  messagingSenderId: "761694580338",
-  appId: "1:761694580338:web:740be370f714b9c218dceb",
-  measurementId: "G-DSHDCEXZK9"
+  apiKey: "AIzaSyAsbAerlKnI7UKYsJuoKXw4p_ODtUU8OcU",
+  authDomain: "earthen8knot-9f3bc.firebaseapp.com",
+  projectId: "earthen8knot-9f3bc",
+  storageBucket: "earthen8knot-9f3bc.firebasestorage.app",
+  messagingSenderId: "57882724273",
+  appId: "1:57882724273:web:afec9eafd889866e275f90",
+  measurementId: "G-2LP41VQJC5"
 };
 
 // Initialize Firebase
