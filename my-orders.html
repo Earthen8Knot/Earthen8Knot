@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Orders - Earthen8Knot</title>
   <meta name="description" content="View your order history, delivery details, and order tour status on EarthenKnot.">
-  <link rel="stylesheet" href="styles.css?v=1.9">
+  <link rel="stylesheet" href="styles.css?v=1.10">
   <style>
     .order-card {
       background: var(--glass-bg);
@@ -214,9 +214,23 @@
     import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js';
     import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js';
 
-    window.cancelUserOrder = function(orderId) {
+    window.cancelUserOrder = async function(orderId) {
       if (!confirm("Are you sure you want to cancel this order? This action cannot be undone.")) return;
 
+      const user = auth.currentUser;
+      
+      // Update Firestore if logged in
+      if (user) {
+        try {
+          const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js");
+          const orderRef = doc(db, 'users', user.uid, 'orders', orderId);
+          await updateDoc(orderRef, { status: 'Cancelled' });
+        } catch(e) {
+          console.error("Error cancelling order in Firestore", e);
+        }
+      }
+
+      // Update Local Storage
       let allOrders = [];
       try {
         const saved = localStorage.getItem('earthenknot_orders');
@@ -227,12 +241,11 @@
       if (index !== -1) {
         allOrders[index].status = 'Cancelled';
         localStorage.setItem('earthenknot_orders', JSON.stringify(allOrders));
-        
-        // Re-render based on current logged in user state
-        const user = auth.currentUser;
-        const userEmail = user ? user.email.toLowerCase() : null;
-        renderOrders(userEmail);
       }
+      
+      // Re-render
+      const userEmail = user ? user.email.toLowerCase() : null;
+      renderOrders(userEmail, user ? user.uid : null);
     };
 
     onAuthStateChanged(auth, async (user) => {
@@ -259,7 +272,7 @@
         }
       }
 
-      renderOrders(userEmail);
+      renderOrders(userEmail, user ? user.uid : null);
     });
 
     function resolveItemLink(item) {
@@ -278,20 +291,32 @@
       return 'collections.html';
     }
 
-    function renderOrders(userEmail) {
+    async function renderOrders(userEmail, uid) {
       const container = document.getElementById('orders-container');
       if (!container) return;
 
-      let allOrders = [];
-      try {
-        const saved = localStorage.getItem('earthenknot_orders');
-        if (saved) allOrders = JSON.parse(saved);
-      } catch (e) {}
+      let filteredOrders = [];
 
-      // Filter: If user is logged in, show only their orders. Otherwise show guest orders on this device.
-      let filteredOrders = allOrders;
-      if (userEmail) {
-        filteredOrders = allOrders.filter(o => o.customer && o.customer.email && o.customer.email.toLowerCase() === userEmail);
+      // 1. If logged in, fetch from Firestore
+      if (uid) {
+        try {
+          const { collection, getDocs, orderBy, query } = await import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js");
+          const q = query(collection(db, 'users', uid, 'orders'), orderBy('timestamp', 'desc'));
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            filteredOrders.push(doc.data());
+          });
+        } catch (e) {
+          console.error("Error fetching orders from Firestore:", e);
+        }
+      } else {
+        // 2. Fallback to localStorage for guest view
+        let allOrders = [];
+        try {
+          const saved = localStorage.getItem('earthenknot_orders');
+          if (saved) allOrders = JSON.parse(saved);
+        } catch (e) {}
+        filteredOrders = allOrders;
       }
 
       if (filteredOrders.length === 0) {
@@ -375,6 +400,7 @@
                   <strong>Method:</strong> ${order.paymentMethod || 'N/A'}<br>
                   ${order.razorpayPaymentId ? `<strong>Payment Ref:</strong> <code style="font-size:0.8rem; background:rgba(108,120,92,0.1); padding:1px 5px; border-radius:4px;">${order.razorpayPaymentId}</code><br>` : ''}
                   <strong>Total Paid:</strong> ₹${Number(order.total || 0).toLocaleString('en-IN')}<br>
+                  ${order.trackingId ? `<strong>Tracking AWB:</strong> <a href="https://www.delhivery.com/track/package/${order.trackingId}" target="_blank" style="color:var(--primary); font-weight:700;">${order.trackingId}</a><br>` : ''}
                   <strong>Delivery:</strong> ${isCancelled ? 'Cancelled' : '10-12 days (lovingly handmade)'}<br>
                   <span style="font-size: 0.8rem; color: var(--secondary); font-weight:600;">⚠️ Non-Refundable & Non-Exchangeable</span>
                 </p>
@@ -413,6 +439,6 @@
     }
   </script>
   
-  <script src="script.js?v=1.9"></script>
+  <script src="script.js?v=1.10"></script>
 </body>
 </html>
