@@ -194,10 +194,35 @@
               <span>FREE</span>
             </div>
             <div style="border-top: 1.5px solid rgba(0,0,0,0.08); padding-top: 0.8rem;">
+              <div class="summary-row" id="discount-row" style="display: none; color: #2e7d32; font-weight: 600; margin-bottom: 0.8rem;">
+                <span>Points Discount</span>
+                <span id="checkout-points-discount">-₹0.00</span>
+              </div>
               <div class="summary-row" style="font-weight: 700; font-size: 1.35rem; color: var(--primary-dark); margin: 0;">
                 <span>Total Payable</span>
                 <span id="checkout-final-total">₹0.00</span>
               </div>
+            </div>
+          </div>
+
+          <!-- Earthen Points Box (Hidden if not logged in) -->
+          <div id="earthen-points-container" style="display: none; background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05)); border-radius: 12px; padding: 1.25rem; border: 1px solid rgba(212, 175, 55, 0.3); margin-top: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; color: #b8860b;">
+                <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span style="font-weight: 700; font-size: 1.05rem;">Earthen Points</span>
+              </div>
+              <span id="points-balance-display" style="font-weight: 600; color: #8b6508;">Balance: 0 pts</span>
+            </div>
+            <p style="font-size: 0.82rem; color: #665014; margin: 0 0 1rem 0;">You can apply your points to get a discount on this order. (1 pt = ₹1)</p>
+            <div style="display: flex; gap: 0.5rem;">
+              <input type="number" id="points-to-redeem" min="0" placeholder="0" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.5); background: white; font-family: inherit; font-size: 0.95rem;">
+              <button type="button" id="apply-points-btn" class="btn btn-secondary" style="padding: 0.6rem 1.2rem; border-color: #d4af37; color: #8b6508; border-radius: 8px; font-weight: 600;">Apply</button>
+            </div>
+            <div id="points-applied-msg" style="display: none; font-size: 0.85rem; color: #2e7d32; margin-top: 0.6rem; font-weight: 600;"></div>
+            
+            <div style="margin-top: 1rem; border-top: 1px dashed rgba(212, 175, 55, 0.3); padding-top: 0.75rem; font-size: 0.85rem; color: #8b6508; font-weight: 500;">
+              ✨ You will earn <strong id="points-to-earn">0</strong> points on this order!
             </div>
           </div>
         </div>
@@ -536,8 +561,15 @@
 
       document.getElementById('checkout-cart-count').textContent = count;
       document.getElementById('checkout-subtotal').textContent = '₹' + total.toLocaleString('en-IN');
-      document.getElementById('checkout-final-total').textContent = '₹' + total.toLocaleString('en-IN');
+      
+      const appliedPts = window._appliedPoints || 0;
+      const finalTotal = total - appliedPts;
+      document.getElementById('checkout-final-total').textContent = '₹' + finalTotal.toLocaleString('en-IN');
       window._currentCartTotal = total;
+
+      const pointsToEarn = Math.floor(finalTotal / 100);
+      const pointsEl = document.getElementById('points-to-earn');
+      if (pointsEl) pointsEl.textContent = pointsToEarn;
 
       // Update submit button states
       const submitBtn = document.getElementById('checkout-submit-btn');
@@ -717,6 +749,26 @@
       } catch (e) {}
       existingOrders.unshift(newOrder);
       localStorage.setItem('earthenknot_orders', JSON.stringify(existingOrders));
+
+      // 1.5 Update Earthen Points in Firestore
+      const auth = window.firebaseAuth;
+      const db = window.firebaseDb;
+      if (auth && db && auth.currentUser) {
+        import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js").then(({ doc, updateDoc, increment, getDoc, setDoc }) => {
+          const userRef = doc(db, "users", auth.currentUser.uid);
+          const ptsEarned = Math.floor((payload.totalAmount - (window._appliedPoints || 0)) / 100);
+          const ptsSpent = window._appliedPoints || 0;
+          const netPts = ptsEarned - ptsSpent;
+          
+          getDoc(userRef).then(d => {
+             if (d.exists()) {
+                updateDoc(userRef, { earthenPoints: increment(netPts) });
+             } else {
+                setDoc(userRef, { earthenPoints: Math.max(0, netPts) }, { merge: true });
+             }
+          }).catch(console.error);
+        }).catch(console.error);
+      }
 
       // 2. Trigger EmailJS Transactional Email Automation
       sendTransactionalEmails(newOrder, () => {
@@ -964,6 +1016,62 @@
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  </script>
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
+
+    let maxPoints = 0;
+    
+    // Listen to points application
+    document.getElementById('apply-points-btn').addEventListener('click', () => {
+      let pts = parseInt(document.getElementById('points-to-redeem').value) || 0;
+      if (pts > maxPoints) pts = maxPoints;
+      if (pts > window._currentCartTotal) pts = window._currentCartTotal;
+      if (pts < 0) pts = 0;
+      
+      window._appliedPoints = pts;
+      document.getElementById('points-to-redeem').value = pts;
+      
+      const discountRow = document.getElementById('discount-row');
+      const finalTotalEl = document.getElementById('checkout-final-total');
+      const submitBtn = document.getElementById('checkout-submit-btn');
+      const msg = document.getElementById('points-applied-msg');
+      
+      if (pts > 0) {
+        discountRow.style.display = 'flex';
+        document.getElementById('checkout-points-discount').textContent = `-₹${pts.toLocaleString('en-IN')}`;
+        msg.style.display = 'block';
+        msg.textContent = `Applied ${pts} points (₹${pts} discount)!`;
+      } else {
+        discountRow.style.display = 'none';
+        msg.style.display = 'none';
+      }
+      
+      const finalTotal = (window._currentCartTotal || 0) - pts;
+      finalTotalEl.textContent = '₹' + finalTotal.toLocaleString('en-IN');
+      if (submitBtn) {
+        submitBtn.textContent = `Pay ₹${finalTotal.toLocaleString('en-IN')} via Razorpay 🤎`;
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        document.getElementById('earthen-points-container').style.display = 'block';
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            maxPoints = userDoc.data().earthenPoints || 0;
+            document.getElementById('points-balance-display').textContent = `Balance: ${maxPoints} pts`;
+          }
+        } catch (e) {
+          console.error("Error fetching points:", e);
+        }
+      } else {
+        document.getElementById('earthen-points-container').style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>

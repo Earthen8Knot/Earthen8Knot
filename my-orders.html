@@ -137,6 +137,23 @@
     <section class="container" style="max-width: 800px; margin: 0 auto;">
       <h1 class="fade-in" style="font-size: 2.8rem; margin-bottom: 2.5rem; color: var(--primary-dark); text-align: center; font-family: 'Playfair Display', serif;">My Orders</h1>
       
+      <!-- Premium Earthen Points Banner -->
+      <div id="points-banner" style="display: none; background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05)); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 14px; padding: 1.5rem 2rem; margin-bottom: 2rem; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div style="width: 48px; height: 48px; background: rgba(212, 175, 55, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #b8860b;">
+            <svg viewBox="0 0 24 24" style="width: 26px; height: 26px; fill: currentColor;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div>
+            <h3 style="margin: 0; color: #8b6508; font-size: 1.25rem; font-family: 'Playfair Display', serif;">Earthen Points Balance</h3>
+            <p style="margin: 0.2rem 0 0 0; font-size: 0.85rem; color: #665014;">You earn 1 point for every ₹100 spent!</p>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <span id="points-banner-value" style="display: block; font-size: 2.2rem; font-weight: 700; color: #b8860b; line-height: 1;">0</span>
+          <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #8b6508;">Points</span>
+        </div>
+      </div>
+      
       <!-- User Info Alert -->
       <div id="auth-alert" style="display:none; padding:1.25rem; border-radius:12px; background:rgba(144, 118, 97, 0.08); border:1px solid rgba(144, 118, 97, 0.2); margin-bottom:2rem; text-align:center; font-size:0.95rem; color:var(--secondary);">
         Please <a href="auth.html" style="font-weight:700; color:var(--secondary); text-decoration:underline;">Sign In</a> to view orders tied to your account email address. Below are guest orders placed on this device.
@@ -193,8 +210,9 @@
 
   <!-- Firebase Auth State Logic to Populate Orders -->
   <script type="module">
-    import { auth } from './firebase-config.js';
-    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+    import { auth, db } from './firebase-config.js';
+    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js';
+    import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js';
 
     window.cancelUserOrder = function(orderId) {
       if (!confirm("Are you sure you want to cancel this order? This action cannot be undone.")) return;
@@ -217,15 +235,28 @@
       }
     };
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       const alertBox = document.getElementById('auth-alert');
       let userEmail = null;
 
       if (!user) {
         if (alertBox) alertBox.style.display = 'block';
+        document.getElementById('points-banner').style.display = 'none';
       } else {
         userEmail = user.email.toLowerCase();
         if (alertBox) alertBox.style.display = 'none';
+        
+        // Fetch and show points
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            const pts = userDoc.data().earthenPoints || 0;
+            document.getElementById('points-banner-value').textContent = pts.toLocaleString('en-IN');
+            document.getElementById('points-banner').style.display = 'flex';
+          }
+        } catch (e) {
+          console.error("Error fetching points:", e);
+        }
       }
 
       renderOrders(userEmail);
