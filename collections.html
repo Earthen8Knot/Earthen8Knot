@@ -213,6 +213,16 @@
           <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
         </div>
 
+        <!-- No Results -->
+        <div id="no-results" class="no-results">
+          No crochet items found matching your search.
+        </div>
+
+      </div>
+    </section>
+    <section class="container" id="sold-out-section" style="padding: 2rem 5% 4rem 5%;">
+      <h2 class="fade-in delay-2" style="font-size: 2.2rem; margin-bottom: 2rem; text-align: center; color: var(--text-light); font-family: 'Playfair Display', serif;">Sold Out Products</h2>
+      <div id="sold-out-grid" class="fade-in delay-2" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 2.5rem;">
         <!-- Product -->
         <div class="product-card glass-panel" data-name="lavender fringe crochet wrap scarf handmade sold out" data-category="scarves" style="padding: 1.5rem; text-align: center;">
           <a href="product.html?id=lavender-fringe-crochet-scarf" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
@@ -323,11 +333,6 @@
             <p style="color: var(--primary-dark); font-weight: 600; font-size: 1.15rem; margin-bottom: 1.2rem; flex-grow: 1;">₹899.00</p>
           </a>
           <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
-        </div>
-
-        <!-- No Results -->
-        <div id="no-results" class="no-results">
-          No crochet items found matching your search.
         </div>
 
       </div>
