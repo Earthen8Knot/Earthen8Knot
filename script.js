@@ -726,7 +726,7 @@ function renderProductPage() {
               <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.hookSize || '4.5mm hook'}</strong>
             </div>
             <div>
-              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Natural Fiber</span>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Yarn Info</span>
               <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.fiberType || '100% Organic Cotton'}</strong>
             </div>
           </div>
