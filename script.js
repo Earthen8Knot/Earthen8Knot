@@ -546,9 +546,9 @@ const productsData = {
     image: 'assets/sweatshirt-1.jpg',
     images: ['assets/sweatshirt-1.jpg', 'assets/sweatshirt-2.jpg'],
     stitchCount: '34,500 hand loops',
-    stitchTime: '24 hours of craft',
+    stitchTime: '15 Hours',
     hookSize: '4.0mm bamboo hook',
-    fiberType: '80% Cotton, 20% Milk Fiber',
+    fiberType: '8 ply cotton yarn, 3 mm thick',
     story: "Handcrafted with soft ocean blue and cream cotton yarn, this striped crochet sweatshirt blends relaxed coastal charm with heirloom craftsmanship. Designed with an effortless drop-shoulder silhouette and airy open-weave stitches, it is perfect for layering year-round. Featuring ribbed trim and artisanal stitching throughout, each sweatshirt is woven with meticulous attention to detail."
   },
   'lavender-fringe-crochet-scarf': {
