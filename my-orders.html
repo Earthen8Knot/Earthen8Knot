@@ -298,7 +298,17 @@
           statusClass = 'status-cancelled';
         }
 
-        const canCancel = order.status !== 'Delivered' && order.status !== 'Dispatched' && order.status !== 'Shipped' && order.status !== 'Cancelled';
+        let isWithin24Hours = true;
+        try {
+          // Fallback to parsing order.date if timestamp doesn't exist
+          const orderTime = order.timestamp || new Date(order.date).getTime();
+          if (orderTime && !isNaN(orderTime)) {
+            const hoursPassed = (Date.now() - orderTime) / (1000 * 60 * 60);
+            if (hoursPassed > 24) isWithin24Hours = false;
+          }
+        } catch(e) {}
+
+        const canCancel = order.status !== 'Delivered' && order.status !== 'Dispatched' && order.status !== 'Shipped' && order.status !== 'Cancelled' && isWithin24Hours;
         const isCancelled = order.status === 'Cancelled';
 
         return `

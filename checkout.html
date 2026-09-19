@@ -694,6 +694,7 @@
       const newOrder = {
         id: payload.orderId,
         date: new Date().toLocaleString(),
+        timestamp: Date.now(),
         customer: payload.customer,
         items: payload.items,
         total: payload.totalAmount,
