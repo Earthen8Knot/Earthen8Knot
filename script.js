@@ -718,10 +718,6 @@ function renderProductPage() {
           </h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;">
             <div>
-              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Active Stitches</span>
-              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.stitchCount || '12,000 loops'}</strong>
-            </div>
-            <div>
               <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Stitching Labor</span>
               <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.stitchTime || '10 hours'}</strong>
             </div>
