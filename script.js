@@ -682,6 +682,9 @@ function renderProductPage() {
         <div class="product-gallery" style="margin-bottom: 3rem;">
           <div class="main-image-container" id="main-image-container">
             <img src="${imagesToUse[0]}" id="main-product-image" alt="${product.name}" style="filter: ${product.filter || 'none'};">
+            <button class="wishlist-btn" onclick="toggleFavorite('${productId}', event)" style="position: absolute; top: 24px; right: 24px;" aria-label="Add to wishlist" data-fav-id="${productId}">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            </button>
           </div>
           ${thumbnailsHTML}
         </div>
@@ -1034,6 +1037,18 @@ function initWishlistSystem() {
         detailBtn.style.color = isFav ? '#e05a47' : 'var(--text)';
       }
     }
+
+
+    const standaloneBtns = document.querySelectorAll('.wishlist-btn[data-fav-id]');
+    standaloneBtns.forEach(btn => {
+      const pId = btn.getAttribute('data-fav-id');
+      const isFav = wishlist.includes(pId);
+      if (isFav) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
   }
 
   window.addEventListener('auth-state-changed', async (e) => {
