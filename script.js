@@ -1110,4 +1110,22 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   document.body.appendChild(waBtn);
+  
+  // Inject "Shipping Partner: Delhivery" into footer
+  const footer = document.querySelector('footer');
+  if (footer) {
+    const shippingBadge = document.createElement('div');
+    shippingBadge.style.cssText = 'text-align: center; margin-top: 2rem; display: flex; justify-content: center; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--text-light); font-weight: 500;';
+    shippingBadge.innerHTML = `
+      <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: var(--secondary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+      <span>Shipping Partner: <strong style="color: var(--primary-dark); font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: 0.5px;">Delhivery</strong></span>
+    `;
+    const copyrightDiv = Array.from(footer.children).find(el => el.innerHTML && el.innerHTML.includes('&copy;'));
+    if (copyrightDiv) {
+      footer.insertBefore(shippingBadge, copyrightDiv);
+      copyrightDiv.style.marginTop = '1rem'; 
+    } else {
+      footer.appendChild(shippingBadge);
+    }
+  }
 });
