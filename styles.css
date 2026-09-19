@@ -1908,8 +1908,8 @@ section,
 /* Wishlist Favorites Heart Button */
 .wishlist-btn {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 32px;
+  right: 32px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
