@@ -807,7 +807,7 @@
       // Format items list as a readable text block with absolute links
       const itemsText = order.items.map(item => {
         const localLink = resolveItemLink(item);
-        const absoluteLink = `https://earthen8knot.github.io/Earthen8Knot/${localLink}`;
+        const absoluteLink = `https://earthen8knot.com/${localLink}`;
         return `- ${item.name} (Qty: ${item.qty}) - ₹${(item.price * item.qty).toLocaleString('en-IN')}\n  View product: ${absoluteLink}`;
       }).join('\n');
 
