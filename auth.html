@@ -273,6 +273,8 @@
           msg = 'Invalid email or password.';
         } else if (error.code === 'auth/too-many-requests') {
           msg = 'Too many attempts. Please try later.';
+        } else if (error.code === 'auth/configuration-not-found') {
+          msg = 'Email/Password sign-in is not enabled in your Firebase Console. Please enable it under Authentication > Sign-in method.';
         }
         showToast(msg, 'error');
         setLoading(btn, false);
@@ -329,6 +331,8 @@
           msg = 'Password is too weak. Use at least 6 characters.';
         } else if (error.code === 'auth/invalid-email') {
           msg = 'Please enter a valid email address.';
+        } else if (error.code === 'auth/configuration-not-found') {
+          msg = 'Email/Password sign-in is not enabled in your Firebase Console. Please enable it under Authentication > Sign-in method.';
         }
         showToast(msg, 'error');
         setLoading(btn, false);
