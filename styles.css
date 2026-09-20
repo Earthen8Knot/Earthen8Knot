@@ -1908,15 +1908,15 @@ section,
 /* Wishlist Favorites Heart Button */
 .wishlist-btn {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 44px;
-  height: 44px;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #ffcccc !important;
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 2px solid #ff0000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.45);
   cursor: pointer;
   z-index: 10;
   display: flex;
