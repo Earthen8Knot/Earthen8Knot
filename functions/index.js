@@ -1,12 +1,11 @@
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const axios = require("axios");
 
 admin.initializeApp();
 
-exports.onOrderCreated = onDocumentCreated("users/{userId}/orders/{orderId}", async (event) => {
-    const snapshot = event.data;
-    if (!snapshot) return;
+exports.onOrderCreated = functions.firestore.document("users/{userId}/orders/{orderId}").onCreate(async (snapshot, context) => {
+    if (!snapshot.exists) return;
 
     const order = snapshot.data();
     
