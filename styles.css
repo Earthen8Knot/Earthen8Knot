@@ -518,6 +518,11 @@ footer {
   color: white;
 }
 
+.social-links a[aria-label="WhatsApp"]:hover {
+  background: #25D366;
+  color: white;
+}
+
 /* Mobile footer stacking */
 @media (max-width: 600px) {
   .footer-content {
