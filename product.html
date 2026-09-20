@@ -4,17 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details - Earthen8Knot</title>
-  <link rel="stylesheet" href="styles.css?v=1.17">
+  <link rel="stylesheet" href="styles.css?v=1.18">
   <style>
-    .story-text {
-      font-size: 1.15rem;
-      color: var(--text-light);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-      position: relative;
-      padding-left: 1.5rem;
-      border-left: 3px solid var(--primary);
-      font-style: italic;
+    .size-info-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .size-info-card:hover {
+      box-shadow: var(--shadow-md);
     }
     .back-link {
       display: inline-flex;
@@ -136,7 +132,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.17"></script>
+  <script src="script.js?v=1.18"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {

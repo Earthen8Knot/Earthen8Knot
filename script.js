@@ -453,7 +453,8 @@ const productsData = {
     stitchTime: '12 hours of craft',
     hookSize: '4.5mm bamboo hook',
     fiberType: '100% Organic Cotton',
-    story: "Handcrafted with intricate vintage lace motifs in natural ivory cotton yarn, this artisan crochet cushion cover brings timeless texture and warmth to your living sanctuary. Each pillow cover features exquisite shell stitches, dimensional floral clusters, and delicate openwork lacework inspired by heirloom crochet artistry. Soft to the touch yet beautifully structured with a crisp cotton lining, it adds instant cozy elegance to any sofa, armchair, or bedroom retreat."
+    size: '16" × 16" (40 × 40 cm)',
+    sizeDetails: 'Square cushion cover measuring 16" × 16" (40 × 40 cm). Perfectly tailored to fit standard 16" to 18" square cushion inserts for a full, plush display.'
   },
   'macrame-weave-crochet-pillow': {
     name: 'Square Pattern Pillow Cover',
@@ -465,7 +466,8 @@ const productsData = {
     stitchTime: '8 hours of craft',
     hookSize: '5.0mm wooden hook',
     fiberType: '100% Natural Cotton Cord',
-    story: "A stunning handcrafted pillow cover woven in a delicate open-grid macramé pattern using soft natural ivory cotton yarn. Each knot is tied by hand, creating a beautifully textured lattice that lets light filter through the weave. The subtle cream tones and organic cotton feel make it a versatile piece that complements any bohemian, minimal, or nature-inspired interior. A cozy, artisan touch for your sofa, bed, or reading nook."
+    size: '16" × 16" (40 × 40 cm)',
+    sizeDetails: 'Square cushion cover measuring 16" × 16" (40 × 40 cm). Hand-knotted lattice designed for standard 16" to 18" square pillow inserts.'
   },
   'striped-crochet-sweatshirt': {
     name: 'White-Blue Striped Sweatshirt',
@@ -477,7 +479,8 @@ const productsData = {
     stitchTime: '15 Hours',
     hookSize: '4.0mm bamboo hook',
     fiberType: '8 ply cotton yarn, 3 mm thick',
-    story: "Handcrafted with soft ocean blue and cream cotton yarn, this striped crochet sweatshirt blends relaxed coastal charm with heirloom craftsmanship. Designed with an effortless drop-shoulder silhouette and airy open-weave stitches, it is perfect for layering year-round. Featuring ribbed trim and artisanal stitching throughout, each sweatshirt is woven with meticulous attention to detail."
+    size: 'Free Size / Relaxed Fit',
+    sizeDetails: 'Relaxed drop-shoulder silhouette. Chest: 40"–42" | Total Length: 22" | Sleeve Length: 21". Easily accommodates sizes S through L with an effortless, comfortable drape.'
   },
   'lavender-fringe-crochet-scarf': {
     name: 'Lavender Fringe Crochet Scarf',
@@ -489,7 +492,8 @@ const productsData = {
     stitchTime: '15 hours of craft',
     hookSize: '5.5mm aluminum hook',
     fiberType: '70% Wool, 30% Acrylic',
-    story: "Handcrafted with a wonderfully soft acrylic and wool blend yarn in beautiful gradient lavender and violet hues. This scarf features an intricate openwork chevron-lace stitch pattern that provides both warmth and a lightweight, flowing drape. Finished with a lush, hand-knotted fringe at both ends, it brings a pop of artisanal charm and cozy color to any chilly day outfit."
+    size: '65" Length × 8.5" Width',
+    sizeDetails: 'Total Length: 65 inches (including hand-knotted fringe) | Width: 8.5 inches. Generous length allows for single loop, double wrap, or draped styling.'
   },
   'midnight-mesh-crochet-top': {
     name: 'Midnight Mesh Crochet Top',
@@ -502,7 +506,8 @@ const productsData = {
     stitchTime: '18 hours of craft',
     hookSize: '3.5mm steel hook',
     fiberType: '100% Egyptian Cotton',
-    story: "A beautifully detailed sleeveless crochet crop top handcrafted in deep midnight black cotton yarn. Featuring an open-mesh grid pattern across the upper chest and shoulders, transitioning into a dense, beautifully textured solid stitch bodice. Designed with a clean-cut scoop neck and a subtle open-knit border at the hem, this lightweight knit brings an effortless, sophisticated artisanal touch to any warm-weather style."
+    size: 'Size S/M (Bust 32"–36")',
+    sizeDetails: 'Sleeveless cropped silhouette. Bust: 32"–36" | Total Length: 17". Handcrafted with natural stitch flexibility to flatter sizes Small through Medium.'
   },
   'blossom-striped-crochet-sweater': {
     name: 'Blossom Striped Crochet Sweater',
@@ -515,7 +520,8 @@ const productsData = {
     stitchTime: '28 hours of craft',
     hookSize: '4.0mm bamboo hook',
     fiberType: '85% Cotton, 15% Milk Fiber',
-    story: "A cozy and charming long-sleeve striped pullover handcrafted in soft bubblegum pink and ivory white premium cotton yarn. Woven in a beautiful openwork trellis crochet stitch that balances warmth with breathability, this sweater features a relaxed boat neckline, drop shoulders, and elegant solid ribbed borders at the cuffs and hem. Its cheerful colors and intricate stitchwork make it a standout artisan piece for any modern knitwear collection."
+    size: 'Free Size / Relaxed Fit',
+    sizeDetails: 'Airy trellis-knit pullover. Chest: 38"–42" | Total Length: 23" | Sleeve Length: 22". Breathable, flexible stretch suitable for sizes S through L.'
   },
   'sweetheart-crochet-pouch': {
     name: 'Sweetheart Crochet Pouch',
@@ -526,7 +532,8 @@ const productsData = {
     stitchTime: '3.5 hours of craft',
     hookSize: '3.5mm steel hook',
     fiberType: '100% Organic Cotton',
-    story: "A charming, handcrafted heart-pattern pouch woven with soft premium cotton yarn. Features a contrast lavender heart motif on a warm cream background, complete with a secure wood button closure at the top. Perfect as an artisan coin purse, makeup pouch, or style accessory."
+    size: '6" × 5" (15 × 12.5 cm)',
+    sizeDetails: 'Width: 6 inches (15 cm) | Height: 5 inches (12.5 cm). Compact size with wood button closure; ideal for cards, coins, cosmetics, or everyday small essentials.'
   },
   'gray-cream-beanie': {
     name: 'Dual-Tone Ribbed Beanie',
@@ -537,7 +544,8 @@ const productsData = {
     stitchTime: '5 hours of craft',
     hookSize: '5.0mm aluminum hook',
     fiberType: '60% Acrylic, 40% Merino Wool',
-    story: "A cozy, double-knit ribbed beanie handcrafted with premium acrylic wool blend. Features a modern split color scheme with a heather-gray crown and a wide, folded cream brim. Elastic fit ensures warmth and comfort for chilly weather."
+    size: 'One Size (Fits Head 20"–22")',
+    sizeDetails: 'Standard Adult Free Size. Head Circumference: 20"–22" | Folded Brim Height: 8.5". Double-knit ribbed structure provides adaptive, cozy stretch.'
   },
   'gray-ribbed-beanie': {
     name: 'Artisan Ribbed Knit Beanie',
@@ -548,7 +556,8 @@ const productsData = {
     stitchTime: '4.5 hours of craft',
     hookSize: '5.0mm aluminum hook',
     fiberType: '60% Acrylic, 40% Merino Wool',
-    story: "A classic ribbed-stitch beanie crocheted in a beautiful slate gray color. Handcrafted with thick, insulating acrylic-wool yarn, it features a thick folded brim and high elasticity for a comfortable, everyday fit."
+    size: 'One Size (Fits Head 20"–22")',
+    sizeDetails: 'Standard Adult Free Size. Head Circumference: 20"–22" | Folded Brim Height: 8.5". Elastic ribbed knit ensures a secure, warm fit.'
   },
   'ivory-beanie': {
     name: 'Ivory Ribbed Knit Beanie',
@@ -559,7 +568,8 @@ const productsData = {
     stitchTime: '4.5 hours of craft',
     hookSize: '4.5mm bamboo hook',
     fiberType: '100% Premium Cotton',
-    story: "A classic ribbed beanie handcrafted in a warm ivory-cream cotton yarn. Featuring a comfortable folded brim and a stretchy ribbed knit pattern, this beanie is perfect for everyday winter styling and outdoor coziness."
+    size: 'One Size (Fits Head 20"–22")',
+    sizeDetails: 'Standard Adult Free Size. Head Circumference: 20"–22" | Folded Brim Height: 8.5". Breathable, all-natural cotton stretch.'
   },
   'scrunchies-set': {
     name: 'Artisan Crochet Scrunchies Set',
@@ -570,7 +580,8 @@ const productsData = {
     stitchTime: '2 hours of craft',
     hookSize: '3.5mm steel hook',
     fiberType: '100% Combed Cotton',
-    story: "A beautiful set of three handmade crochet scrunchies, including two cream and one dusty rose/mauve scrunchie. Soft, gentle on hair, and handcrafted using premium organic cotton yarn."
+    size: 'Set of 3 (Diameter 4.5")',
+    sizeDetails: 'Set of 3 handmade scrunchies. Outer Diameter: ~4.5 inches (11.5 cm) unstretched | Stretches smoothly up to 8 inches without snagging.'
   }
 };
 
@@ -636,27 +647,44 @@ function renderProductPage() {
       </div>
 
       <div class="product-bio-wrapper" style="max-width: 800px; margin: 0 auto; padding: 3rem 0; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
-        <h2 style="font-size: 2rem; margin-bottom: 2rem; color: var(--primary-dark); font-family: 'Quicksand', sans-serif; font-weight: 600;">The Story Behind It</h2>
-        <div class="story-text" style="text-align: left; font-size: 1.2rem; line-height: 1.7; color: var(--text-light);">${product.story}</div>
+        <h2 style="font-size: 2rem; margin-bottom: 1.75rem; color: var(--primary-dark); font-family: 'Quicksand', sans-serif; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.65rem;">
+          <svg viewBox="0 0 24 24" style="width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 2;" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.3 15.3l-6.6 6.6c-.4.4-1 .4-1.4 0l-9.9-9.9c-.2-.2-.3-.4-.3-.7V4c0-.6.4-1 1-1h7.3c.3 0 .5.1.7.3l9.9 9.9c.4.4.4 1 0 1.4z"></path>
+            <circle cx="7.5" cy="7.5" r="1.5"></circle>
+          </svg>
+          Size Info
+        </h2>
+        <div class="size-info-card" style="background: var(--surface); border: 1px solid rgba(108, 120, 92, 0.18); border-radius: 16px; padding: 2rem 2.5rem; text-align: left; box-shadow: var(--shadow-sm); max-width: 650px; margin: 0 auto;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(108, 120, 92, 0.12); padding-bottom: 0.85rem;">
+            <span style="font-size: 0.8rem; color: var(--primary-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(108, 120, 92, 0.1); padding: 0.3rem 0.8rem; border-radius: 20px;">Dimensions & Fit</span>
+            <span style="font-size: 0.9rem; color: var(--text-light); font-style: italic;">Handcrafted with care</span>
+          </div>
+          <p style="font-size: 1.3rem; font-weight: 700; color: var(--primary-dark); margin: 0 0 0.6rem 0; font-family: 'Quicksand', sans-serif;">${product.size || 'Standard Size'}</p>
+          <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text); margin: 0;">${product.sizeDetails || ''}</p>
+        </div>
         
         <!-- Artisan Craftsmanship Details -->
-        <div style="background: var(--bg-secondary); border-radius: 16px; padding: 2.5rem; margin-top: 3.5rem; text-align: left; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.03);">
+        <div style="background: var(--bg-secondary); border-radius: 16px; padding: 2.5rem; margin-top: 3rem; text-align: left; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.03);">
           <h3 style="font-size: 1.35rem; color: var(--primary-dark); font-family: 'Quicksand', sans-serif; font-weight: 600; margin-top: 0; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.65rem;">
             <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2;" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-7.3 16.8M12 22a10 10 0 0 0 7.3-16.8"/><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4z"/></svg>
             Artisan Craftsmanship Details
           </h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;">
             <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Size / Fit</span>
+              <strong style="font-size: 1.05rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.size || 'Standard'}</strong>
+            </div>
+            <div>
               <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Stitching Labor</span>
-              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.stitchTime || '10 hours'}</strong>
+              <strong style="font-size: 1.05rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.stitchTime || '10 hours'}</strong>
             </div>
             <div>
               <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Hook Utilized</span>
-              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.hookSize || '4.5mm hook'}</strong>
+              <strong style="font-size: 1.05rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.hookSize || '4.5mm hook'}</strong>
             </div>
             <div>
               <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 500; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.25rem;">Yarn Info</span>
-              <strong style="font-size: 1.1rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.fiberType || '100% Organic Cotton'}</strong>
+              <strong style="font-size: 1.05rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 600;">${product.fiberType || '100% Organic Cotton'}</strong>
             </div>
           </div>
         </div>
