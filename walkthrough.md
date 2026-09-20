@@ -10,13 +10,30 @@ I have successfully implemented the Favorite/Wishlist heart button feature acros
 - **Global Auth & Db**: Exported `window.firebaseAuth` and `window.firebaseDb` from `firebase-config.js` to allow regular non-module scripts (like `script.js`) to interact with Firebase Auth and Firestore.
 - **Custom Event Dispatcher**: Configured `onAuthStateChanged` to dispatch a custom `auth-state-changed` event to the `window` object, notifying page components whenever the user logs in, logs out, or changes session states.
 
-### 2. Global CSS & Heart Animations (`styles.css`)
+### 2. Social Media Hover Colors & Theme Matching
+Updated social media icons so they match the natural earthen website theme by default (`var(--surface)` / `var(--primary-dark)`) and dynamically illuminate with official brand colors exclusively upon hover.
+
+- **Footer Social Icons (`styles.css`)**:
+  - **Default State**: Clean neutral circular buttons styled with `background: var(--surface); color: var(--primary-dark); box-shadow: var(--shadow-sm);`.
+  - **Hover State**: Transitions smoothly with `cubic-bezier(0.34, 1.56, 0.64, 1)` into official brand colors with glowing drop-shadows:
+    - WhatsApp: `#25D366`
+    - Instagram: Official vibrant gradient
+    - YouTube: `#FF0000`
+    - Email: `#EA4335`
+    - Facebook: `#1877F2`
+- **Page-Specific Contact Cards (`contact.html`, `about.html`, `policies.html`, `checkout.html`)**:
+  - Styled to default to subtle earthen tones matching page backgrounds.
+  - Smoothly reveal brand colors and glowing accents when hovered.
+- **Cache Busting**:
+  - Bumped `styles.css` cache busters from `v=1.20` to `v=1.21` across all 16 HTML files.
+
+### 3. Global CSS & Heart Animations (`styles.css`)
 - **Heart Buttons (.wishlist-btn)**: Added standard SVG heart buttons to all product cards, positioned in the top-right corner with a glassmorphic semi-transparent background and blur filter.
 - **Micro-interactions**: Added smooth scale transitions on hover and active heart click animations (`transform: scale(1.15);` and filling the SVG shape with a warm coral red `#e05a47`).
 - **Focus Rings**: Provided a clear outline indicator (`focus-visible`) for keyboard accessibility.
 - **Loading Spinners**: Created keyframe-based rotating circular border overlays (`wishlistSpin`) to provide visual status feedback while syncing with Firestore.
 
-### 3. Wishlist Sync Controller (`script.js`)
+### 4. Wishlist Sync Controller (`script.js`)
 - **Dual Session Syncing**: 
   - Guest mode saves choices directly to LocalStorage (`earthenknot_favorites`).
   - Logged-in mode automatically imports Firestore (`setDoc`/`getDoc`) in the background, syncing favorites to their cloud profile document (`users/{userId}`).
