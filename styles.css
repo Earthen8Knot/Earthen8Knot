@@ -1220,6 +1220,9 @@ body.nav-menu-open {
 
 /* Tablet Layout (max-width: 1024px) */
 @media (max-width: 1024px) {
+  .global-search-container {
+    display: none !important;
+  }
   .navbar {
     padding: 1.2rem 4%;
   }
