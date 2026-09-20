@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - Earthen8Knot</title>
-  <link rel="stylesheet" href="styles.css?v=1.21">
+  <link rel="stylesheet" href="styles.css?v=1.22">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
+  <!-- Google Maps & Places Configuration & Map Libraries -->
+  <script src="maps-config.js?v=1.0"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <style>
     .razorpay-card {
       background: rgba(255, 255, 255, 0.85);
@@ -236,19 +240,106 @@
                 <input type="email" id="cust-email" placeholder="you@example.com" required>
               </div>
             </div>
-            <div class="form-grid-2">
-              <div class="form-group">
-                <label>WhatsApp Number *</label>
-                <input type="tel" id="cust-phone" placeholder="+91 98765 43210" required>
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+              <label for="cust-phone">WhatsApp Contact Number * <span style="font-size:0.75rem; color:var(--primary); font-weight:600;">(Order tracking & updates sent here)</span></label>
+              <input type="tel" id="cust-phone" placeholder="+91 98765 43210" required>
+            </div>
+
+            <!-- Google Maps & Places Location Search -->
+            <div style="background: rgba(108, 120, 92, 0.07); border: 1.5px solid rgba(108, 120, 92, 0.22); border-radius: 16px; padding: 1.35rem 1.45rem; margin-bottom: 1.5rem; position: relative;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem; flex-wrap: wrap; gap: 0.5rem;">
+                <label for="address-search-input" style="font-weight: 700; color: var(--primary-dark); font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0;">
+                  <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--primary);"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                  Search Location on Google Maps
+                </label>
+                <button type="button" id="use-gps-btn" style="background: rgba(255,255,255,0.9); border: 1px solid var(--primary); color: var(--primary-dark); padding: 0.4rem 0.85rem; border-radius: 20px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s;" onmouseover="this.style.background='var(--primary)'; this.style.color='#ffffff';" onmouseout="this.style.background='rgba(255,255,255,0.9)'; this.style.color='var(--primary-dark)';">
+                  <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                  <span>Use My Current Location</span>
+                </button>
               </div>
-              <div class="form-group">
-                <label>PIN Code *</label>
-                <input type="text" id="cust-pincode" placeholder="400001" required>
+
+              <!-- Search Bar with Suggestions Dropdown -->
+              <div style="position: relative;">
+                <div style="position: relative; display: flex; align-items: center;">
+                  <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: var(--text-light); fill: none; stroke-width: 2; position: absolute; left: 1rem; pointer-events: none;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" id="address-search-input" placeholder="Start typing building, apartment, street, area, or landmark..." autocomplete="off" style="width: 100%; padding: 0.95rem 1rem 0.95rem 2.75rem; border-radius: 12px; border: 1.5px solid rgba(108,120,92,0.25); background: #ffffff; outline: none; font-size: 0.95rem; font-family: 'Quicksand', sans-serif; transition: border-color 0.2s, box-shadow 0.2s;">
+                  <span id="search-spinner" style="display: none; position: absolute; right: 1rem; font-size: 0.85rem; color: var(--primary);">⏳</span>
+                </div>
+                <!-- Suggestions Dropdown List -->
+                <ul id="address-suggestions" class="address-suggestions-dropdown" style="display: none;"></ul>
+              </div>
+
+              <p style="font-size: 0.8rem; color: var(--text-light); margin: 0.5rem 0 0 0.2rem; line-height: 1.4;">
+                ⚡ Selecting a location automatically populates the area, city, state, and PIN code below.
+              </p>
+
+              <!-- Interactive Google Map / Pin Confirmation -->
+              <div id="map-section" style="margin-top: 1.15rem; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                  <div style="font-size: 0.88rem; font-weight: 700; color: var(--primary-dark); display: flex; align-items: center; gap: 0.4rem;">
+                    <span>📍 Confirm Delivery Pin on Map</span>
+                    <span id="pin-status-badge" style="background: rgba(108, 120, 92, 0.15); color: var(--primary-dark); font-size: 0.72rem; padding: 0.15rem 0.6rem; border-radius: 12px; font-weight: 600;">Drag pin to fine-tune doorstep</span>
+                  </div>
+                  <a id="external-maps-link" href="#" target="_blank" rel="noopener noreferrer" style="font-size: 0.8rem; color: var(--primary); text-decoration: underline; font-weight: 600; display: none;">Open in Google Maps ↗</a>
+                </div>
+                <div id="delivery-map-container" style="width: 100%; height: 220px; border-radius: 12px; border: 1.5px solid rgba(108,120,92,0.25); overflow: hidden; background: #e5e3df; position: relative; box-shadow: var(--shadow-sm);">
+                  <div id="delivery-map" style="width: 100%; height: 100%;"></div>
+                </div>
+                <div id="pin-coords-text" style="font-size: 0.76rem; color: var(--text-light); margin-top: 0.35rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  <span>Coordinates: <strong id="coords-display">-</strong></span>
+                  <span style="color: #25D366; font-weight: 600;">✓ Doorstep pin confirmed</span>
+                </div>
               </div>
             </div>
-            <div class="form-group" style="margin-bottom: 1.25rem;">
-              <label>Complete Street Address *</label>
-              <input type="text" id="cust-address" placeholder="House/Flat No, Apartment, Street Name, Area / Landmark, City, State" required>
+
+            <!-- Structured Address Details (Auto-Populated & Fully Editable) -->
+            <div style="border-top: 1px dashed rgba(108,120,92,0.25); padding-top: 1.25rem;">
+              <h3 style="font-size: 1.05rem; color: var(--primary-dark); font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <span>🏠 Delivery Address Details</span>
+                <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-light);">(Check and edit anytime)</span>
+              </h3>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="cust-house">House / Flat / Floor / Building No. *</label>
+                  <input type="text" id="cust-house" placeholder="e.g. Flat 402, Sunshine Heights, Wing B" required>
+                </div>
+                <div class="form-group">
+                  <label for="cust-area">Area / Locality / Street Name *</label>
+                  <input type="text" id="cust-area" placeholder="e.g. Hill Road, Bandra West, Near St. Peter's" required>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="cust-city">City / Town *</label>
+                  <input type="text" id="cust-city" placeholder="e.g. Mumbai" required>
+                </div>
+                <div class="form-group">
+                  <label for="cust-state">State *</label>
+                  <input type="text" id="cust-state" placeholder="e.g. Maharashtra" required>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="cust-pincode">PIN / Postal Code *</label>
+                  <input type="text" id="cust-pincode" placeholder="400050" required>
+                </div>
+                <div class="form-group">
+                  <label for="cust-country">Country *</label>
+                  <input type="text" id="cust-country" value="India" placeholder="India" required>
+                </div>
+              </div>
+
+              <!-- Complete Confirmed Delivery Address (Kept in Sync for Orders) -->
+              <input type="hidden" id="cust-address" name="cust-address" required>
+
+              <!-- Confirmed Address Live Card -->
+              <div id="confirmed-address-card" style="display: none; background: rgba(108,120,92,0.08); border-left: 4px solid var(--primary); border-radius: 8px; padding: 0.85rem 1.1rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                <div style="font-size: 0.72rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Confirmed Delivery Address:</div>
+                <div id="confirmed-address-preview" style="font-size: 0.95rem; color: var(--text); font-weight: 600; line-height: 1.45;"></div>
+              </div>
             </div>
             <!-- Quality Tour Request Checkbox Option -->
             <div style="padding: 1rem; border-radius: 12px; background: rgba(108, 120, 92, 0.05); border: 1.5px solid rgba(108, 120, 92, 0.12); margin-top: 1.25rem;">
@@ -616,12 +707,37 @@
       const origText = btn.textContent;
       const totalAmount = window._currentCartTotal || 0;
       const orderId = '#EK-' + Math.floor(100000 + Math.random() * 900000);
+      const finalAddress = (typeof syncConfirmedAddress === 'function') 
+        ? syncConfirmedAddress() 
+        : document.getElementById('cust-address').value.trim();
+
+      const houseVal = (document.getElementById('cust-house')?.value || '').trim();
+      const areaVal = (document.getElementById('cust-area')?.value || '').trim();
+      const cityVal = (document.getElementById('cust-city')?.value || '').trim();
+      const stateVal = (document.getElementById('cust-state')?.value || '').trim();
+      const pincodeVal = (document.getElementById('cust-pincode')?.value || '').trim();
+      const countryVal = (document.getElementById('cust-country')?.value || 'India').trim();
+
+      if (!houseVal || !areaVal || !cityVal || !stateVal || !pincodeVal) {
+        alert('Please complete all delivery address fields (House/Building, Area/Locality, City, State, and PIN code).');
+        return;
+      }
+
       const customer = {
         name: document.getElementById('cust-name').value.trim(),
         email: document.getElementById('cust-email').value.trim(),
         phone: document.getElementById('cust-phone').value.trim(),
-        pincode: document.getElementById('cust-pincode').value.trim(),
-        address: document.getElementById('cust-address').value.trim()
+        pincode: pincodeVal,
+        address: finalAddress,
+        house: houseVal,
+        area: areaVal,
+        city: cityVal,
+        state: stateVal,
+        country: countryVal,
+        coordinates: window._confirmedLocationCoordinates || null,
+        mapUrl: window._confirmedLocationCoordinates 
+          ? `https://www.google.com/maps?q=${window._confirmedLocationCoordinates.lat},${window._confirmedLocationCoordinates.lng}` 
+          : ''
       };
 
       if (window.currentPaymentMethod === 'razorpay') {
@@ -1054,7 +1170,8 @@
         `• *Customer Name:* ${order.customer.name}\n` +
         `• *Phone:* ${order.customer.phone}\n` +
         `• *Email:* ${order.customer.email}\n` +
-        `• *Delivery Address:* ${order.customer.address} (PIN: ${order.customer.pincode})\n\n` +
+        `• *Delivery Address:* ${order.customer.address} (PIN: ${order.customer.pincode})\n` +
+        (order.customer.mapUrl ? `• *Google Maps Pin:* ${order.customer.mapUrl}\n` : '') + `\n` +
         `📦 *Products Ordered & Quantities:*\n` +
         `${itemsList}\n\n` +
         notesDetail +
@@ -1226,6 +1343,623 @@
       renderWhatsAppNotificationsBox(order);
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // GOOGLE MAPS / PLACES AUTOCOMPLETE & PIN CONTROLLER
+    // ==========================================
+    window._confirmedLocationCoordinates = null;
+    let _mapInstance = null;
+    let _markerInstance = null;
+    let _googleMapsActive = false;
+    let _leafletMap = null;
+    let _leafletMarker = null;
+
+    function syncConfirmedAddress() {
+      const house = (document.getElementById('cust-house')?.value || '').trim();
+      const area = (document.getElementById('cust-area')?.value || '').trim();
+      const city = (document.getElementById('cust-city')?.value || '').trim();
+      const state = (document.getElementById('cust-state')?.value || '').trim();
+      const pincode = (document.getElementById('cust-pincode')?.value || '').trim();
+      const country = (document.getElementById('cust-country')?.value || 'India').trim();
+
+      const parts = [];
+      if (house) parts.push(house);
+      if (area) parts.push(area);
+      if (city) parts.push(city);
+      if (state) parts.push(state);
+
+      let full = parts.join(', ');
+      if (pincode) full += (full ? ' - ' : '') + pincode;
+      if (country && country.toLowerCase() !== 'india') full += ', ' + country;
+
+      const hiddenInput = document.getElementById('cust-address');
+      if (hiddenInput) hiddenInput.value = full;
+
+      const previewCard = document.getElementById('confirmed-address-card');
+      const previewEl = document.getElementById('confirmed-address-preview');
+      if (previewCard && previewEl) {
+        if (full.length > 5) {
+          previewCard.style.display = 'block';
+          previewEl.textContent = full;
+        } else {
+          previewCard.style.display = 'none';
+        }
+      }
+      return full;
+    }
+
+    function showMapSection() {
+      const mapSec = document.getElementById('map-section');
+      if (mapSec) mapSec.style.display = 'block';
+    }
+
+    function updatePinDisplay(lat, lng, label) {
+      window._confirmedLocationCoordinates = {
+        lat: Number(Number(lat).toFixed(6)),
+        lng: Number(Number(lng).toFixed(6))
+      };
+      const displayEl = document.getElementById('coords-display');
+      if (displayEl) {
+        displayEl.textContent = `${window._confirmedLocationCoordinates.lat}, ${window._confirmedLocationCoordinates.lng}`;
+      }
+
+      const extLink = document.getElementById('external-maps-link');
+      if (extLink) {
+        extLink.href = `https://www.google.com/maps?q=${window._confirmedLocationCoordinates.lat},${window._confirmedLocationCoordinates.lng}`;
+        extLink.style.display = 'inline-block';
+      }
+
+      const badge = document.getElementById('pin-status-badge');
+      if (badge) {
+        badge.textContent = '✓ Location Pinned';
+        badge.style.background = 'rgba(37, 211, 102, 0.2)';
+        badge.style.color = '#1f8b44';
+      }
+    }
+
+    // --- Google Maps Native Implementation ---
+    function initGoogleMapsPlaces() {
+      _googleMapsActive = true;
+      const config = window.GOOGLE_MAPS_CONFIG || {};
+      const searchInput = document.getElementById('address-search-input');
+      if (!searchInput) return;
+
+      try {
+        const defaultCenter = config.defaultCenter || { lat: 20.5937, lng: 78.9629 };
+        const defaultZoom = config.defaultZoom || 5;
+
+        // Setup Autocomplete
+        const options = {
+          fields: ['address_components', 'geometry', 'formatted_address', 'name'],
+          componentRestrictions: { country: config.countryRestriction || ['in'] }
+        };
+        const autocomplete = new google.maps.places.Autocomplete(searchInput, options);
+
+        // Setup Google Map
+        const mapEl = document.getElementById('delivery-map');
+        _mapInstance = new google.maps.Map(mapEl, {
+          center: defaultCenter,
+          zoom: defaultZoom,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false
+        });
+
+        _markerInstance = new google.maps.Marker({
+          map: _mapInstance,
+          position: defaultCenter,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+          title: 'Delivery Location'
+        });
+
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (!place || !place.geometry || !place.geometry.location) return;
+
+          showMapSection();
+          const loc = place.geometry.location;
+          _mapInstance.setCenter(loc);
+          _mapInstance.setZoom(config.focusedZoom || 16);
+          _markerInstance.setPosition(loc);
+          _markerInstance.setVisible(true);
+
+          updatePinDisplay(loc.lat(), loc.lng(), place.name || place.formatted_address);
+          parseAndApplyGoogleComponents(place);
+        });
+
+        _markerInstance.addListener('dragend', () => {
+          const pos = _markerInstance.getPosition();
+          const lat = pos.lat();
+          const lng = pos.lng();
+          updatePinDisplay(lat, lng);
+
+          const geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+            if (status === 'OK' && results[0]) {
+              parseAndApplyGoogleComponents(results[0]);
+            }
+          });
+        });
+
+        _mapInstance.addListener('click', (e) => {
+          if (!e.latLng) return;
+          _markerInstance.setPosition(e.latLng);
+          updatePinDisplay(e.latLng.lat(), e.latLng.lng());
+
+          const geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ location: e.latLng }, (results, status) => {
+            if (status === 'OK' && results[0]) {
+              parseAndApplyGoogleComponents(results[0]);
+            }
+          });
+        });
+
+      } catch (err) {
+        console.warn('Google Maps Places init warning:', err);
+        initFallbackPlaces();
+      }
+    }
+
+    function parseAndApplyGoogleComponents(place) {
+      if (!place || !place.address_components) return;
+
+      let houseNumber = '';
+      let premise = '';
+      let route = '';
+      let sublocality = '';
+      let locality = '';
+      let state = '';
+      let postalCode = '';
+      let country = 'India';
+
+      place.address_components.forEach(comp => {
+        const types = comp.types || [];
+        if (types.includes('street_number')) houseNumber = comp.long_name;
+        if (types.includes('premise') || types.includes('subpremise') || types.includes('establishment')) premise = comp.long_name;
+        if (types.includes('route')) route = comp.long_name;
+        if (types.includes('sublocality_level_1') || types.includes('sublocality')) sublocality = comp.long_name;
+        if (types.includes('sublocality_level_2') && !sublocality) sublocality = comp.long_name;
+        if (types.includes('locality')) locality = comp.long_name;
+        if (!locality && types.includes('administrative_area_level_2')) locality = comp.long_name;
+        if (types.includes('administrative_area_level_1')) state = comp.long_name;
+        if (types.includes('postal_code')) postalCode = comp.long_name;
+        if (types.includes('country')) country = comp.long_name;
+      });
+
+      const houseEl = document.getElementById('cust-house');
+      const areaEl = document.getElementById('cust-area');
+      const cityEl = document.getElementById('cust-city');
+      const stateEl = document.getElementById('cust-state');
+      const pincodeEl = document.getElementById('cust-pincode');
+      const countryEl = document.getElementById('cust-country');
+
+      if (houseEl && (!houseEl.value.trim() || houseEl.value.trim() === '')) {
+        const combined = [houseNumber, premise].filter(Boolean).join(' ');
+        if (combined) houseEl.value = combined;
+        else if (place.name && place.name !== locality && place.name !== sublocality && place.name !== route) {
+          houseEl.value = place.name;
+        }
+      }
+
+      if (areaEl) {
+        const areaParts = [sublocality, route].filter(Boolean);
+        if (areaParts.length > 0) areaEl.value = areaParts.join(', ');
+      }
+
+      if (cityEl && locality) cityEl.value = locality;
+      if (stateEl && state) stateEl.value = state;
+      if (pincodeEl && postalCode) pincodeEl.value = postalCode;
+      if (countryEl && country) countryEl.value = country;
+
+      syncConfirmedAddress();
+    }
+
+    // --- Fallback Places Autocomplete (Instant Geocoding) ---
+    function initFallbackPlaces() {
+      if (_googleMapsActive) return;
+      const searchInput = document.getElementById('address-search-input');
+      const suggestionsBox = document.getElementById('address-suggestions');
+      const spinner = document.getElementById('search-spinner');
+      if (!searchInput || !suggestionsBox) return;
+
+      let debounceTimer = null;
+      let currentResults = [];
+      let selectedIdx = -1;
+
+      initLeafletMap();
+
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        clearTimeout(debounceTimer);
+        if (query.length < 3) {
+          suggestionsBox.style.display = 'none';
+          suggestionsBox.innerHTML = '';
+          return;
+        }
+
+        if (spinner) spinner.style.display = 'inline';
+        debounceTimer = setTimeout(async () => {
+          try {
+            const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=6&lang=en`);
+            if (spinner) spinner.style.display = 'none';
+            if (!res.ok) throw new Error('Photon error');
+            const data = await res.json();
+
+            if (!data || !data.features || data.features.length === 0) {
+              const nomRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=6&countrycodes=in&q=${encodeURIComponent(query)}`);
+              const nomData = await nomRes.json();
+              renderNominatimSuggestions(nomData);
+              return;
+            }
+
+            renderPhotonSuggestions(data.features);
+          } catch (err) {
+            if (spinner) spinner.style.display = 'none';
+            console.warn('Geocoding autocomplete fallback notice:', err);
+          }
+        }, 280);
+      });
+
+      function renderPhotonSuggestions(features) {
+        currentResults = features;
+        selectedIdx = -1;
+        if (features.length === 0) {
+          suggestionsBox.style.display = 'none';
+          return;
+        }
+
+        let html = '';
+        features.forEach((feat, idx) => {
+          const p = feat.properties || {};
+          const mainTitle = p.name || p.street || p.city || 'Location';
+          const secondaryParts = [p.district || p.suburb, p.city, p.state, p.postcode, p.country].filter(Boolean);
+          const secondaryText = secondaryParts.join(', ');
+
+          html += `
+            <li class="suggestion-item" data-index="${idx}">
+              <svg class="sugg-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              <div class="sugg-content">
+                <div class="sugg-main">${escapeHtml(mainTitle)}</div>
+                <div class="sugg-secondary">${escapeHtml(secondaryText)}</div>
+              </div>
+            </li>
+          `;
+        });
+
+        suggestionsBox.innerHTML = html;
+        suggestionsBox.style.display = 'block';
+
+        suggestionsBox.querySelectorAll('.suggestion-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const idx = parseInt(item.getAttribute('data-index'));
+            applyPhotonSelection(currentResults[idx]);
+          });
+        });
+      }
+
+      function renderNominatimSuggestions(items) {
+        if (!items || !items.length) {
+          suggestionsBox.style.display = 'none';
+          return;
+        }
+        currentResults = items;
+        selectedIdx = -1;
+
+        let html = '';
+        items.forEach((item, idx) => {
+          const title = item.name || item.display_name.split(',')[0];
+          html += `
+            <li class="suggestion-item" data-index="${idx}">
+              <svg class="sugg-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              <div class="sugg-content">
+                <div class="sugg-main">${escapeHtml(title)}</div>
+                <div class="sugg-secondary">${escapeHtml(item.display_name)}</div>
+              </div>
+            </li>
+          `;
+        });
+
+        suggestionsBox.innerHTML = html;
+        suggestionsBox.style.display = 'block';
+
+        suggestionsBox.querySelectorAll('.suggestion-item').forEach(el => {
+          el.addEventListener('click', () => {
+            const idx = parseInt(el.getAttribute('data-index'));
+            applyNominatimSelection(currentResults[idx]);
+          });
+        });
+      }
+
+      function applyPhotonSelection(feat) {
+        if (!feat) return;
+        const p = feat.properties || {};
+        const coords = feat.geometry.coordinates; // [lng, lat]
+        const lat = coords[1];
+        const lng = coords[0];
+
+        const mainTitle = p.name || p.street || p.city || '';
+        searchInput.value = [mainTitle, p.city, p.state].filter(Boolean).join(', ');
+        suggestionsBox.style.display = 'none';
+
+        const houseEl = document.getElementById('cust-house');
+        const areaEl = document.getElementById('cust-area');
+        const cityEl = document.getElementById('cust-city');
+        const stateEl = document.getElementById('cust-state');
+        const pincodeEl = document.getElementById('cust-pincode');
+        const countryEl = document.getElementById('cust-country');
+
+        if (houseEl && (!houseEl.value.trim() || houseEl.value.trim() === '')) {
+          if (p.housenumber) houseEl.value = p.housenumber;
+          else if (p.name && p.name !== p.city && p.name !== p.state) houseEl.value = p.name;
+        }
+
+        if (areaEl) {
+          const areaParts = [p.street, p.district || p.suburb].filter(Boolean);
+          if (areaParts.length > 0) areaEl.value = areaParts.join(', ');
+          else if (p.name && p.name !== p.city) areaEl.value = p.name;
+        }
+
+        if (cityEl && (p.city || p.county)) cityEl.value = p.city || p.county;
+        if (stateEl && p.state) stateEl.value = p.state;
+        if (pincodeEl && p.postcode) pincodeEl.value = p.postcode;
+        if (countryEl && p.country) countryEl.value = p.country;
+
+        syncConfirmedAddress();
+        showMapSection();
+        updateLeafletPin(lat, lng);
+      }
+
+      function applyNominatimSelection(item) {
+        if (!item) return;
+        const lat = parseFloat(item.lat);
+        const lng = parseFloat(item.lon);
+        const a = item.address || {};
+
+        searchInput.value = item.display_name.split(',').slice(0, 3).join(',');
+        suggestionsBox.style.display = 'none';
+
+        const houseEl = document.getElementById('cust-house');
+        const areaEl = document.getElementById('cust-area');
+        const cityEl = document.getElementById('cust-city');
+        const stateEl = document.getElementById('cust-state');
+        const pincodeEl = document.getElementById('cust-pincode');
+        const countryEl = document.getElementById('cust-country');
+
+        if (houseEl && !houseEl.value.trim()) {
+          houseEl.value = a.house_number || a.building || a.hotel || a.amenity || '';
+        }
+        if (areaEl) {
+          areaEl.value = [a.suburb, a.neighbourhood, a.road].filter(Boolean).join(', ');
+        }
+        if (cityEl && (a.city || a.town || a.county)) cityEl.value = a.city || a.town || a.county;
+        if (stateEl && a.state) stateEl.value = a.state;
+        if (pincodeEl && a.postcode) pincodeEl.value = a.postcode;
+        if (countryEl && a.country) countryEl.value = a.country;
+
+        syncConfirmedAddress();
+        showMapSection();
+        updateLeafletPin(lat, lng);
+      }
+
+      // Keyboard navigation
+      searchInput.addEventListener('keydown', (e) => {
+        const items = suggestionsBox.querySelectorAll('.suggestion-item');
+        if (!items.length || suggestionsBox.style.display === 'none') return;
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          selectedIdx = (selectedIdx + 1) % items.length;
+          updateActive(items);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          selectedIdx = (selectedIdx - 1 + items.length) % items.length;
+          updateActive(items);
+        } else if (e.key === 'Enter') {
+          if (selectedIdx >= 0 && selectedIdx < items.length) {
+            e.preventDefault();
+            items[selectedIdx].click();
+          }
+        } else if (e.key === 'Escape') {
+          suggestionsBox.style.display = 'none';
+        }
+      });
+
+      function updateActive(items) {
+        items.forEach((it, i) => {
+          it.classList.toggle('active', i === selectedIdx);
+          if (i === selectedIdx) it.scrollIntoView({ block: 'nearest' });
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+          suggestionsBox.style.display = 'none';
+        }
+      });
+    }
+
+    function initLeafletMap() {
+      if (typeof L === 'undefined' || _leafletMap) return;
+      const mapEl = document.getElementById('delivery-map');
+      if (!mapEl) return;
+
+      const defaultCenter = [20.5937, 78.9629]; // India
+      _leafletMap = L.map('delivery-map').setView(defaultCenter, 5);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(_leafletMap);
+
+      const customIcon = L.divIcon({
+        className: 'custom-map-pin',
+        html: '<svg viewBox="0 0 24 24" style="width:32px;height:32px;fill:#e05a47;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32]
+      });
+
+      _leafletMarker = L.marker(defaultCenter, {
+        draggable: true,
+        icon: customIcon
+      }).addTo(_leafletMap);
+
+      _leafletMarker.on('dragend', () => {
+        const pos = _leafletMarker.getLatLng();
+        updatePinDisplay(pos.lat, pos.lng);
+        reverseGeocodeNominatim(pos.lat, pos.lng);
+      });
+
+      _leafletMap.on('click', (e) => {
+        _leafletMarker.setLatLng(e.latlng);
+        updatePinDisplay(e.latlng.lat, e.latlng.lng);
+        reverseGeocodeNominatim(e.latlng.lat, e.latlng.lng);
+      });
+    }
+
+    function updateLeafletPin(lat, lng) {
+      if (!_leafletMap || typeof L === 'undefined') return;
+      _leafletMap.setView([lat, lng], 16);
+      if (_leafletMarker) {
+        _leafletMarker.setLatLng([lat, lng]);
+      }
+      updatePinDisplay(lat, lng);
+      setTimeout(() => {
+        _leafletMap.invalidateSize();
+      }, 250);
+    }
+
+    async function reverseGeocodeNominatim(lat, lng) {
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data || !data.address) return;
+
+        const addr = data.address;
+        const areaEl = document.getElementById('cust-area');
+        const cityEl = document.getElementById('cust-city');
+        const stateEl = document.getElementById('cust-state');
+        const pincodeEl = document.getElementById('cust-pincode');
+
+        if (areaEl && !areaEl.value.trim()) {
+          areaEl.value = [addr.suburb, addr.neighbourhood, addr.road].filter(Boolean).join(', ');
+        }
+        if (cityEl && !cityEl.value.trim()) {
+          cityEl.value = addr.city || addr.town || addr.county || '';
+        }
+        if (stateEl && !stateEl.value.trim()) {
+          stateEl.value = addr.state || '';
+        }
+        if (pincodeEl && !pincodeEl.value.trim()) {
+          pincodeEl.value = addr.postcode || '';
+        }
+        syncConfirmedAddress();
+      } catch (e) {
+        console.warn('Reverse geocoding error:', e);
+      }
+    }
+
+    function initGpsLocationButton() {
+      const btn = document.getElementById('use-gps-btn');
+      if (!btn) return;
+
+      btn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+          alert('Geolocation is not supported on this device/browser.');
+          return;
+        }
+
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = '⏳ <span>Locating...</span>';
+        btn.disabled = true;
+
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            btn.innerHTML = origHtml;
+            btn.disabled = false;
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            showMapSection();
+            if (_googleMapsActive && _mapInstance) {
+              const loc = new google.maps.LatLng(lat, lng);
+              _mapInstance.setCenter(loc);
+              _mapInstance.setZoom(16);
+              _markerInstance.setPosition(loc);
+              updatePinDisplay(lat, lng);
+
+              const geocoder = new google.maps.Geocoder();
+              geocoder.geocode({ location: loc }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                  parseAndApplyGoogleComponents(results[0]);
+                }
+              });
+            } else {
+              updateLeafletPin(lat, lng);
+              reverseGeocodeNominatim(lat, lng);
+            }
+
+            const houseEl = document.getElementById('cust-house');
+            if (houseEl) {
+              houseEl.focus();
+            }
+          },
+          (err) => {
+            btn.innerHTML = origHtml;
+            btn.disabled = false;
+            alert('Location access was denied or timed out. Please enter your location in the search box above.');
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      });
+    }
+
+    function initAddressFieldListeners() {
+      ['cust-house', 'cust-area', 'cust-city', 'cust-state', 'cust-pincode', 'cust-country'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', syncConfirmedAddress);
+          el.addEventListener('change', syncConfirmedAddress);
+        }
+      });
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    function bootAddressAndMaps() {
+      initAddressFieldListeners();
+      initGpsLocationButton();
+      syncConfirmedAddress();
+
+      const cfg = window.GOOGLE_MAPS_CONFIG || {};
+      const hasKey = cfg.apiKey && cfg.apiKey !== 'YOUR_GOOGLE_MAPS_API_KEY' && !cfg.apiKey.includes('placeholder');
+
+      if (hasKey) {
+        window.initGoogleMapsPlaces = initGoogleMapsPlaces;
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(cfg.apiKey)}&libraries=places&callback=initGoogleMapsPlaces`;
+        script.async = true;
+        script.defer = true;
+        script.onerror = () => {
+          console.warn('Google Maps script failed to load. Falling back to built-in open geocoding.');
+          initFallbackPlaces();
+        };
+        document.head.appendChild(script);
+      } else {
+        initFallbackPlaces();
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bootAddressAndMaps);
+    } else {
+      bootAddressAndMaps();
     }
   </script>
   <script type="module">

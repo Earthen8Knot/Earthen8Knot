@@ -1833,11 +1833,104 @@ section,
   transform-origin: center 52px;
 }
 
-
-}
-
 /* Ensure the product card supports relative positioning */
 .product-card {
   position: relative;
+}
+
+/* --- Delivery Address Autocomplete & Map Pinning --- */
+.address-suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(108, 120, 92, 0.25);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 2500;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem 0;
+}
+
+.suggestion-item {
+  padding: 0.85rem 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(108, 120, 92, 0.08);
+  transition: background 0.2s ease;
+  user-select: none;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+  background: rgba(108, 120, 92, 0.12);
+}
+
+.suggestion-item .sugg-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  fill: var(--primary);
+}
+
+.suggestion-item .sugg-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestion-item .sugg-main {
+  font-weight: 700;
+  font-size: 0.93rem;
+  color: var(--primary-dark);
+  margin-bottom: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestion-item .sugg-secondary {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Custom pulsing map pin */
+.custom-map-pin {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+  animation: pinDrop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pinDrop {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  #delivery-map-container {
+    height: 190px !important;
+  }
 }
 
