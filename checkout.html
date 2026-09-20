@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - Earthen8Knot</title>
-  <link rel="stylesheet" href="styles.css?v=1.19">
+  <link rel="stylesheet" href="styles.css?v=1.20">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -95,6 +95,10 @@
       });
     })();
   </script>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 </head>
 <body>
   <nav class="navbar" id="main-nav">
@@ -342,21 +346,26 @@
             <!-- Rendered by JS -->
           </div>
 
+          <!-- Automated WhatsApp Order Notifications System -->
+          <div id="whatsapp-order-notifications-box" style="margin-bottom: 2rem;">
+            <!-- Rendered by JS -->
+          </div>
+
           <!-- Customer Query & Support Contact Box -->
           <div style="background: rgba(108, 120, 92, 0.09); border: 1px solid rgba(108, 120, 92, 0.25); border-radius: 16px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; text-align: center;">
             <p style="font-size: 0.95rem; color: var(--primary-dark); font-weight: 700; margin-bottom: 0.35rem;">Have a query about your order?</p>
             <p style="font-size: 0.88rem; color: var(--text-light); margin-bottom: 0.85rem;">Reach out to our customer support team directly and we'll be happy to assist you!</p>
             <div style="display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; align-items: center;">
-              <a href="mailto:earthen8knot@gmail.com" style="color: var(--primary-dark); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.7); border-radius: 8px;">
-                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:earthen8knot@gmail.com" style="color: #EA4335; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.45rem; text-decoration: none; padding: 0.45rem 0.9rem; background: rgba(255,255,255,0.85); border-radius: 10px; box-shadow: 0 2px 6px rgba(234,67,53,0.15); border: 1px solid rgba(234,67,53,0.2);">
+                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: #EA4335; fill: none; stroke-width: 2;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 earthen8knot@gmail.com
               </a>
-              <a href="https://wa.me/917517592373" target="_blank" rel="noopener noreferrer" style="color: #128C7E; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.7); border-radius: 8px;">
-                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/></svg>
+              <a href="https://wa.me/917517592373" target="_blank" rel="noopener noreferrer" style="color: #25D366; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.45rem; text-decoration: none; padding: 0.45rem 0.9rem; background: rgba(255,255,255,0.85); border-radius: 10px; box-shadow: 0 2px 6px rgba(37,211,102,0.15); border: 1px solid rgba(37,211,102,0.2);">
+                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #25D366;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/></svg>
                 WhatsApp Us
               </a>
-              <a href="https://www.instagram.com/earthen8knot/" target="_blank" rel="noopener noreferrer" style="color: var(--primary-dark); font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; padding: 0.4rem 0.8rem; background: rgba(255,255,255,0.7); border-radius: 8px;">
-                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <a href="https://www.instagram.com/earthen8knot/" target="_blank" rel="noopener noreferrer" style="color: #E1306C; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 0.45rem; text-decoration: none; padding: 0.45rem 0.9rem; background: rgba(255,255,255,0.85); border-radius: 10px; box-shadow: 0 2px 6px rgba(225,48,108,0.15); border: 1px solid rgba(225,48,108,0.2);">
+                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #E1306C;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                 DM @earthen8knot
               </a>
             </div>
@@ -414,7 +423,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.19"></script>
+  <script src="script.js?v=1.20"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window.selectPaymentMethod = function(method) {
@@ -784,14 +793,8 @@
         // Show Confirmation Screen
         showConfirmationReceipt(newOrder);
 
-        // Open WhatsApp auto-confirmation in a new tab if opted in
-        if (newOrder.requestOrderTour && newOrder.customer && newOrder.customer.phone) {
-          const cleanPhone = newOrder.customer.phone.replace(/[^0-9]/g, '');
-          const recipientPhone = cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone;
-          const msgText = `Hello ${newOrder.customer.name}, we've received your request for an Order Quality Tour for Earthen8Knot Order ${newOrder.id}. Our artisan team will reach out to you here within 3 hours! Thank you for choosing Earthen8Knot.`;
-          const waUrl = `https://api.whatsapp.com/send?phone=${recipientPhone}&text=${encodeURIComponent(msgText)}`;
-          window.open(waUrl, '_blank');
-        }
+        // Automated WhatsApp Order Notification System
+        dispatchWhatsAppOrderNotifications(newOrder);
       });
     }
 
@@ -968,6 +971,208 @@
       setTimeout(callback, 900);
     }
 
+    // ==========================================
+    // AUTOMATED WHATSAPP ORDER NOTIFICATION SYSTEM
+    // ==========================================
+
+    function getCleanPhoneNumber(phoneStr) {
+      const clean = (phoneStr || '').replace(/[^0-9]/g, '');
+      if (clean.length === 10) return '91' + clean;
+      return clean;
+    }
+
+    function buildCustomerWhatsAppMessage(order) {
+      const itemsList = (order.items || []).map(i => `• ${i.name} (Qty: ${i.qty}) - ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('\n');
+      const paymentStatusText = order.status && order.status.includes('Paid') 
+        ? (order.razorpayPaymentId ? `Paid via Razorpay (Ref: ${order.razorpayPaymentId})` : `Paid (${order.paymentMethod})`) 
+        : (order.status || 'Received');
+
+      return `✨ *Thank You for Ordering with Earthen8Knot!* 🧶\n\n` +
+        `Dear *${order.customer.name}*,\n` +
+        `We have successfully received your order, and our artisans have already started handcrafting your pieces with the utmost love and care!\n\n` +
+        `📋 *Order Summary:*\n` +
+        `• *Order Number / ID:* ${order.id}\n` +
+        `• *Products Ordered:*\n${itemsList}\n` +
+        `• *Total Order Amount:* ₹${Number(order.total).toLocaleString('en-IN')}\n` +
+        `• *Payment Status:* ${paymentStatusText}\n\n` +
+        `📍 *Delivery Details:*\n` +
+        `• *Deliver To:* ${order.customer.name}\n` +
+        `• *Shipping Address:* ${order.customer.address} (PIN: ${order.customer.pincode})\n` +
+        `• *Estimated Delivery:* 10–12 business days (Handmade with natural warmth)\n\n` +
+        `Your order has been officially confirmed and received. We will message you again with tracking details as soon as your package is dispatched.\n\n` +
+        `Thank you for supporting sustainable, handmade craftsmanship! 🌿\n\n` +
+        `Warm regards,\n` +
+        `*Earthen8Knot Team*\n` +
+        `https://earthen8knot.com`;
+    }
+
+    function buildCustomerTourMessage(order) {
+      return `📸 *Earthen8Knot - WhatsApp Product Tour Request Received!* ✨\n\n` +
+        `Dear *${order.customer.name}*,\n\n` +
+        `We are pleased to confirm that your **WhatsApp Product Tour request** has been received for Order *#${order.id}*!\n\n` +
+        `Before dispatching your order, our artisan team will contact you directly on this WhatsApp chat to share photos and a video of your finished handcrafted item(s) so you can review and inspect them prior to delivery.\n\n` +
+        `Thank you for choosing Earthen8Knot! 🤎\n` +
+        `https://earthen8knot.com`;
+    }
+
+    function buildOwnerWhatsAppMessage(order) {
+      const itemsList = (order.items || []).map(i => `• ${i.name} × ${i.qty} - ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('\n');
+      const paymentStatusText = order.status && order.status.includes('Paid') 
+        ? (order.razorpayPaymentId ? `Paid via Razorpay (Ref: ${order.razorpayPaymentId})` : `Paid (${order.paymentMethod})`) 
+        : (order.status || 'Received');
+
+      // WhatsApp Tour section - included ONLY if customer selected it
+      let tourHeader = '';
+      let tourDetail = '';
+      if (order.requestOrderTour) {
+        tourHeader = `\n🚨 *WHATSAPP TOUR REQUESTED: YES*\n⚠️ *Action Required:* Please contact customer with photos/video of finished items before dispatch!\n`;
+        tourDetail = `• *WhatsApp Product Tour:* 🎥 REQUESTED (Send photo/video quality review before dispatch)\n`;
+      }
+
+      // Special notes & gifting
+      let notesDetail = '';
+      if (order.isGift) {
+        notesDetail += `• *Gift Package:* Yes 🎁 (Card Note: "${order.giftMessage || 'Warmest wishes'}")\n`;
+      }
+      if (order.requestOrderTour) {
+        notesDetail += tourDetail;
+      }
+      if (!notesDetail) {
+        notesDetail = `• *Special Instructions / Notes:* None\n`;
+      } else {
+        notesDetail = `• *Special Instructions / Notes:*\n${notesDetail}`;
+      }
+
+      return `🚨 *NEW ORDER NOTIFICATION - Earthen8Knot* 🛍️\n` +
+        tourHeader +
+        `\n📋 *Order Information:*\n` +
+        `• *Order Number / ID:* ${order.id}\n` +
+        `• *Order Date:* ${order.date}\n` +
+        `• *Payment Status:* ${paymentStatusText}\n` +
+        `• *Total Order Amount:* ₹${Number(order.total).toLocaleString('en-IN')}\n\n` +
+        `👤 *Customer Contact Details:*\n` +
+        `• *Customer Name:* ${order.customer.name}\n` +
+        `• *Phone:* ${order.customer.phone}\n` +
+        `• *Email:* ${order.customer.email}\n` +
+        `• *Delivery Address:* ${order.customer.address} (PIN: ${order.customer.pincode})\n\n` +
+        `📦 *Products Ordered & Quantities:*\n` +
+        `${itemsList}\n\n` +
+        notesDetail +
+        `\n🔗 *Open Orders Dashboard:*\n` +
+        `https://earthen8knot.com/orders.html`;
+    }
+
+    function dispatchWhatsAppOrderNotifications(order) {
+      console.log('Automated WhatsApp dispatch for Order:', order.id);
+      const ownerPhone = '917517592373';
+      const ownerMsg = buildOwnerWhatsAppMessage(order);
+      const ownerUrl = `https://api.whatsapp.com/send?phone=${ownerPhone}&text=${encodeURIComponent(ownerMsg)}`;
+
+      // Immediate automated dispatch attempt for the owner
+      try {
+        window.open(ownerUrl, '_blank');
+      } catch (e) {
+        console.warn('Auto popup blocked, interactive WhatsApp buttons available on confirmation screen:', e);
+      }
+    }
+
+    function renderWhatsAppNotificationsBox(order) {
+      const box = document.getElementById('whatsapp-order-notifications-box');
+      if (!box) return;
+
+      const ownerPhone = '917517592373';
+      const customerPhone = getCleanPhoneNumber(order.customer?.phone);
+
+      const ownerMsg = buildOwnerWhatsAppMessage(order);
+      const customerMsg = buildCustomerWhatsAppMessage(order);
+      const tourMsg = order.requestOrderTour ? buildCustomerTourMessage(order) : null;
+
+      const ownerUrl = `https://api.whatsapp.com/send?phone=${ownerPhone}&text=${encodeURIComponent(ownerMsg)}`;
+      const customerUrl = customerPhone ? `https://api.whatsapp.com/send?phone=${customerPhone}&text=${encodeURIComponent(customerMsg)}` : null;
+      const tourUrl = (order.requestOrderTour && customerPhone) ? `https://api.whatsapp.com/send?phone=${customerPhone}&text=${encodeURIComponent(tourMsg)}` : null;
+
+      let tourBanner = '';
+      if (order.requestOrderTour) {
+        tourBanner = `
+          <div style="background: rgba(37, 211, 102, 0.12); border: 1.5px dashed #25D366; border-radius: 12px; padding: 0.9rem 1.15rem; margin-bottom: 1.15rem; text-align: left;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+              <span style="font-size:1.15rem;">📸</span>
+              <strong style="color: #075E54; font-size: 0.95rem;">WhatsApp Tour Requested!</strong>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text); margin: 0; line-height: 1.5;">
+              The customer requested a product tour before dispatch. This is prominently highlighted in the owner's notification, and a separate tour confirmation message is available below.
+            </p>
+          </div>
+        `;
+      }
+
+      box.innerHTML = `
+        <div style="background: linear-gradient(135deg, rgba(37, 211, 102, 0.08) 0%, rgba(18, 140, 126, 0.05) 100%); border: 1.5px solid rgba(37, 211, 102, 0.35); border-radius: 16px; padding: 1.5rem; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.08);">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.85rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div style="width: 38px; height: 38px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(37,211,102,0.4);">
+                <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/></svg>
+              </div>
+              <div>
+                <h4 style="margin: 0; font-size: 1.05rem; color: #075E54; font-family: 'Quicksand', sans-serif; font-weight: 700;">WhatsApp Order Notification System</h4>
+                <span style="font-size: 0.8rem; color: #128C7E; font-weight: 600;">Direct notifications ready for Customer & Store Owner</span>
+              </div>
+            </div>
+            <span style="background: #25D366; color: white; padding: 0.28rem 0.7rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">
+              Active & Formatted ✓
+            </span>
+          </div>
+
+          ${tourBanner}
+
+          <p style="font-size: 0.88rem; color: var(--text); margin-bottom: 1.15rem; line-height: 1.5; text-align: left;">
+            WhatsApp notifications have been prepared with complete order details. Click below to view or send directly:
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.9rem;">
+            
+            <!-- Owner Notification Button -->
+            <a href="${ownerUrl}" target="_blank" rel="noopener noreferrer" style="background: #ffffff; border: 1.5px solid #25D366; border-radius: 12px; padding: 0.9rem 1.1rem; text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37,211,102,0.25)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: #25D366; color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/></svg>
+              </div>
+              <div style="text-align: left;">
+                <div style="font-weight: 700; font-size: 0.92rem; color: #075E54;">Send Owner Order Alert</div>
+                <div style="font-size: 0.78rem; color: var(--text-light);">To Owner (+91 75175 92373)</div>
+              </div>
+            </a>
+
+            <!-- Customer Confirmation Button -->
+            ${customerUrl ? `
+            <a href="${customerUrl}" target="_blank" rel="noopener noreferrer" style="background: #ffffff; border: 1.5px solid #25D366; border-radius: 12px; padding: 0.9rem 1.1rem; text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37,211,102,0.25)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(37,211,102,0.15); color: #25D366; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/></svg>
+              </div>
+              <div style="text-align: left;">
+                <div style="font-weight: 700; font-size: 0.92rem; color: #075E54;">Send Customer Confirmation</div>
+                <div style="font-size: 0.78rem; color: var(--text-light);">To ${order.customer?.name || 'Customer'} (${order.customer?.phone || ''})</div>
+              </div>
+            </a>
+            ` : ''}
+
+            <!-- Tour Confirmation Button (Conditional) -->
+            ${tourUrl ? `
+            <a href="${tourUrl}" target="_blank" rel="noopener noreferrer" style="background: #ffffff; border: 1.5px solid #25D366; border-radius: 12px; padding: 0.9rem 1.1rem; text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37,211,102,0.25)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(37,211,102,0.15); color: #25D366; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <span style="font-size: 1.1rem;">📸</span>
+              </div>
+              <div style="text-align: left;">
+                <div style="font-weight: 700; font-size: 0.92rem; color: #075E54;">Send Tour Confirmation</div>
+                <div style="font-size: 0.78rem; color: var(--text-light);">Separate Quality Tour message</div>
+              </div>
+            </a>
+            ` : ''}
+
+          </div>
+        </div>
+      `;
+    }
+
     function showConfirmationReceipt(order) {
       document.getElementById('checkout-main-grid').style.display = 'none';
       const screen = document.getElementById('order-confirmation-screen');
@@ -1016,6 +1221,9 @@
           <span>₹${Number(order.total).toLocaleString('en-IN')}</span>
         </div>
       `;
+
+      // Render the automated WhatsApp Order Notifications card
+      renderWhatsAppNotificationsBox(order);
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

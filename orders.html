@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Management Dashboard - Earthen8Knot</title>
-  <link rel="stylesheet" href="styles.css?v=1.19">
+  <link rel="stylesheet" href="styles.css?v=1.20">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -147,6 +147,10 @@
       box-shadow: 0 20px 50px rgba(0,0,0,0.25);
     }
   </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 </head>
 <body>
   <!-- Navigation -->
@@ -389,9 +393,14 @@
             </select>
           </td>
           <td>
-            <button onclick="viewOrderDetails('${o.id}')" style="background: none; border: 1px solid var(--primary); color: var(--primary-dark); padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 600;">
-              Receipt
-            </button>
+            <div style="display:flex; gap:0.4rem; align-items:center;">
+              <button onclick="viewOrderDetails('${o.id}')" style="background: none; border: 1px solid var(--primary); color: var(--primary-dark); padding: 0.35rem 0.65rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
+                Receipt
+              </button>
+              <button onclick="openWhatsAppForOrder('${o.id}')" style="background: #25D366; border: none; color: white; padding: 0.35rem 0.65rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem;" title="Chat with customer on WhatsApp">
+                <span>💬</span> WhatsApp
+              </button>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
@@ -467,13 +476,75 @@
           </div>
         </div>
 
-        <div style="background:#f8fafc; border-left:4px solid #2563eb; padding:1rem; border-radius:8px; font-size:0.85rem;">
+        <div style="background:#f8fafc; border-left:4px solid #2563eb; padding:1rem; border-radius:8px; font-size:0.85rem; margin-bottom: 1.25rem;">
           <strong>Automated Transactional Emails Log:</strong><br>
           ✅ Customer Order Confirmation sent to <code>${order.customer?.email}</code><br>
           ✅ Merchant Notification sent to store admin
         </div>
+
+        <!-- WhatsApp Quick Actions inside Modal -->
+        <div style="background: rgba(37, 211, 102, 0.08); border: 1.5px solid rgba(37, 211, 102, 0.35); padding: 1.25rem; border-radius: 12px; font-size: 0.88rem;">
+          <strong style="color: #075E54; display: flex; align-items: center; gap: 0.4rem; font-size: 0.95rem; margin-bottom: 0.5rem;">
+            <span>💬</span> WhatsApp Order Notifications
+          </strong>
+          <p style="margin: 0 0 0.85rem 0; font-size: 0.83rem; color: var(--text-light);">
+            Directly message the customer or re-send their order confirmation or tour confirmation:
+          </p>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button onclick="openWhatsAppForOrder('${order.id}')" style="background: #25D366; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;">
+              <span>💬</span> Send Order Confirmation
+            </button>
+            ${order.requestOrderTour ? `
+            <button onclick="openWhatsAppTourForOrder('${order.id}')" style="background: #075E54; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem;">
+              <span>📸</span> Send Product Tour Notice
+            </button>
+            ` : ''}
+          </div>
+        </div>
       `;
       document.getElementById('order-modal').style.display = 'flex';
+    }
+
+    function openWhatsAppForOrder(orderId) {
+      const orders = loadOrders();
+      const order = orders.find(o => o.id === orderId);
+      if (!order || !order.customer?.phone) {
+        alert('Customer phone number not available for this order.');
+        return;
+      }
+      const cleanPhone = (order.customer.phone || '').replace(/[^0-9]/g, '');
+      const recipient = cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone;
+      
+      const itemsFormatted = (order.items || []).map(i => `• ${i.name} (Qty: ${i.qty}) - ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('\n');
+      const msg = `✨ *Hello ${order.customer.name}! Greetings from Earthen8Knot* 🧶\n\n` +
+        `This is a message regarding your Order *${order.id}*.\n\n` +
+        `📋 *Order Summary:*\n${itemsFormatted}\n` +
+        `• *Total Amount:* ₹${Number(order.total).toLocaleString('en-IN')}\n` +
+        `• *Status:* ${order.status}\n\n` +
+        `📍 *Delivery Address:* ${order.customer.address}\n\n` +
+        `Please let us know if you have any questions or customization requests. Thank you for supporting handmade! 🌿\n\n` +
+        `*Earthen8Knot Team*\nhttps://earthen8knot.com`;
+      
+      window.open(`https://api.whatsapp.com/send?phone=${recipient}&text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function openWhatsAppTourForOrder(orderId) {
+      const orders = loadOrders();
+      const order = orders.find(o => o.id === orderId);
+      if (!order || !order.customer?.phone) {
+        alert('Customer phone number not available.');
+        return;
+      }
+      const cleanPhone = (order.customer.phone || '').replace(/[^0-9]/g, '');
+      const recipient = cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone;
+
+      const tourMsg = `📸 *Earthen8Knot - Your WhatsApp Product Tour!* ✨\n\n` +
+        `Dear *${order.customer.name}*,\n` +
+        `As requested for Order *#${order.id}*, we are preparing your handcrafted creations and are excited to share a quick video/photo tour of the finished items with you right here before dispatch!\n\n` +
+        `Please let us know if you're ready to review your pieces! 🤎\n\n` +
+        `*Earthen8Knot Team*\nhttps://earthen8knot.com`;
+
+      window.open(`https://api.whatsapp.com/send?phone=${recipient}&text=${encodeURIComponent(tourMsg)}`, '_blank');
     }
 
     function closeOrderModal() {
