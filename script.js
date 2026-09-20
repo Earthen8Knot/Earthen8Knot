@@ -989,42 +989,16 @@ function initWishlistSystem() {
       if (!productId) return;
 
       let btn = card.querySelector('.wishlist-btn');
-      if (!btn) {
-        btn = document.createElement('button');
-        btn.className = 'wishlist-btn';
-        btn.setAttribute('tabindex', '0');
-        btn.onclick = (e) => toggleFavorite(productId, e);
+      if (btn) {
+        const isFav = wishlist.includes(productId);
+        const productName = btn.getAttribute('data-product-name') || 'product';
+        btn.setAttribute('aria-label', isFav ? `Remove ${productName} from wishlist` : `Add ${productName} to wishlist`);
         
-        const titleEl = card.querySelector('h3');
-        const productName = titleEl ? titleEl.textContent : 'Product';
-        btn.setAttribute('data-fav-id', productId);
-        btn.setAttribute('data-product-name', productName);
-        
-        btn.innerHTML = `
-          <svg viewBox="0 0 24 24">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-        `;
-        
-        // Try to append to image container so it overlays the image perfectly
-        const imgContainer = card.querySelector('.product-image-container') || card.querySelector('div[style*="overflow: hidden"]');
-        if (imgContainer) {
-          // Ensure image container is positioned relatively so absolute child works
-          imgContainer.style.position = 'relative';
-          imgContainer.appendChild(btn);
+        if (isFav) {
+          btn.classList.add('active');
         } else {
-          card.appendChild(btn);
+          btn.classList.remove('active');
         }
-      }
-
-      const isFav = wishlist.includes(productId);
-      const productName = btn.getAttribute('data-product-name') || 'product';
-      btn.setAttribute('aria-label', isFav ? `Remove ${productName} from wishlist` : `Add ${productName} to wishlist`);
-      
-      if (isFav) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
       }
     });
 
