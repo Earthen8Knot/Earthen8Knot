@@ -1527,15 +1527,6 @@ body.nav-menu-open {
     gap: 0 !important;
   }
 
-  .wishlist-nav-btn {
-    padding: 0.45rem !important;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .cart-btn {
     padding: 0.45rem !important;
     width: 36px;
