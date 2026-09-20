@@ -675,16 +675,14 @@ function renderProductPage() {
         <div class="product-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
           <h1 style="font-size: 2.2rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 500; margin: 0;">${product.name}</h1>
           <div style="display:flex; gap:0.5rem; align-items:center;">
-            <button id="product-reaction-btn" class="reaction-btn-detail" data-id="${productId}" style="padding: 0.5rem 1.1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid rgba(0,0,0,0.08); background: var(--surface); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm); display:flex; align-items:center; gap:6px; font-family:'Quicksand',sans-serif; font-weight:600;"></button>
+            
             <button id="zoom-toggle-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm);">🔍 Enable Zoom</button>
           </div>
         </div>
         <div class="product-gallery" style="margin-bottom: 3rem;">
           <div class="main-image-container" id="main-image-container">
             <img src="${imagesToUse[0]}" id="main-product-image" alt="${product.name}" style="filter: ${product.filter || 'none'};">
-            <button class="wishlist-btn" onclick="toggleFavorite('${productId}', event)" style="position: absolute; top: 24px; right: 24px;" aria-label="Add to wishlist" data-fav-id="${productId}">
-              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            </button>
+            
           </div>
           ${thumbnailsHTML}
         </div>
@@ -825,8 +823,7 @@ function initGalleryZoom() {
 
 // Initialize and handle Favorite/Wishlist System
 function initWishlistSystem() {
-  let wishlist = [];
-  
+    
   // Load initial local guest wishlist
   try {
     const saved = localStorage.getItem('earthenknot_favorites');
@@ -963,75 +960,22 @@ function initWishlistSystem() {
 
     // Remove loading indicators and refresh active classes
     targets.forEach(el => el.classList.remove('loading'));
-    syncAllHeartButtons();
+    
 
     // If we are on the wishlist page, re-render it dynamically!
     if (typeof renderWishlistPage === 'function') {
-      renderWishlistPage();
+      
     }
   };
 
-  function syncAllHeartButtons() {
-    const cards = document.querySelectorAll('.product-card');
-    cards.forEach(card => {
-      const link = card.querySelector('a[href*="product.html?id="]');
-      if (!link) return;
+        if (!productId) return;
 
-      let productId = '';
-      try {
-        const url = new URL(link.href, window.location.href);
-        productId = url.searchParams.get('id');
-      } catch (err) {
-        const match = link.href.match(/id=([^&]+)/);
-        if (match) productId = match[1];
-      }
+      
 
-      if (!productId) return;
-
-      let btn = card.querySelector('.wishlist-btn');
-      if (btn) {
-        const isFav = wishlist.includes(productId);
-        const productName = btn.getAttribute('data-product-name') || 'product';
-        btn.setAttribute('aria-label', isFav ? `Remove ${productName} from wishlist` : `Add ${productName} to wishlist`);
-        
-        if (isFav) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      }
-    });
-
-    const detailBtn = document.getElementById('product-reaction-btn');
-    if (detailBtn) {
-      const productId = detailBtn.getAttribute('data-id');
-      if (productId) {
-        const isFav = wishlist.includes(productId);
-        detailBtn.setAttribute('data-fav-id', productId);
-        detailBtn.innerHTML = `
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:${isFav ? 'currentColor' : 'none'};stroke-width:2.2;transition:all 0.3s;vertical-align:middle;margin-right:4px;">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-          <span>${isFav ? 'Wishlisted' : 'Add to Wishlist'}</span>
-        `;
-        detailBtn.onclick = (e) => toggleFavorite(productId, e);
-        detailBtn.style.borderColor = isFav ? 'rgba(224, 90, 71, 0.25)' : 'rgba(0,0,0,0.08)';
-        detailBtn.style.background = isFav ? '#fff5f5' : 'var(--surface)';
-        detailBtn.style.color = isFav ? '#e05a47' : 'var(--text)';
-      }
-    }
+    
 
 
-    const standaloneBtns = document.querySelectorAll('.wishlist-btn[data-fav-id]');
-    standaloneBtns.forEach(btn => {
-      const pId = btn.getAttribute('data-fav-id');
-      const isFav = wishlist.includes(pId);
-      if (isFav) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
+    
   }
 
   window.addEventListener('auth-state-changed', async (e) => {
@@ -1065,13 +1009,13 @@ function initWishlistSystem() {
         wishlist = [];
       }
     }
-    syncAllHeartButtons();
+    
   });
 
-  syncAllHeartButtons();
+  
 
   const observer = new MutationObserver(() => {
-    syncAllHeartButtons();
+    
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
