@@ -1002,7 +1002,7 @@
       // Format items list as a readable text block with absolute links
       const itemsText = order.items.map(item => {
         const localLink = resolveItemLink(item);
-        const absoluteLink = `https://earthen8knot.com/${localLink}`;
+        const absoluteLink = `https://earthenknot.in/${localLink}`;
         return `- ${item.name} (Qty: ${item.qty}) - ₹${(item.price * item.qty).toLocaleString('en-IN')}\n  View product: ${absoluteLink}`;
       }).join('\n');
 
@@ -1201,7 +1201,7 @@
         `Thank you for supporting sustainable, handmade craftsmanship! 🌿\n\n` +
         `Warm regards,\n` +
         `*Earthen8Knot Team*\n` +
-        `https://earthen8knot.com`;
+        `https://earthenknot.in`;
     }
 
     function buildCustomerTourMessage(order) {
@@ -1210,7 +1210,7 @@
         `We are pleased to confirm that your **WhatsApp Product Tour request** has been received for Order *#${order.id}*!\n\n` +
         `Before dispatching your order, our artisan team will contact you directly on this WhatsApp chat to share photos and a video of your finished handcrafted item(s) so you can review and inspect them prior to delivery.\n\n` +
         `Thank you for choosing Earthen8Knot! 🤎\n` +
-        `https://earthen8knot.com`;
+        `https://earthenknot.in`;
     }
 
     function buildOwnerWhatsAppMessage(order) {
@@ -1258,7 +1258,7 @@
         `${itemsList}\n\n` +
         notesDetail +
         `\n🔗 *Open Orders Dashboard:*\n` +
-        `https://earthen8knot.com/orders.html`;
+        `https://earthenknot.in/orders.html`;
     }
 
     function dispatchWhatsAppOrderNotifications(order) {

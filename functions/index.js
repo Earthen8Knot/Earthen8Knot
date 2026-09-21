@@ -49,7 +49,7 @@ async function sendBackgroundWhatsAppMessages(order) {
       `• *Deliver To:* ${order.customer?.name || ""}\n` +
       `• *Shipping Address:* ${order.customer?.address || ""} (PIN: ${order.customer?.pincode || ""})\n` +
       `• *Estimated Delivery:* 10–12 business days (Handmade with natural warmth)\n\n` +
-      `Warm regards,\n*Earthen8Knot Team*\nhttps://earthen8knot.com`;
+      `Warm regards,\n*Earthen8Knot Team*\nhttps://earthenknot.in`;
 
     // 2. Owner Message
     const ownerMsg =
@@ -65,7 +65,7 @@ async function sendBackgroundWhatsAppMessages(order) {
       `\n📦 *Products Ordered:*\n${itemsList}\n` +
       (order.requestOrderTour ? `\n🚨 *WHATSAPP TOUR REQUESTED:* Yes! (Send photo/video quality review before dispatch)\n` : "") +
       (order.isGift ? `\n🎁 *Gift Order:* "${order.giftMessage || "Warmest wishes"}"\n` : "") +
-      `\n🔗 *Orders Dashboard:*\nhttps://earthen8knot.com/orders.html`;
+      `\n🔗 *Orders Dashboard:*\nhttps://earthenknot.in/orders.html`;
 
     console.log(`[Background WhatsApp] Processing notifications for Order ${order.id}...`);
 
