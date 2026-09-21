@@ -437,9 +437,11 @@
             <!-- Rendered by JS -->
           </div>
 
-          <!-- Automated WhatsApp Order Notifications System -->
-          <div id="whatsapp-order-notifications-box" style="margin-bottom: 2rem;">
-            <!-- Rendered by JS -->
+          <!-- Clean Background Notification Confirmation Note -->
+          <div style="background: rgba(108, 120, 92, 0.08); border: 1.5px dashed rgba(108, 120, 92, 0.3); border-radius: 14px; padding: 1rem 1.4rem; margin-bottom: 2rem; text-align: center;">
+            <p style="margin: 0; font-size: 0.93rem; color: var(--primary-dark); font-weight: 600; line-height: 1.5;">
+              🌿 <strong>Order Confirmed & Received!</strong> A detailed receipt has been sent to your email, and automatic WhatsApp updates have been dispatched in the background.
+            </p>
           </div>
 
           <!-- Customer Query & Support Contact Box -->
@@ -751,58 +753,134 @@
           !config.keyId.includes('placeholder');
 
         if (hasValidKey && typeof Razorpay !== 'undefined') {
-          const options = {
-            key: config.keyId,
-            amount: Math.round(totalAmount * 100),
-            currency: config.currency || 'INR',
-            name: config.merchantName || 'Earthen8Knot',
-            description: `Order ${orderId} - Handcrafted Modern Crochet`,
-            image: config.logo || 'assets/logo.png',
-            prefill: {
-              name: customer.name,
-              email: customer.email,
-              contact: customer.phone
-            },
-            theme: {
-              color: config.themeColor || '#6c785c'
-            },
-            handler: function (response) {
-              finalizeOrderPlacement({
-                orderId: orderId,
-                customer: customer,
-                items: items,
-                totalAmount: totalAmount,
-                paymentMethod: `Online (Razorpay: ${response.razorpay_payment_id})`,
-                upiTransactionId: response.razorpay_payment_id,
-                razorpayPaymentId: response.razorpay_payment_id,
-                status: 'Paid & Confirmed'
-              });
-            },
-            modal: {
-              ondismiss: function () {
+          const launchRazorpayGateway = async () => {
+            let rzpOrderId = null;
+
+            // 1. Payment Initiated: Attempt backend order creation with auto-capture (payment_capture: 1)
+            try {
+              if (config.functionsBaseUrl) {
+                const orderRes = await fetch(`${config.functionsBaseUrl}/createRazorpayOrder`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    amount: totalAmount,
+                    orderId: orderId,
+                    currency: config.currency || 'INR'
+                  })
+                }).then(r => r.json()).catch(() => null);
+
+                if (orderRes && orderRes.orderId) {
+                  rzpOrderId = orderRes.orderId;
+                }
+              }
+            } catch (createErr) {
+              console.warn('[Razorpay] Backend order creation fallback:', createErr.message);
+            }
+
+            const options = {
+              key: config.keyId,
+              amount: Math.round(totalAmount * 100),
+              currency: config.currency || 'INR',
+              name: config.merchantName || 'Earthen8Knot',
+              description: `Order ${orderId} - Handcrafted Modern Crochet`,
+              image: config.logo || 'assets/logo.png',
+              order_id: rzpOrderId || undefined,
+              prefill: {
+                name: customer.name,
+                email: customer.email,
+                contact: customer.phone
+              },
+              theme: {
+                color: config.themeColor || '#6c785c'
+              },
+              handler: async function (response) {
+                // 2. Payment Successful & 3. Payment Captured
+                btn.textContent = 'Verifying & Capturing Payment...';
+                
+                let isCaptured = true;
+                let finalStatus = 'Paid & Confirmed';
+                let paymentStatus = 'Captured';
+
+                if (config.functionsBaseUrl && response.razorpay_payment_id) {
+                  try {
+                    const verifyRes = await fetch(`${config.functionsBaseUrl}/verifyAndCapturePayment`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        orderId: orderId,
+                        userId: window.firebaseAuth?.currentUser?.uid || null,
+                        razorpayPaymentId: response.razorpay_payment_id,
+                        razorpayOrderId: response.razorpay_order_id || rzpOrderId || null,
+                        razorpaySignature: response.razorpay_signature || null,
+                        orderData: {
+                          customer: customer,
+                          items: items,
+                          total: totalAmount,
+                          paymentMethod: `Online (Razorpay: ${response.razorpay_payment_id})`
+                        }
+                      })
+                    }).then(r => r.json());
+
+                    if (verifyRes && verifyRes.success) {
+                      isCaptured = verifyRes.paymentStatus === 'Captured';
+                      finalStatus = verifyRes.status || 'Paid & Confirmed';
+                      paymentStatus = verifyRes.paymentStatus || 'Captured';
+                    } else if (verifyRes && verifyRes.error) {
+                      console.error('[Razorpay] Payment verification error:', verifyRes.error);
+                      alert('Payment verification error: ' + verifyRes.error + '\nPlease contact support with payment reference: ' + response.razorpay_payment_id);
+                      btn.textContent = origText;
+                      btn.disabled = false;
+                      btn.style.opacity = '1';
+                      return; // Do NOT finalize order if signature/verification failed!
+                    }
+                  } catch (vErr) {
+                    console.warn('[Razorpay] Verification endpoint note:', vErr.message);
+                  }
+                }
+
+                finalizeOrderPlacement({
+                  orderId: orderId,
+                  customer: customer,
+                  items: items,
+                  totalAmount: totalAmount,
+                  paymentMethod: `Online (Razorpay: ${response.razorpay_payment_id})`,
+                  upiTransactionId: response.razorpay_payment_id,
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpayOrderId: response.razorpay_order_id || rzpOrderId || '',
+                  paymentStatus: paymentStatus,
+                  status: finalStatus
+                });
+              },
+              modal: {
+                ondismiss: function () {
+                  btn.textContent = origText;
+                  btn.disabled = false;
+                  btn.style.opacity = '1';
+                }
+              }
+            };
+
+            try {
+              const rzp = new Razorpay(options);
+              rzp.on('payment.failed', function (resp) {
+                // 4. Payment Failed
+                console.error('[Razorpay] Payment failed:', resp.error);
+                alert('Payment failed: ' + (resp.error && resp.error.description ? resp.error.description : 'Transaction cancelled or declined.'));
                 btn.textContent = origText;
                 btn.disabled = false;
                 btn.style.opacity = '1';
-              }
-            }
-          };
-
-          try {
-            const rzp = new Razorpay(options);
-            rzp.on('payment.failed', function (resp) {
-              alert('Payment failed: ' + (resp.error && resp.error.description ? resp.error.description : 'Transaction cancelled.'));
+              });
+              rzp.open();
+            } catch (err) {
+              console.error('Razorpay init error:', err);
+              alert('Could not initialize Razorpay checkout: ' + err.message);
               btn.textContent = origText;
               btn.disabled = false;
               btn.style.opacity = '1';
-            });
-            rzp.open();
-          } catch (err) {
-            console.error('Razorpay init error:', err);
-            alert('Could not initialize Razorpay checkout: ' + err.message);
-            btn.textContent = origText;
-            btn.disabled = false;
-            btn.style.opacity = '1';
-          }
+            }
+          };
+
+          launchRazorpayGateway();
         } else {
           // Simulated test checkout mode for when placeholder key is in place
           const proceedSim = confirm(
@@ -825,6 +903,8 @@
                 paymentMethod: `Online (Razorpay Simulated: ${simId})`,
                 upiTransactionId: simId,
                 razorpayPaymentId: simId,
+                razorpayOrderId: 'order_sim_' + Math.floor(100000 + Math.random() * 900000),
+                paymentStatus: 'Captured',
                 status: 'Paid & Confirmed'
               });
             }, 400);
@@ -852,6 +932,8 @@
         paymentMethod: payload.paymentMethod,
         upiTransactionId: payload.upiTransactionId || 'N/A',
         razorpayPaymentId: payload.razorpayPaymentId || '',
+        razorpayOrderId: payload.razorpayOrderId || '',
+        paymentStatus: payload.paymentStatus || 'Captured',
         status: payload.status,
         requestOrderTour: orderTourChecked,
         isGift: orderIsGiftChecked,
@@ -1180,114 +1262,19 @@
     }
 
     function dispatchWhatsAppOrderNotifications(order) {
-      console.log('Automated WhatsApp dispatch for Order:', order.id);
-      const ownerPhone = '917517592373';
-      const ownerMsg = buildOwnerWhatsAppMessage(order);
-      const ownerUrl = `https://api.whatsapp.com/send?phone=${ownerPhone}&text=${encodeURIComponent(ownerMsg)}`;
-
-      // Immediate automated dispatch attempt for the owner
-      try {
-        window.open(ownerUrl, '_blank');
-      } catch (e) {
-        console.warn('Auto popup blocked, interactive WhatsApp buttons available on confirmation screen:', e);
+      console.log('Automated background WhatsApp dispatch for Order:', order.id);
+      const config = window.RAZORPAY_CONFIG || {};
+      if (config.functionsBaseUrl) {
+        fetch(`${config.functionsBaseUrl}/sendWhatsAppNotifications`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order: order })
+        }).then(r => r.json()).then(res => {
+          console.log('[Background WhatsApp] Silent dispatch response:', res);
+        }).catch(err => {
+          console.warn('[Background WhatsApp] Silent dispatch note:', err.message);
+        });
       }
-    }
-
-    function renderWhatsAppNotificationsBox(order) {
-      const box = document.getElementById('whatsapp-order-notifications-box');
-      if (!box) return;
-
-      const ownerPhone = '917517592373';
-      const customerPhone = getCleanPhoneNumber(order.customer?.phone);
-
-      const ownerMsg = buildOwnerWhatsAppMessage(order);
-      const customerMsg = buildCustomerWhatsAppMessage(order);
-      const tourMsg = order.requestOrderTour ? buildCustomerTourMessage(order) : null;
-
-      const ownerUrl = `https://api.whatsapp.com/send?phone=${ownerPhone}&text=${encodeURIComponent(ownerMsg)}`;
-      const customerUrl = customerPhone ? `https://api.whatsapp.com/send?phone=${customerPhone}&text=${encodeURIComponent(customerMsg)}` : null;
-      const tourUrl = (order.requestOrderTour && customerPhone) ? `https://api.whatsapp.com/send?phone=${customerPhone}&text=${encodeURIComponent(tourMsg)}` : null;
-
-      let tourBanner = '';
-      if (order.requestOrderTour) {
-        tourBanner = `
-          <div style="background: rgba(37, 211, 102, 0.12); border: 1.5px dashed #25D366; border-radius: 12px; padding: 0.9rem 1.15rem; margin-bottom: 1.15rem; text-align: left;">
-            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
-              <span style="font-size:1.15rem;">📸</span>
-              <strong style="color: #075E54; font-size: 0.95rem;">WhatsApp Tour Requested!</strong>
-            </div>
-            <p style="font-size: 0.85rem; color: var(--text); margin: 0; line-height: 1.5;">
-              The customer requested a product tour before dispatch. This is prominently highlighted in the owner's notification, and a separate tour confirmation message is available below.
-            </p>
-          </div>
-        `;
-      }
-
-      box.innerHTML = `
-        <div style="background: linear-gradient(135deg, rgba(37, 211, 102, 0.08) 0%, rgba(18, 140, 126, 0.05) 100%); border: 1.5px solid rgba(37, 211, 102, 0.35); border-radius: 16px; padding: 1.5rem; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.08);">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.85rem;">
-            <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <div style="width: 38px; height: 38px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(37,211,102,0.4);">
-                <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/></svg>
-              </div>
-              <div>
-                <h4 style="margin: 0; font-size: 1.05rem; color: #075E54; font-family: 'Quicksand', sans-serif; font-weight: 700;">WhatsApp Order Notification System</h4>
-                <span style="font-size: 0.8rem; color: #128C7E; font-weight: 600;">Direct notifications ready for Customer & Store Owner</span>
-              </div>
-            </div>
-            <span style="background: #25D366; color: white; padding: 0.28rem 0.7rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">
-              Active & Formatted ✓
-            </span>
-          </div>
-
-          ${tourBanner}
-
-          <p style="font-size: 0.88rem; color: var(--text); margin-bottom: 1.15rem; line-height: 1.5; text-align: left;">
-            WhatsApp notifications have been prepared with complete order details. Click below to view or send directly:
-          </p>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.9rem;">
-            
-            <!-- Owner Notification Button -->
-            <a href="${ownerUrl}" target="_blank" rel="noopener noreferrer" style="background: #ffffff; border: 1.5px solid #25D366; border-radius: 12px; padding: 0.9rem 1.1rem; text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37,211,102,0.25)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
-              <div style="width: 36px; height: 36px; border-radius: 8px; background: #25D366; color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/></svg>
-              </div>
-              <div style="text-align: left;">
-                <div style="font-weight: 700; font-size: 0.92rem; color: #075E54;">Send Owner Order Alert</div>
-                <div style="font-size: 0.78rem; color: var(--text-light);">To Owner (+91 75175 92373)</div>
-              </div>
-            </a>
-
-            <!-- Customer Confirmation Button -->
-            ${customerUrl ? `
-            <a href="${customerUrl}" target="_blank" rel="noopener noreferrer" style="background: #ffffff; border: 1.5px solid #25D366; border-radius: 12px; padding: 0.9rem 1.1rem; text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37,211,102,0.25)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
-              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(37,211,102,0.15); color: #25D366; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/></svg>
-              </div>
-              <div style="text-align: left;">
-                <div style="font-weight: 700; font-size: 0.92rem; color: #075E54;">Send Customer Confirmation</div>
-                <div style="font-size: 0.78rem; color: var(--text-light);">To ${order.customer?.name || 'Customer'} (${order.customer?.phone || ''})</div>
-              </div>
-            </a>
-            ` : ''}
-
-            <!-- Tour Confirmation Button (Conditional) -->
-            ${tourUrl ? `
-            <a href="${tourUrl}" target="_blank" rel="noopener noreferrer" style="background: #ffffff; border: 1.5px solid #25D366; border-radius: 12px; padding: 0.9rem 1.1rem; text-decoration: none; display: flex; align-items: center; gap: 0.85rem; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37,211,102,0.25)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
-              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(37,211,102,0.15); color: #25D366; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <span style="font-size: 1.1rem;">📸</span>
-              </div>
-              <div style="text-align: left;">
-                <div style="font-weight: 700; font-size: 0.92rem; color: #075E54;">Send Tour Confirmation</div>
-                <div style="font-size: 0.78rem; color: var(--text-light);">Separate Quality Tour message</div>
-              </div>
-            </a>
-            ` : ''}
-
-          </div>
-        </div>
-      `;
     }
 
     function showConfirmationReceipt(order) {
@@ -1319,7 +1306,8 @@
           <div>
             <span style="font-size:0.8rem; text-transform:uppercase; color:var(--text-light); font-weight:600;">Payment & Order Details</span>
             <p style="margin:0.3rem 0 0 0; font-size:0.95rem; line-height:1.6;">
-              <strong>Mode:</strong> ${order.paymentMethod}<br>
+              <strong>Payment Mode:</strong> ${order.paymentMethod}<br>
+              <strong>Payment Status:</strong> <span style="color:#166534; background:#dcfce7; padding:2px 8px; border-radius:12px; font-weight:700;">${order.paymentStatus || 'Captured'} ✓</span><br>
               <strong>Order Status:</strong> ${order.status && order.status.includes('Paid') ? '<span style="color:#2e7d32; background:#e8f5e9; padding:2px 8px; border-radius:12px; font-weight:700;">' + order.status + ' ✓</span>' : order.status}<br>
               <strong>Order ID:</strong> ${order.id}<br>
               ${order.razorpayPaymentId ? `<strong>Payment Ref:</strong> <code style="background:rgba(108,120,92,0.12); color:var(--primary-dark); padding:2px 6px; border-radius:4px; font-size:0.85rem; font-weight:600;">${order.razorpayPaymentId}</code><br>` : ''}
@@ -1338,9 +1326,6 @@
           <span>₹${Number(order.total).toLocaleString('en-IN')}</span>
         </div>
       `;
-
-      // Render the automated WhatsApp Order Notifications card
-      renderWhatsAppNotificationsBox(order);
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

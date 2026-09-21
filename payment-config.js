@@ -20,5 +20,14 @@ window.RAZORPAY_CONFIG = {
   themeColor: '#6c785c',
   
   // Currency
-  currency: 'INR'
+  currency: 'INR',
+
+  // Automatic Payment Capture enabled by default
+  autoCapture: true,
+
+  // Firebase Functions Base URL for secure backend verification & refund endpoints
+  functionsBaseUrl: window.location.hostname === 'localhost' 
+    ? 'http://localhost:5001/earthenknot/us-central1'
+    : 'https://us-central1-earthenknot.cloudfunctions.net'
 };
+
