@@ -146,11 +146,16 @@ a {
 }
 
 .logo img {
-  height: 96px;
-  width: 96px;
+  height: 64px;
+  width: 64px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease;
+}
+
+.logo:hover img {
+  transform: scale(1.06);
 }
 
 .logo-title {

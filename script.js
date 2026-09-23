@@ -53,10 +53,13 @@ function addToCart(name, price, img, url) {
     const card = window.event.target.closest('.product-card');
     if (card) {
       if (!itemName) itemName = card.querySelector('h3')?.textContent?.trim();
-      if (!itemPrice) {
+      if (itemPrice === null || itemPrice === undefined || isNaN(itemPrice)) {
         const priceEl = card.querySelector('.discount-price') || card.querySelector('p');
         const priceTxt = priceEl?.textContent?.trim();
-        if (priceTxt) itemPrice = Number(priceTxt.replace(/[^0-9.]/g, ''));
+        if (priceTxt) {
+          const pVal = Number(priceTxt.replace(/[^0-9.]/g, ''));
+          if (!isNaN(pVal)) itemPrice = pVal;
+        }
       }
       if (!itemImg) itemImg = card.querySelector('img')?.getAttribute('src');
       if (!itemUrl) itemUrl = card.querySelector('a')?.getAttribute('href');
@@ -69,14 +72,17 @@ function addToCart(name, price, img, url) {
     const pid = params.get('id');
     if (pid && typeof productsData !== 'undefined' && productsData[pid]) {
       if (!itemName) itemName = productsData[pid].name;
-      if (!itemPrice) itemPrice = Number(String(productsData[pid].price).replace(/[^0-9.]/g, '')) || 3200;
+      if (itemPrice === null || itemPrice === undefined || isNaN(itemPrice)) {
+        const pVal = Number(String(productsData[pid].price).replace(/[^0-9.]/g, ''));
+        if (!isNaN(pVal)) itemPrice = pVal;
+      }
       if (!itemImg) itemImg = productsData[pid].image;
       if (!itemUrl) itemUrl = `product.html?id=${pid}`;
     }
   }
 
   itemName = itemName || 'Handcrafted Earth Crochet Creation';
-  itemPrice = itemPrice || 2499;
+  if (itemPrice === null || itemPrice === undefined || isNaN(itemPrice)) itemPrice = 0;
   itemImg = itemImg || 'assets/hero-bag.jpg';
   itemUrl = resolveProductUrl(itemName, itemUrl);
 
@@ -471,7 +477,7 @@ const productsData = {
   },
   'striped-crochet-sweatshirt': {
     name: 'White-Blue Striped Sweatshirt',
-    price: '₹2,999.00',
+    price: '₹0.00',
     originalPrice: '',
     image: 'assets/sweatshirt-1.jpg',
     images: ['assets/sweatshirt-1.jpg', 'assets/sweatshirt-2.jpg'],
