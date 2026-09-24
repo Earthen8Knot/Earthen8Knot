@@ -1384,16 +1384,29 @@
       }
     }
 
+    function escapeHTML(str) {
+      if (typeof str !== 'string') return str || '';
+      return str.replace(/[&<>"']/g, function(m) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        }[m];
+      });
+    }
+
     function showConfirmationReceipt(order) {
       document.getElementById('checkout-main-grid').style.display = 'none';
       const screen = document.getElementById('order-confirmation-screen');
       screen.style.display = 'block';
 
-      document.getElementById('confirm-order-id-label').textContent = `Order Reference: ${order.id} • Date: ${order.date}`;
+      document.getElementById('confirm-order-id-label').textContent = `Order Reference: ${escapeHTML(order.id)} • Date: ${escapeHTML(order.date)}`;
 
-      const itemsHtml = order.items.map(i => `
+      const itemsHtml = (order.items || []).map(i => `
         <div style="display:flex; justify-content:space-between; padding:0.55rem 0; border-bottom:1px solid #f0f0f0;">
-          <a href="${resolveItemLink(i)}" style="color:var(--primary-dark); text-decoration:underline; text-underline-offset:2px; font-weight:500;">${i.name} × ${i.qty}</a>
+          <a href="${resolveItemLink(i)}" style="color:var(--primary-dark); text-decoration:underline; text-underline-offset:2px; font-weight:500;">${escapeHTML(i.name)} × ${i.qty}</a>
           <strong>₹${(i.price * i.qty).toLocaleString('en-IN')}</strong>
         </div>
       `).join('');
@@ -1403,24 +1416,24 @@
           <div>
             <span style="font-size:0.8rem; text-transform:uppercase; color:var(--text-light); font-weight:600;">Customer & Shipping Address</span>
             <p style="margin:0.3rem 0 0 0; font-size:0.95rem; line-height:1.5;">
-              <strong>${order.customer.name}</strong><br>
-              ${order.customer.address}<br>
-              PIN: ${order.customer.pincode}<br>
-              WhatsApp: ${order.customer.phone}<br>
-              Email: ${order.customer.email}
+              <strong>${escapeHTML(order.customer.name)}</strong><br>
+              ${escapeHTML(order.customer.address)}<br>
+              PIN: ${escapeHTML(order.customer.pincode)}<br>
+              WhatsApp: ${escapeHTML(order.customer.phone)}<br>
+              Email: ${escapeHTML(order.customer.email)}
             </p>
           </div>
           <div>
             <span style="font-size:0.8rem; text-transform:uppercase; color:var(--text-light); font-weight:600;">Payment & Order Details</span>
             <p style="margin:0.3rem 0 0 0; font-size:0.95rem; line-height:1.6;">
-              <strong>Payment Mode:</strong> ${order.paymentMethod}<br>
-              <strong>Payment Status:</strong> <span style="color:#166534; background:#dcfce7; padding:2px 8px; border-radius:12px; font-weight:700;">${order.paymentStatus || 'Captured'} ✓</span><br>
-              <strong>Order Status:</strong> ${order.status && order.status.includes('Paid') ? '<span style="color:#2e7d32; background:#e8f5e9; padding:2px 8px; border-radius:12px; font-weight:700;">' + order.status + ' ✓</span>' : order.status}<br>
-              <strong>Order ID:</strong> ${order.id}<br>
-              ${order.razorpayPaymentId ? `<strong>Payment Ref:</strong> <code style="background:rgba(108,120,92,0.12); color:var(--primary-dark); padding:2px 6px; border-radius:4px; font-size:0.85rem; font-weight:600;">${order.razorpayPaymentId}</code><br>` : ''}
+              <strong>Payment Mode:</strong> ${escapeHTML(order.paymentMethod || 'Online')}<br>
+              <strong>Payment Status:</strong> <span style="color:#166534; background:#dcfce7; padding:2px 8px; border-radius:12px; font-weight:700;">${escapeHTML(order.paymentStatus || 'Captured')} ✓</span><br>
+              <strong>Order Status:</strong> ${order.status && order.status.includes('Paid') ? '<span style="color:#2e7d32; background:#e8f5e9; padding:2px 8px; border-radius:12px; font-weight:700;">' + escapeHTML(order.status) + ' ✓</span>' : escapeHTML(order.status)}<br>
+              <strong>Order ID:</strong> ${escapeHTML(order.id)}<br>
+              ${order.razorpayPaymentId ? `<strong>Payment Ref:</strong> <code style="background:rgba(108,120,92,0.12); color:var(--primary-dark); padding:2px 6px; border-radius:4px; font-size:0.85rem; font-weight:600;">${escapeHTML(order.razorpayPaymentId)}</code><br>` : ''}
               <strong>Estimated Delivery:</strong> 10-12 days (lovingly handmade)<br>
               <strong>WhatsApp Quality Tour:</strong> ${order.requestOrderTour ? '<span style="color:var(--primary); font-weight:600;">Requested ✓</span>' : 'Not Requested'}<br>
-              ${order.isGift ? `<strong>Gift Package:</strong> Yes 🎁<br><strong>Card Note:</strong> <span style="font-style:italic; color:var(--secondary); font-weight:600;">"${order.giftMessage}"</span><br>` : ''}
+              ${order.isGift ? `<strong>Gift Package:</strong> Yes 🎁<br><strong>Card Note:</strong> <span style="font-style:italic; color:var(--secondary); font-weight:600;">"${escapeHTML(order.giftMessage)}"</span><br>` : ''}
               <span style="font-size: 0.82rem; color: var(--secondary); font-weight: 600; display: block; margin-top: 0.4rem;">⚠️ Non-Refundable & Non-Exchangeable</span>
             </p>
           </div>

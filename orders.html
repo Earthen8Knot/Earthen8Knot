@@ -338,6 +338,19 @@
       return JSON.parse(saved);
     }
 
+    function escapeHTML(str) {
+      if (typeof str !== 'string') return str || '';
+      return str.replace(/[&<>"']/g, function(m) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        }[m];
+      });
+    }
+
     function saveOrders(orders) {
       localStorage.setItem('earthenknot_orders', JSON.stringify(orders));
       updateKPIs(orders);
@@ -362,7 +375,7 @@
       tbody.innerHTML = '';
 
       const filtered = orders.filter(order => {
-        const matchesSearch = order.id.toLowerCase().includes(searchVal) ||
+        const matchesSearch = (order.id || '').toLowerCase().includes(searchVal) ||
                               (order.customer?.name || '').toLowerCase().includes(searchVal) ||
                               (order.customer?.email || '').toLowerCase().includes(searchVal);
         const matchesStatus = statusFilter === 'All' || order.status === statusFilter;
@@ -376,7 +389,7 @@
 
       filtered.forEach((o, index) => {
         const tr = document.createElement('tr');
-        const itemsSummary = (o.items || []).map(i => `${i.name} (x${i.qty})`).join(', ') || 'Crochet Creation';
+        const itemsSummary = (o.items || []).map(i => `${escapeHTML(i.name)} (x${i.qty})`).join(', ') || 'Crochet Creation';
         
         let pStatus = o.paymentStatus || (o.status && o.status.includes('Paid') ? 'Captured' : 'Pending');
         let pBadgeClass = 'payment-badge-pending';
@@ -395,25 +408,25 @@
         else if (o.status === 'Cancelled') statusSelectClass = 'status-Cancelled';
 
         tr.innerHTML = `
-          <td><strong style="color: var(--primary-dark);">${o.id}</strong></td>
-          <td style="font-size: 0.85rem; color: var(--text-light);">${o.date}</td>
+          <td><strong style="color: var(--primary-dark);">${escapeHTML(o.id)}</strong></td>
+          <td style="font-size: 0.85rem; color: var(--text-light);">${escapeHTML(o.date)}</td>
           <td>
-            <strong>${o.customer?.name || 'Customer'}</strong><br>
-            <span style="font-size: 0.82rem; color: var(--text-light);">${o.customer?.email || ''}</span><br>
-            <span style="font-size: 0.82rem; color: var(--text-light);">${o.customer?.phone || ''}</span>
+            <strong>${escapeHTML(o.customer?.name || 'Customer')}</strong><br>
+            <span style="font-size: 0.82rem; color: var(--text-light);">${escapeHTML(o.customer?.email || '')}</span><br>
+            <span style="font-size: 0.82rem; color: var(--text-light);">${escapeHTML(o.customer?.phone || '')}</span>
           </td>
           <td style="max-width: 220px;">${itemsSummary}</td>
           <td><strong>₹${Number(o.total || 0).toLocaleString('en-IN')}</strong></td>
           <td>
             <span style="font-size: 0.82rem; background: rgba(0,0,0,0.05); padding: 0.3rem 0.6rem; border-radius: 8px; display: block; width: fit-content;">
-              ${o.paymentMethod}
+              ${escapeHTML(o.paymentMethod || 'Online')}
             </span>
-            <span class="${pBadgeClass}">${pStatus}</span>
-            ${o.refundId ? `<div style="font-size:0.75rem; color:#1d4ed8; margin-top:3px;">Refund ID: <code>${o.refundId}</code></div>` : ''}
+            <span class="${pBadgeClass}">${escapeHTML(pStatus)}</span>
+            ${o.refundId ? `<div style="font-size:0.75rem; color:#1d4ed8; margin-top:3px;">Refund ID: <code>${escapeHTML(o.refundId)}</code></div>` : ''}
             ${o.flaggedForAttention ? `<div style="font-size:0.75rem; color:#dc2626; font-weight:700; margin-top:3px;">⚠️ Attention Req.</div>` : ''}
           </td>
           <td>
-            <select class="status-select ${statusSelectClass}" onchange="changeOrderStatus('${o.id}', this.value)">
+            <select class="status-select ${statusSelectClass}" onchange="changeOrderStatus('${escapeHTML(o.id)}', this.value)">
               <option value="Paid & Confirmed" ${o.status === 'Paid & Confirmed' ? 'selected' : ''}>Paid & Confirmed</option>
               <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
               <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
@@ -427,10 +440,10 @@
           </td>
           <td>
             <div style="display:flex; gap:0.4rem; align-items:center;">
-              <button onclick="viewOrderDetails('${o.id}')" style="background: none; border: 1px solid var(--primary); color: var(--primary-dark); padding: 0.35rem 0.65rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
+              <button onclick="viewOrderDetails('${escapeHTML(o.id)}')" style="background: none; border: 1px solid var(--primary); color: var(--primary-dark); padding: 0.35rem 0.65rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
                 Receipt
               </button>
-              <button onclick="openWhatsAppForOrder('${o.id}')" style="background: #25D366; border: none; color: white; padding: 0.35rem 0.65rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem;" title="Chat with customer on WhatsApp">
+              <button onclick="openWhatsAppForOrder('${escapeHTML(o.id)}')" style="background: #25D366; border: none; color: white; padding: 0.35rem 0.65rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem;" title="Chat with customer on WhatsApp">
                 <span>💬</span> WhatsApp
               </button>
             </div>
@@ -459,7 +472,7 @@
       const contentEl = document.getElementById('modal-order-content');
       const itemsHtml = (order.items || []).map(i => `
         <div style="display:flex; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid #f0f0f0;">
-          <span>${i.name} × ${i.qty}</span>
+          <span>${escapeHTML(i.name)} × ${i.qty}</span>
           <strong>₹${(i.price * i.qty).toLocaleString('en-IN')}</strong>
         </div>
       `).join('');
@@ -468,44 +481,44 @@
         <div style="background:rgba(108,120,92,0.08); padding:1.2rem; border-radius:12px; margin-bottom:1.5rem;">
           <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
             <span style="color:var(--text-light); font-size:0.85rem;">Date & Time</span>
-            <strong>${order.date}</strong>
+            <strong>${escapeHTML(order.date)}</strong>
           </div>
           <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
             <span style="color:var(--text-light); font-size:0.85rem;">Payment Mode</span>
-            <strong>${order.paymentMethod}</strong>
+            <strong>${escapeHTML(order.paymentMethod || 'Online')}</strong>
           </div>
           <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
             <span style="color:var(--text-light); font-size:0.85rem;">Payment Capture Status</span>
-            <strong style="color:var(--primary-dark);">${order.paymentStatus || 'Captured'}</strong>
+            <strong style="color:var(--primary-dark);">${escapeHTML(order.paymentStatus || 'Captured')}</strong>
           </div>
           ${order.razorpayPaymentId ? `
           <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
             <span style="color:var(--text-light); font-size:0.85rem;">Razorpay Payment ID</span>
-            <code style="font-size:0.85rem; background:rgba(108,120,92,0.15); color:var(--primary-dark); padding:2px 6px; border-radius:4px; font-weight:600;">${order.razorpayPaymentId}</code>
+            <code style="font-size:0.85rem; background:rgba(108,120,92,0.15); color:var(--primary-dark); padding:2px 6px; border-radius:4px; font-weight:600;">${escapeHTML(order.razorpayPaymentId)}</code>
           </div>` : ''}
           ${order.refundId ? `
           <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
             <span style="color:var(--text-light); font-size:0.85rem;">Refund Ref ID</span>
-            <code style="font-size:0.85rem; background:rgba(37,99,235,0.15); color:#1d4ed8; padding:2px 6px; border-radius:4px; font-weight:600;">${order.refundId}</code>
+            <code style="font-size:0.85rem; background:rgba(37,99,235,0.15); color:#1d4ed8; padding:2px 6px; border-radius:4px; font-weight:600;">${escapeHTML(order.refundId)}</code>
           </div>` : ''}
           <div style="display:flex; justify-content:space-between;">
             <span style="color:var(--text-light); font-size:0.85rem;">Workflow Status</span>
-            <strong style="color:var(--primary-dark);">${order.status}</strong>
+            <strong style="color:var(--primary-dark);">${escapeHTML(order.status)}</strong>
           </div>
         </div>
 
         <h4 style="font-size:1rem; color:var(--primary-dark); margin-bottom:0.5rem;">Customer & Shipping Address</h4>
         <div style="border:1px solid #eee; padding:1rem; border-radius:12px; margin-bottom:1.5rem;">
-          <strong>${order.customer?.name}</strong><br>
-          <span style="font-size:0.9rem; color:var(--text);">${order.customer?.email} • ${order.customer?.phone}</span><br>
-          <p style="font-size:0.9rem; color:var(--text); margin-top:0.5rem; margin-bottom:0;">${order.customer?.address}</p>
+          <strong>${escapeHTML(order.customer?.name)}</strong><br>
+          <span style="font-size:0.9rem; color:var(--text);">${escapeHTML(order.customer?.email)} • ${escapeHTML(order.customer?.phone)}</span><br>
+          <p style="font-size:0.9rem; color:var(--text); margin-top:0.5rem; margin-bottom:0;">${escapeHTML(order.customer?.address)}</p>
         </div>
 
         ${order.isGift ? `
         <h4 style="font-size:1rem; color:var(--secondary); margin-bottom:0.5rem;">🎁 Cozy Gift Package Details</h4>
         <div style="border:1px dashed var(--secondary-light); background:rgba(144, 118, 97, 0.05); padding:1rem; border-radius:12px; margin-bottom:1.5rem;">
           <strong>Handwritten Card Message:</strong><br>
-          <p style="font-size:0.95rem; font-style:italic; color:var(--text); margin-top:0.35rem; margin-bottom:0;">"${order.giftMessage}"</p>
+          <p style="font-size:0.95rem; font-style:italic; color:var(--text); margin-top:0.35rem; margin-bottom:0;">"${escapeHTML(order.giftMessage)}"</p>
         </div>
         ` : ''}
 
@@ -520,7 +533,7 @@
 
         <div style="background:#f8fafc; border-left:4px solid #2563eb; padding:1rem; border-radius:8px; font-size:0.85rem; margin-bottom: 1.25rem;">
           <strong>Automated Transactional Emails Log:</strong><br>
-          ✅ Customer Order Confirmation sent to <code>${order.customer?.email}</code><br>
+          ✅ Customer Order Confirmation sent to <code>${escapeHTML(order.customer?.email)}</code><br>
           ✅ Merchant Notification sent to store admin
         </div>
 
