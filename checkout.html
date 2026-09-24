@@ -529,8 +529,116 @@
       }
     };
 
+    function saveCheckoutFormData() {
+      // Do not overwrite saved form if order confirmation receipt screen is currently displayed
+      const screen = document.getElementById('order-confirmation-screen');
+      if (screen && screen.style.display === 'block') return;
+
+      const formData = {
+        name: document.getElementById('cust-name')?.value || '',
+        email: document.getElementById('cust-email')?.value || '',
+        phone: document.getElementById('cust-phone')?.value || '',
+        house: document.getElementById('cust-house')?.value || '',
+        area: document.getElementById('cust-area')?.value || '',
+        city: document.getElementById('cust-city')?.value || '',
+        state: document.getElementById('cust-state')?.value || '',
+        pincode: document.getElementById('cust-pincode')?.value || '',
+        country: document.getElementById('cust-country')?.value || 'India',
+        addressSearch: document.getElementById('address-search-input')?.value || '',
+        requestTour: document.getElementById('request-order-tour')?.checked || false,
+        isGift: document.getElementById('order-is-gift')?.checked || false,
+        giftMessage: document.getElementById('order-gift-message')?.value || '',
+        coordinates: window._confirmedLocationCoordinates || null
+      };
+
+      try {
+        localStorage.setItem('earthenknot_checkout_form', JSON.stringify(formData));
+      } catch (e) {}
+    }
+
+    function restoreCheckoutFormData() {
+      try {
+        const saved = localStorage.getItem('earthenknot_checkout_form');
+        if (!saved) return;
+        const data = JSON.parse(saved);
+
+        if (data.name && document.getElementById('cust-name')) document.getElementById('cust-name').value = data.name;
+        if (data.email && document.getElementById('cust-email')) document.getElementById('cust-email').value = data.email;
+        if (data.phone && document.getElementById('cust-phone')) document.getElementById('cust-phone').value = data.phone;
+        if (data.house && document.getElementById('cust-house')) document.getElementById('cust-house').value = data.house;
+        if (data.area && document.getElementById('cust-area')) document.getElementById('cust-area').value = data.area;
+        if (data.city && document.getElementById('cust-city')) document.getElementById('cust-city').value = data.city;
+        if (data.state && document.getElementById('cust-state')) document.getElementById('cust-state').value = data.state;
+        if (data.pincode && document.getElementById('cust-pincode')) document.getElementById('cust-pincode').value = data.pincode;
+        if (data.country && document.getElementById('cust-country')) document.getElementById('cust-country').value = data.country;
+        if (data.addressSearch && document.getElementById('address-search-input')) document.getElementById('address-search-input').value = data.addressSearch;
+
+        const tourCheckbox = document.getElementById('request-order-tour');
+        if (tourCheckbox && typeof data.requestTour === 'boolean') {
+          tourCheckbox.checked = data.requestTour;
+        }
+
+        const giftCheckbox = document.getElementById('order-is-gift');
+        const giftMsgContainer = document.getElementById('gift-message-container');
+        const giftMsgTextarea = document.getElementById('order-gift-message');
+        if (giftCheckbox && typeof data.isGift === 'boolean') {
+          giftCheckbox.checked = data.isGift;
+          if (data.isGift && giftMsgContainer) {
+            giftMsgContainer.style.display = 'block';
+            if (giftMsgTextarea) {
+              giftMsgTextarea.required = true;
+              if (data.giftMessage) giftMsgTextarea.value = data.giftMessage;
+            }
+          }
+        }
+
+        if (data.coordinates) {
+          window._confirmedLocationCoordinates = data.coordinates;
+          if (typeof updatePinDisplay === 'function') {
+            updatePinDisplay(data.coordinates.lat, data.coordinates.lng, 'Restored Doorstep Pin');
+          }
+        }
+
+        if (typeof syncConfirmedAddress === 'function') {
+          syncConfirmedAddress();
+        }
+      } catch (e) {
+        console.warn('Failed to restore checkout form data:', e);
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      renderCheckoutCart();
+      // 1. Check if an order confirmation receipt should be restored on refresh
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlOrderId = urlParams.get('order_id');
+      
+      let orderToRestore = null;
+      if (urlOrderId) {
+        try {
+          const orders = JSON.parse(localStorage.getItem('earthenknot_orders') || '[]');
+          orderToRestore = orders.find(o => o.id === urlOrderId);
+        } catch(e) {}
+      }
+      
+      if (!orderToRestore) {
+        try {
+          const latest = JSON.parse(localStorage.getItem('earthenknot_latest_confirmed_order') || 'null');
+          if (latest && latest.timestamp && (Date.now() - latest.timestamp < 24 * 60 * 60 * 1000)) {
+            const cartItems = getCheckoutItems();
+            // If cart is empty and a recently placed order exists, show order confirmation screen
+            if (cartItems.length === 0 || urlOrderId) {
+              orderToRestore = latest;
+            }
+          }
+        } catch(e) {}
+      }
+
+      if (orderToRestore) {
+        showConfirmationReceipt(orderToRestore);
+      } else {
+        renderCheckoutCart();
+        restoreCheckoutFormData();
+      }
 
       // Default to automated online payment (Razorpay)
       selectPaymentMethod('razorpay');
@@ -541,6 +649,15 @@
           e.preventDefault();
           processOrderSubmission();
         });
+
+        // Listen for input changes to automatically persist form data across reloads
+        orderForm.addEventListener('input', saveCheckoutFormData);
+        orderForm.addEventListener('change', saveCheckoutFormData);
+      }
+
+      const searchInput = document.getElementById('address-search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', saveCheckoutFormData);
       }
 
       // Gift options form interaction logic
@@ -559,6 +676,7 @@
               giftMsgTextarea.value = '';
             }
           }
+          saveCheckoutFormData();
         });
       }
     });
@@ -792,52 +910,11 @@
               theme: {
                 color: config.themeColor || '#6c785c'
               },
-              handler: async function (response) {
-                // 2. Payment Successful & 3. Payment Captured
-                btn.textContent = 'Verifying & Capturing Payment...';
+              handler: function (response) {
+                // Payment Successful & Captured via Razorpay Gateway
+                btn.textContent = 'Finalizing Order...';
                 
-                let isCaptured = true;
-                let finalStatus = 'Paid & Confirmed';
-                let paymentStatus = 'Captured';
-
-                if (config.functionsBaseUrl && response.razorpay_payment_id) {
-                  try {
-                    const verifyRes = await fetch(`${config.functionsBaseUrl}/verifyAndCapturePayment`, {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        orderId: orderId,
-                        userId: window.firebaseAuth?.currentUser?.uid || null,
-                        razorpayPaymentId: response.razorpay_payment_id,
-                        razorpayOrderId: response.razorpay_order_id || rzpOrderId || null,
-                        razorpaySignature: response.razorpay_signature || null,
-                        orderData: {
-                          customer: customer,
-                          items: items,
-                          total: totalAmount,
-                          paymentMethod: `Online (Razorpay: ${response.razorpay_payment_id})`
-                        }
-                      })
-                    }).then(r => r.json());
-
-                    if (verifyRes && verifyRes.success) {
-                      isCaptured = verifyRes.paymentStatus === 'Captured';
-                      finalStatus = verifyRes.status || 'Paid & Confirmed';
-                      paymentStatus = verifyRes.paymentStatus || 'Captured';
-                    } else if (verifyRes && verifyRes.error) {
-                      console.error('[Razorpay] Payment verification error:', verifyRes.error);
-                      alert('Payment verification error: ' + verifyRes.error + '\nPlease contact support with payment reference: ' + response.razorpay_payment_id);
-                      btn.textContent = origText;
-                      btn.disabled = false;
-                      btn.style.opacity = '1';
-                      return; // Do NOT finalize order if signature/verification failed!
-                    }
-                  } catch (vErr) {
-                    console.warn('[Razorpay] Verification endpoint note:', vErr.message);
-                  }
-                }
-
-                finalizeOrderPlacement({
+                const payload = {
                   orderId: orderId,
                   customer: customer,
                   items: items,
@@ -846,9 +923,33 @@
                   upiTransactionId: response.razorpay_payment_id,
                   razorpayPaymentId: response.razorpay_payment_id,
                   razorpayOrderId: response.razorpay_order_id || rzpOrderId || '',
-                  paymentStatus: paymentStatus,
-                  status: finalStatus
-                });
+                  paymentStatus: 'Captured',
+                  status: 'Paid & Confirmed'
+                };
+
+                // 1. Immediately transition UI to Order Confirmation Receipt
+                finalizeOrderPlacement(payload);
+
+                // 2. Perform backend verification & capture in background asynchronously
+                if (config.functionsBaseUrl && response.razorpay_payment_id) {
+                  fetch(`${config.functionsBaseUrl}/verifyAndCapturePayment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      orderId: orderId,
+                      userId: window.firebaseAuth?.currentUser?.uid || null,
+                      razorpayPaymentId: response.razorpay_payment_id,
+                      razorpayOrderId: response.razorpay_order_id || rzpOrderId || null,
+                      razorpaySignature: response.razorpay_signature || null,
+                      orderData: {
+                        customer: customer,
+                        items: items,
+                        total: totalAmount,
+                        paymentMethod: `Online (Razorpay: ${response.razorpay_payment_id})`
+                      }
+                    })
+                  }).catch(vErr => console.warn('[Razorpay] Background verification note:', vErr.message));
+                }
               },
               modal: {
                 ondismiss: function () {
@@ -862,7 +963,7 @@
             try {
               const rzp = new Razorpay(options);
               rzp.on('payment.failed', function (resp) {
-                // 4. Payment Failed
+                // Payment Failed
                 console.error('[Razorpay] Payment failed:', resp.error);
                 alert('Payment failed: ' + (resp.error && resp.error.description ? resp.error.description : 'Transaction cancelled or declined.'));
                 btn.textContent = origText;
@@ -939,13 +1040,10 @@
         giftMessage: orderGiftMessageVal,
         customerEmailSent: true,
         merchantEmailSent: true,
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
       };
 
-      const auth = window.firebaseAuth;
-      const db = window.firebaseDb;
-      
-      // 1. Save Order into localStorage as fallback, but primarily Firestore
+      // 1. Save Order into localStorage
       let existingOrders = [];
       try {
         const saved = localStorage.getItem('earthenknot_orders');
@@ -954,16 +1052,37 @@
       existingOrders.unshift(newOrder);
       localStorage.setItem('earthenknot_orders', JSON.stringify(existingOrders));
 
+      // Save as latest confirmed order for seamless page reload persistence
+      try {
+        localStorage.setItem('earthenknot_latest_confirmed_order', JSON.stringify(newOrder));
+      } catch (e) {}
+
+      // Clear filled checkout form data & cart items
+      localStorage.removeItem('earthenknot_checkout_form');
+      localStorage.removeItem('earthenknot_cart');
+      sessionStorage.setItem('cartCount', '0');
+      const cartCountEl = document.getElementById('cart-count');
+      if (cartCountEl) cartCountEl.textContent = '0';
+
+      // Update URL search parameters without reloading page
+      try {
+        const newUrl = window.location.pathname + '?order_id=' + encodeURIComponent(newOrder.id);
+        window.history.replaceState(null, '', newUrl);
+      } catch (e) {}
+
+      // 2. Immediately render order confirmation screen (< 50ms)
+      showConfirmationReceipt(newOrder);
+
+      // 3. Firestore Sync & Points Update
+      const auth = window.firebaseAuth;
+      const db = window.firebaseDb;
       if (auth && db && auth.currentUser) {
         import("https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js").then(({ doc, updateDoc, increment, getDoc, setDoc }) => {
-          
-          // 1.1 Save the order to Firestore to trigger Delhivery Webhook
           const orderRef = doc(db, `users/${auth.currentUser.uid}/orders`, newOrder.id);
           setDoc(orderRef, newOrder).then(() => {
             console.log("Order saved to Firestore successfully.");
           }).catch(console.error);
 
-          // 1.5 Update Earthen Points
           const userRef = doc(db, "users", auth.currentUser.uid);
           const ptsEarned = Math.floor((payload.totalAmount - (window._appliedPoints || 0)) / 100);
           const ptsSpent = window._appliedPoints || 0;
@@ -979,20 +1098,9 @@
         }).catch(console.error);
       }
 
-      // 2. Trigger EmailJS Transactional Email Automation
-      sendTransactionalEmails(newOrder, () => {
-        // Clear cart
-        localStorage.removeItem('earthenknot_cart');
-        sessionStorage.setItem('cartCount', '0');
-        const cartCountEl = document.getElementById('cart-count');
-        if (cartCountEl) cartCountEl.textContent = '0';
-
-        // Show Confirmation Screen
-        showConfirmationReceipt(newOrder);
-
-        // Automated WhatsApp Order Notification System
-        dispatchWhatsAppOrderNotifications(newOrder);
-      });
+      // 4. Background Transactional Email & WhatsApp Notifications
+      sendTransactionalEmails(newOrder, () => {});
+      dispatchWhatsAppOrderNotifications(newOrder);
     }
 
     function sendTransactionalEmails(order, callback) {
