@@ -1,5 +1,5 @@
 /**
- * Server-Side Configuration for Earthen8Knot
+ * Server-Side Configuration for EarthenKnot
  * 
  * Keep this file on the server / Firebase Functions only!
  * Never expose these secrets to client-side frontend code.

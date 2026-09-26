@@ -1,5 +1,5 @@
 /**
- * Payment Gateway Configuration for Earthen8Knot
+ * Payment Gateway Configuration for EarthenKnot
  * 
  * Instructions:
  * 1. Log in to your Razorpay Dashboard: https://dashboard.razorpay.com/app/keys
@@ -12,11 +12,11 @@ window.RAZORPAY_CONFIG = {
   keyId: 'rzp_live_TdO9wjpeo1fyUX',
   
   // Store details displayed on the checkout modal
-  merchantName: 'Earthen8Knot',
+  merchantName: 'EarthenKnot',
   description: 'Handcrafted Modern Crochet',
   logo: 'assets/logo.png',
   
-  // Branding color (Matching Earthen8Knot theme)
+  // Branding color (Matching EarthenKnot theme)
   themeColor: '#6c785c',
   
   // Currency

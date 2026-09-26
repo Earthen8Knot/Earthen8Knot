@@ -1,5 +1,5 @@
 /**
- * Google Maps & Places Configuration for Earthen8Knot
+ * Google Maps & Places Configuration for EarthenKnot
  * 
  * Instructions:
  * 1. Open Google Cloud Console: https://console.cloud.google.com/google/maps-apis/credentials

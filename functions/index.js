@@ -37,7 +37,7 @@ async function sendBackgroundWhatsAppMessages(order) {
 
     // 1. Customer Message
     const customerMsg =
-      `✨ *Thank You for Ordering with Earthen8Knot!* 🧶\n\n` +
+      `✨ *Thank You for Ordering with EarthenKnot!* 🧶\n\n` +
       `Dear *${order.customer?.name || "Customer"}*,\n` +
       `We have successfully received your order, and our artisans have already started handcrafting your pieces!\n\n` +
       `📋 *Order Summary:*\n` +
@@ -49,11 +49,11 @@ async function sendBackgroundWhatsAppMessages(order) {
       `• *Deliver To:* ${order.customer?.name || ""}\n` +
       `• *Shipping Address:* ${order.customer?.address || ""} (PIN: ${order.customer?.pincode || ""})\n` +
       `• *Estimated Delivery:* 10–12 business days (Handmade with natural warmth)\n\n` +
-      `Warm regards,\n*Earthen8Knot Team*\nhttps://earthenknot.in`;
+      `Warm regards,\n*EarthenKnot Team*\nhttps://earthenknot.in`;
 
     // 2. Owner Message
     const ownerMsg =
-      `🚨 *NEW ORDER CONFIRMED - Earthen8Knot* 🛍️\n\n` +
+      `🚨 *NEW ORDER CONFIRMED - EarthenKnot* 🛍️\n\n` +
       `• *Order Number / ID:* ${order.id}\n` +
       `• *Customer:* ${order.customer?.name} (${order.customer?.phone})\n` +
       `• *Email:* ${order.customer?.email}\n` +
@@ -140,7 +140,7 @@ exports.createRazorpayOrder = functions.https.onRequest((req, res) => cors(req, 
       payment_capture: 1,
       notes: {
         orderId: orderId,
-        store: "Earthen8Knot"
+        store: "EarthenKnot"
       }
     });
 
@@ -373,7 +373,7 @@ exports.cancelAndRefundOrder = functions.https.onRequest((req, res) => cors(req,
             notes: {
               orderId: order.id,
               cancellationReason: reason || "Customer requested cancellation within 12h policy",
-              source: "Earthen8Knot Automated Refund"
+              source: "EarthenKnot Automated Refund"
             }
           });
 

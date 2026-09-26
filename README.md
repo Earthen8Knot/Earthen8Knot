@@ -1,1 +1,1 @@
-https://earthen8knot.github.io/Earthen8Knot/
+https://earthen8knot.github.io/EarthenKnot/

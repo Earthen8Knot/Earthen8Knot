@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Management Dashboard - Earthen8Knot</title>
+  <title>Order Management Dashboard - EarthenKnot</title>
   <link rel="stylesheet" href="styles.css?v=1.22">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
@@ -179,7 +179,7 @@
   <!-- Admin Header -->
   <div class="admin-header">
     <div style="max-width: 1200px; margin: 0 auto;">
-      <span style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8;">Earthen8Knot Management</span>
+      <span style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8;">EarthenKnot Management</span>
       <h1 style="font-size: 2.4rem; margin-top: 0.5rem; font-family: 'Playfair Display', serif;">Order Workflow & Automation</h1>
       <p style="opacity: 0.9; margin-top: 0.5rem; font-size: 1.05rem;">Manage incoming orders, update workflow statuses, and monitor transactional emails.</p>
     </div>
@@ -284,7 +284,7 @@
       <a href="policies.html#contact">Contact & Grievances</a>
     </div>
 
-      <p style="color: var(--text-light); font-size: 0.9rem;">&copy; 2026 Earthen8Knot • Automated Order Management & Transactional Emails</p>
+      <p style="color: var(--text-light); font-size: 0.9rem;">&copy; 2026 EarthenKnot • Automated Order Management & Transactional Emails</p>
     </div>
   </footer>
 
@@ -571,14 +571,14 @@
       const recipient = cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone;
       
       const itemsFormatted = (order.items || []).map(i => `• ${i.name} (Qty: ${i.qty}) - ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('\n');
-      const msg = `✨ *Hello ${order.customer.name}! Greetings from Earthen8Knot* 🧶\n\n` +
+      const msg = `✨ *Hello ${order.customer.name}! Greetings from EarthenKnot* 🧶\n\n` +
         `This is a message regarding your Order *${order.id}*.\n\n` +
         `📋 *Order Summary:*\n${itemsFormatted}\n` +
         `• *Total Amount:* ₹${Number(order.total).toLocaleString('en-IN')}\n` +
         `• *Status:* ${order.status}\n\n` +
         `📍 *Delivery Address:* ${order.customer.address}\n\n` +
         `Please let us know if you have any questions or customization requests. Thank you for supporting handmade! 🌿\n\n` +
-        `*Earthen8Knot Team*\nhttps://earthenknot.in`;
+        `*EarthenKnot Team*\nhttps://earthenknot.in`;
       
       window.open(`https://api.whatsapp.com/send?phone=${recipient}&text=${encodeURIComponent(msg)}`, '_blank');
     }
@@ -593,11 +593,11 @@
       const cleanPhone = (order.customer.phone || '').replace(/[^0-9]/g, '');
       const recipient = cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone;
 
-      const tourMsg = `📸 *Earthen8Knot - Your WhatsApp Product Tour!* ✨\n\n` +
+      const tourMsg = `📸 *EarthenKnot - Your WhatsApp Product Tour!* ✨\n\n` +
         `Dear *${order.customer.name}*,\n` +
         `As requested for Order *#${order.id}*, we are preparing your handcrafted creations and are excited to share a quick video/photo tour of the finished items with you right here before dispatch!\n\n` +
         `Please let us know if you're ready to review your pieces! 🤎\n\n` +
-        `*Earthen8Knot Team*\nhttps://earthenknot.in`;
+        `*EarthenKnot Team*\nhttps://earthenknot.in`;
 
       window.open(`https://api.whatsapp.com/send?phone=${recipient}&text=${encodeURIComponent(tourMsg)}`, '_blank');
     }
