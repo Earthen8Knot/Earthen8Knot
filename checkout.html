@@ -1252,7 +1252,7 @@
       }
 
       // 1. Send Customer Confirmation Email
-      emailjs.send('service_vtumu9a', 'template_ze720vg', customerEmailParams, '0g6F6xrRH6nOT5Q5R')
+      emailjs.send('service_vtumu9a', 'template_customer123', customerEmailParams, '0g6F6xrRH6nOT5Q5R')
         .then(function(response) {
           console.log('Customer confirmation email sent successfully:', response.status, response.text);
           const el = document.getElementById('customer-email-status');
@@ -1265,7 +1265,7 @@
         });
 
       // 2. Send Merchant Notification Email
-      emailjs.send('service_vtumu9a', 'template_psgk7pc', merchantEmailParams, '0g6F6xrRH6nOT5Q5R')
+      emailjs.send('service_vtumu9a', 'template_owner456', merchantEmailParams, '0g6F6xrRH6nOT5Q5R')
         .then(function(response) {
           console.log('Merchant notification email sent successfully:', response.status, response.text);
           const el = document.getElementById('merchant-email-status');
