@@ -103,6 +103,18 @@
       
       <div id="product-grid" class="fade-in delay-2" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 2.5rem;">
         <!-- Product -->
+        <div class="product-card glass-panel" data-name="pearl embellished crochet sling bag ivory cream shoulder bag with pearls" data-category="bags" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=pearl-crochet-sling-bag" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container">
+              <img src="assets/pearl-crochet-bag.jpg" alt="Pearl Embellished Crochet Sling Bag">
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Pearl Embellished Crochet Sling Bag</h3>
+            <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--primary-dark); font-weight: 700; font-size: 1.22rem;">₹1,699.00</span></p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+        </div>
+
+        <!-- Product -->
         <div class="product-card glass-panel" data-name="sweetheart crochet pouch purple cream love heart button sold out" data-category="bags" style="padding: 1.5rem; text-align: center;">
           <a href="product.html?id=sweetheart-crochet-pouch" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
             <div class="product-image-container">
@@ -156,7 +168,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.20"></script>
+  <script src="script.js?v=1.21"></script>
   <script type="module" src="firebase-config.js"></script>
 </body>
 </html>
