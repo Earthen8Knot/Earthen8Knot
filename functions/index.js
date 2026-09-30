@@ -25,7 +25,7 @@ function getRazorpayInstance() {
 // Background WhatsApp Message Dispatcher (Sends silently without UI interference)
 async function sendBackgroundWhatsAppMessages(order) {
   try {
-    const ownerPhone = serverConfig.ownerPhone || "917517592373";
+    const ownerPhone = serverConfig.ownerPhone || "918468937613";
     let customerPhone = (order.customer?.phone || "").replace(/[^0-9]/g, "");
     if (customerPhone.length === 10) customerPhone = "91" + customerPhone;
 

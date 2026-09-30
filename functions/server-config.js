@@ -15,7 +15,7 @@ module.exports = {
   },
 
   // Owner Notifications
-  ownerPhone: '917517592373',
+  ownerPhone: '918468937613',
   ownerEmail: 'earthen8knot@gmail.com',
 
   // Order Cancellation Policy

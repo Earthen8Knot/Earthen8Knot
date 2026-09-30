@@ -805,7 +805,7 @@ function initGalleryZoom() {
 // ----------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
   const waBtn = document.createElement('a');
-  waBtn.href = "https://wa.me/917517592373?text=Hi EarthenKnot, I need help with my order!";
+  waBtn.href = "https://wa.me/918468937613?text=Hi EarthenKnot, I need help with my order!";
   waBtn.target = "_blank";
   waBtn.rel = "noopener noreferrer";
   waBtn.setAttribute('aria-label', 'Chat with us on WhatsApp');
