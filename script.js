@@ -480,7 +480,7 @@ const productsData = {
   },
   'striped-crochet-sweatshirt': {
     name: 'White-Blue Striped Sweatshirt',
-    price: '₹0.00',
+    price: '₹2,999.00',
     originalPrice: '',
     image: 'assets/sweatshirt-1.jpg',
     images: ['assets/sweatshirt-1.jpg', 'assets/sweatshirt-2.jpg'],
