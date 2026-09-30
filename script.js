@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
       drawerHeader.innerHTML = `
         <div class="mobile-drawer-brand">
           <img src="assets/logo.png" alt="Earthen Knot">
-          <span>Earthen Knot</span>
+          <span style="font-family: 'Ribeye', cursive, serif; font-size: 1.5rem; color: #728465;">Earthen<span style="color: #c9783c;">Knot</span></span>
         </div>
         <button class="mobile-drawer-close" aria-label="Close menu">
           <svg viewBox="0 0 24 24">
