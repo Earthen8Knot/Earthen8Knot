@@ -32,9 +32,6 @@ function resolveProductUrl(itemName, passedUrl) {
       return `product.html?id=${id}`;
     }
   }
-  if (lower.includes('pearl') || lower.includes('sling')) {
-    return 'product.html?id=pearl-crochet-sling-bag';
-  }
   if (lower.includes('pillow') || lower.includes('cushion') || lower.includes('ivory')) {
     return 'product.html?id=ivory-lace-crochet-pillow';
   }
@@ -531,20 +528,6 @@ const productsData = {
     fiberType: '85% Cotton, 15% Milk Fiber',
     size: 'Free Size / Relaxed Fit',
     sizeDetails: 'Airy trellis-knit pullover. Chest: 38"–42" | Total Length: 23" | Sleeve Length: 22". Breathable, flexible stretch suitable for sizes S through L.'
-  },
-  'pearl-crochet-sling-bag': {
-    name: 'Pearl Embellished Crochet Sling Bag',
-    price: '₹1,699.00',
-    originalPrice: '',
-    image: 'assets/pearl-crochet-bag.jpg',
-    images: ['assets/pearl-crochet-bag.jpg'],
-    soldOut: false,
-    stitchCount: '16,200 hand loops',
-    stitchTime: '14 hours of craft',
-    hookSize: '3.5mm ergonomic hook',
-    fiberType: '100% Organic Milk Cotton & Faux Pearl Beads',
-    size: '8" × 6.5" (20 × 16.5 cm)',
-    sizeDetails: 'Artisan handcrafted sling bag with textured shell crochet weave, fold-over flap with delicate pearl embellishments, and a long pearl-studded crossbody shoulder strap (strap drop: ~20" / 50 cm). Spacious enough for your smartphone, lip balm, cards, and daily essentials.'
   },
   'sweetheart-crochet-pouch': {
     name: 'Sweetheart Crochet Pouch',
