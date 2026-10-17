@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const productsData = {
   'ivory-lace-crochet-pillow': {
     name: 'Leafy Pattern Pillow Cover',
-    price: '₹3,999.00',
+    price: '₹2,999.00',
     originalPrice: '',
     image: 'assets/pillow-1.jpg',
     images: ['assets/pillow-1.jpg', 'assets/pillow-2.jpg', 'assets/pillow-3.jpg'],
@@ -464,7 +464,7 @@ const productsData = {
   },
   'macrame-weave-crochet-pillow': {
     name: 'Square Pattern Pillow Cover',
-    price: '₹2,999.00',
+    price: '₹1,999.00',
     originalPrice: '',
     image: 'assets/pillow-crochet-1.jpg',
     images: ['assets/pillow-crochet-1.jpg', 'assets/pillow-crochet-2.jpg'],
@@ -477,7 +477,7 @@ const productsData = {
   },
   'striped-crochet-sweatshirt': {
     name: 'White-Blue Striped Sweatshirt',
-    price: '₹2,999.00',
+    price: '₹1,999.00',
     originalPrice: '',
     image: 'assets/sweatshirt-1.jpg',
     images: ['assets/sweatshirt-1.jpg', 'assets/sweatshirt-2.jpg'],
@@ -663,17 +663,16 @@ function renderProductPage() {
         <div class="size-info-card" style="background: var(--surface); border: 1px solid rgba(108, 120, 92, 0.18); border-radius: 16px; padding: 2rem 2.5rem; text-align: left; box-shadow: var(--shadow-sm); max-width: 650px; margin: 0 auto;">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(108, 120, 92, 0.12); padding-bottom: 0.85rem;">
             <span style="font-size: 0.8rem; color: var(--primary-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(108, 120, 92, 0.1); padding: 0.3rem 0.8rem; border-radius: 20px;">Dimensions & Fit</span>
-            <span style="font-size: 0.9rem; color: var(--text-light); font-style: italic;">Handcrafted with care</span>
           </div>
           <p style="font-size: 1.3rem; font-weight: 700; color: var(--primary-dark); margin: 0 0 0.6rem 0; font-family: 'Quicksand', sans-serif;">${product.size || 'Standard Size'}</p>
           <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text); margin: 0;">${product.sizeDetails || ''}</p>
         </div>
         
-        <!-- Artisan Craftsmanship Details -->
+        <!-- Material Used -->
         <div style="background: var(--bg-secondary); border-radius: 16px; padding: 2.5rem; margin-top: 3rem; text-align: left; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.03);">
           <h3 style="font-size: 1.35rem; color: var(--primary-dark); font-family: 'Quicksand', sans-serif; font-weight: 600; margin-top: 0; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.65rem;">
             <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2;" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-7.3 16.8M12 22a10 10 0 0 0 7.3-16.8"/><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4z"/></svg>
-            Artisan Craftsmanship Details
+            Material Used
           </h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem;">
             <div>
