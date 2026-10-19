@@ -32,6 +32,9 @@ function resolveProductUrl(itemName, passedUrl) {
       return `product.html?id=${id}`;
     }
   }
+  if (lower.includes('rose') || lower.includes('pearl') || lower.includes('sling')) {
+    return 'product.html?id=rose-pearl-crochet-sling-bag';
+  }
   if (lower.includes('pillow') || lower.includes('cushion') || lower.includes('ivory')) {
     return 'product.html?id=ivory-lace-crochet-pillow';
   }
@@ -487,6 +490,20 @@ const productsData = {
     fiberType: '8 ply cotton yarn, 3 mm thick',
     size: 'Free Size / Relaxed Fit',
     sizeDetails: 'Relaxed drop-shoulder silhouette. Chest: 40"–42" | Total Length: 22" | Sleeve Length: 21". Easily accommodates sizes S through L with an effortless, comfortable drape.'
+  },
+  'rose-pearl-crochet-sling-bag': {
+    name: 'Rose & Pearl Crochet Sling Bag',
+    price: '₹2,649.00',
+    originalPrice: '',
+    image: 'assets/rose-pearl-bag-1.jpg',
+    images: ['assets/rose-pearl-bag-1.jpg', 'assets/rose-pearl-bag-2.jpg', 'assets/rose-pearl-bag-3.jpg'],
+    soldOut: false,
+    stitchCount: '16,200 hand loops',
+    stitchTime: '14 hours of craft',
+    hookSize: '3.5mm ergonomic hook',
+    fiberType: '100% Cotton Thread & Faux Pearl Beads',
+    size: '8" × 7" (20 × 18 cm)',
+    sizeDetails: 'Artisan handcrafted round sling bag featuring a blooming 3D crochet rose motif adorned with lustrous pearls, a ribbed cotton border, and an elegant crossbody shoulder strap intertwined with delicate pearls (strap drop: ~20" / 50 cm). Handcrafted with 100% cotton thread. Perfectly sized for your smartphone, cards, keys, and daily essentials.'
   },
   'lavender-fringe-crochet-scarf': {
     name: 'Lavender Fringe Crochet Scarf',

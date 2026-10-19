@@ -21,6 +21,11 @@ def process_file(filepath):
             'old_name': 'Ocean Blue Striped Crochet Sweatshirt',
             'new_name': 'White-Blue Striped Sweatshirt',
             'new_price': '₹1,999.00'
+        },
+        'rose-pearl-crochet-sling-bag': {
+            'old_name': 'Rose & Pearl Crochet Sling Bag',
+            'new_name': 'Rose & Pearl Crochet Sling Bag',
+            'new_price': '₹2,649.00'
         }
     }
 
