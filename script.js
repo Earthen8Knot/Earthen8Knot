@@ -106,6 +106,38 @@ function addToCart(name, price, img, url) {
   showCartToast(itemName);
 }
 
+function requestRemake(productName) {
+  let name = typeof productName === 'string' && productName ? productName : '';
+
+  if (!name && window.event && window.event.target) {
+    const card = window.event.target.closest('.product-card');
+    if (card) {
+      name = card.querySelector('h3')?.textContent?.trim() || '';
+    }
+  }
+
+  if (!name && window.location.pathname.includes('product.html')) {
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('id');
+    if (pid && typeof productsData !== 'undefined' && productsData[pid]) {
+      name = productsData[pid].name;
+    }
+  }
+
+  let text = 'I want to request a remake this product';
+  if (name) {
+    text += `: ${name}`;
+  }
+
+  const phone = '918468937613';
+  const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+  const newTab = window.open(waUrl, '_blank');
+  if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+    window.location.href = waUrl;
+  }
+}
+window.requestRemake = requestRemake;
+
 function showCartWarningToast(message) {
   let toast = document.getElementById('cart-toast-msg');
   if (!toast) {
@@ -627,14 +659,14 @@ function renderProductPage() {
             ${product.soldOut ? `<span class="sold-out-badge" style="font-size: 0.8rem; padding: 0.25rem 0.75rem;">Sold Out</span>` : ''}
           </div>
           ${product.soldOut ? `
-            <button class="btn btn-secondary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 30px; white-space: nowrap; cursor: pointer; transition: all 0.3s;" onclick="addToCart()">Request a Remake</button>
+            <button class="btn btn-secondary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 30px; white-space: nowrap; cursor: pointer; transition: all 0.3s;" onclick="requestRemake('${product.name}')">Request a Remake</button>
           ` : `
             <button class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 30px; box-shadow: 0 4px 10px rgba(108, 120, 92, 0.2); white-space: nowrap;" onclick="addToCart()">Add to Cart</button>
           `}
         </div>
         ${product.soldOut ? `
         <div class="collection-note" style="margin-top: 2rem; margin-bottom: 0;">
-          <span class="collection-note-title">Note!</span> Loved something that’s sold out? Just <a href="contact.html" style="text-decoration: underline; color: inherit; font-weight: 500; transition: color 0.3s ease;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='inherit'">drop us a message</a> and let us know — you can always request a reorder
+          <span class="collection-note-title">Note!</span> Loved something that’s sold out? You can <a href="javascript:void(0)" onclick="requestRemake('${product.name}')" style="text-decoration: underline; color: inherit; font-weight: 500; transition: color 0.3s ease;" onmouseover="this.style.color='var(--secondary)'" onmouseout="this.style.color='inherit'">request a remake on WhatsApp</a> and let us know!
         </div>
         ` : ''}
       </div>
