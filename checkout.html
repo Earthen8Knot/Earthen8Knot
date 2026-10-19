@@ -524,7 +524,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.25"></script>
+  <script src="script.js?v=1.26"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window.selectPaymentMethod = function(method) {
@@ -719,12 +719,6 @@
       const name = (item && item.name) ? item.name.toLowerCase() : '';
       if (name.includes('rose') || name.includes('pearl') || name.includes('sling')) {
         return 'product.html?id=rose-pearl-crochet-sling-bag';
-      }
-      if (name.includes('macrame') || name.includes('macramé')) {
-        return 'product.html?id=macrame-weave-crochet-pillow';
-      }
-      if (name.includes('pillow') || name.includes('cushion') || name.includes('ivory')) {
-        return 'product.html?id=ivory-lace-crochet-pillow';
       }
       if (name.includes('sweatshirt') || name.includes('striped') || name.includes('ocean')) {
         return 'product.html?id=striped-crochet-sweatshirt';

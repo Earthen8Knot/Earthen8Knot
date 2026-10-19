@@ -35,9 +35,6 @@ function resolveProductUrl(itemName, passedUrl) {
   if (lower.includes('rose') || lower.includes('pearl') || lower.includes('sling')) {
     return 'product.html?id=rose-pearl-crochet-sling-bag';
   }
-  if (lower.includes('pillow') || lower.includes('cushion') || lower.includes('ivory')) {
-    return 'product.html?id=ivory-lace-crochet-pillow';
-  }
   if (lower.includes('sweatshirt') || lower.includes('striped') || lower.includes('ocean')) {
     return 'product.html?id=striped-crochet-sweatshirt';
   }
@@ -452,32 +449,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Product Stories Data
 const productsData = {
-  'ivory-lace-crochet-pillow': {
-    name: 'Leafy Pattern Pillow Cover',
-    price: '₹2,999.00',
-    originalPrice: '',
-    image: 'assets/pillow-1.jpg',
-    images: ['assets/pillow-1.jpg', 'assets/pillow-2.jpg', 'assets/pillow-3.jpg'],
-    stitchCount: '14,200 hand loops',
-    stitchTime: '12 hours of craft',
-    hookSize: '4.5mm bamboo hook',
-    fiberType: '100% Organic Cotton',
-    size: '16" × 16" (40 × 40 cm)',
-    sizeDetails: 'Square cushion cover measuring 16" × 16" (40 × 40 cm). Perfectly tailored to fit standard 16" to 18" square cushion inserts for a full, plush display.'
-  },
-  'macrame-weave-crochet-pillow': {
-    name: 'Square Pattern Pillow Cover',
-    price: '₹1,999.00',
-    originalPrice: '',
-    image: 'assets/pillow-crochet-1.jpg',
-    images: ['assets/pillow-crochet-1.jpg', 'assets/pillow-crochet-2.jpg'],
-    stitchCount: '8,900 hand loops',
-    stitchTime: '8 hours of craft',
-    hookSize: '5.0mm wooden hook',
-    fiberType: '100% Natural Cotton Cord',
-    size: '16" × 16" (40 × 40 cm)',
-    sizeDetails: 'Square cushion cover measuring 16" × 16" (40 × 40 cm). Hand-knotted lattice designed for standard 16" to 18" square pillow inserts.'
-  },
   'striped-crochet-sweatshirt': {
     name: 'White-Blue Striped Sweatshirt',
     price: '₹1,999.00',

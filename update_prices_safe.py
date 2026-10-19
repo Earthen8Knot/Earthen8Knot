@@ -7,16 +7,6 @@ def process_file(filepath):
 
     # Define the mapping
     targets = {
-        'ivory-lace-crochet-pillow': {
-            'old_name': 'Ivory Lace Crochet Pillow Cover',
-            'new_name': 'Leafy Pattern Pillow Cover',
-            'new_price': '₹2,999.00'
-        },
-        'macrame-weave-crochet-pillow': {
-            'old_name': 'Macramé Weave Crochet Pillow',
-            'new_name': 'Square Pattern Pillow Cover',
-            'new_price': '₹1,999.00'
-        },
         'striped-crochet-sweatshirt': {
             'old_name': 'Ocean Blue Striped Crochet Sweatshirt',
             'new_name': 'White-Blue Striped Sweatshirt',
