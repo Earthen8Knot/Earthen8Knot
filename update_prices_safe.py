@@ -16,6 +16,11 @@ def process_file(filepath):
             'old_name': 'Rose & Pearl Crochet Sling Bag',
             'new_name': 'Rose & Pearl Crochet Sling Bag',
             'new_price': '₹2,649.00'
+        },
+        'pearl-crochet-phone-pouch': {
+            'old_name': 'Pearl Crochet Phone Sling Pouch',
+            'new_name': 'Pearl Crochet Phone Sling Pouch',
+            'new_price': '₹699.00'
         }
     }
 

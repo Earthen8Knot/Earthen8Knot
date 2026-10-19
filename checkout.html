@@ -524,7 +524,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.30"></script>
+  <script src="script.js?v=1.31"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window.selectPaymentMethod = function(method) {
@@ -717,6 +717,9 @@
     function resolveItemLink(item) {
       if (item && item.url) return item.url;
       const name = (item && item.name) ? item.name.toLowerCase() : '';
+      if (name.includes('phone') || (name.includes('pearl') && name.includes('pouch'))) {
+        return 'product.html?id=pearl-crochet-phone-pouch';
+      }
       if (name.includes('rose') || name.includes('pearl') || name.includes('sling')) {
         return 'product.html?id=rose-pearl-crochet-sling-bag';
       }

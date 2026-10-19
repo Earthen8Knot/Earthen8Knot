@@ -32,6 +32,9 @@ function resolveProductUrl(itemName, passedUrl) {
       return `product.html?id=${id}`;
     }
   }
+  if (lower.includes('phone') || (lower.includes('pearl') && lower.includes('pouch'))) {
+    return 'product.html?id=pearl-crochet-phone-pouch';
+  }
   if (lower.includes('rose') || lower.includes('pearl') || lower.includes('sling')) {
     return 'product.html?id=rose-pearl-crochet-sling-bag';
   }
@@ -533,6 +536,19 @@ const productsData = {
     fiberType: '100% Cotton Thread & Faux Pearl Beads',
     size: '8" × 7" (20 × 18 cm)',
     sizeDetails: 'Artisan handcrafted round sling bag featuring a blooming 3D crochet rose motif adorned with lustrous pearls, a ribbed cotton border, and an elegant crossbody shoulder strap intertwined with delicate pearls (strap drop: ~20" / 50 cm). Handcrafted with 100% cotton thread. Perfectly sized for your smartphone, cards, keys, and daily essentials.'
+  },
+  'pearl-crochet-phone-pouch': {
+    name: 'Pearl Crochet Phone Sling Pouch',
+    price: '₹699.00',
+    originalPrice: '',
+    image: 'assets/pearl-phone-pouch.jpg',
+    soldOut: false,
+    stitchCount: '9,400 hand loops',
+    stitchTime: '8.5 hours of craft',
+    hookSize: '3.5mm ergonomic hook',
+    fiberType: '100% Acrylic Yarn & Faux Pearl Beads',
+    size: '7.5" × 4.5" (19 × 11.5 cm)',
+    sizeDetails: 'Artisan handcrafted ribbed vertical sling pouch designed to snugly fit smartphones, cards, and daily essentials. Features a fold-over flap with a pearl-clustered toggle loop closure, and a delicate crochet crossbody shoulder strap intertwined with lustrous pearls (strap drop: ~20" / 50 cm). Handcrafted with 100% acrylic yarn.'
   },
   'lavender-fringe-crochet-scarf': {
     name: 'Lavender Fringe Crochet Scarf',

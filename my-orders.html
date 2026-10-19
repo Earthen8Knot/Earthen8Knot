@@ -339,6 +339,7 @@
 
     function resolveItemLink(item) {
       const name = item.name ? item.name.toLowerCase() : '';
+      if (name.includes('phone') || (name.includes('pearl') && name.includes('pouch'))) return 'product.html?id=pearl-crochet-phone-pouch';
       if (name.includes('rose') || name.includes('pearl') || name.includes('sling')) return 'product.html?id=rose-pearl-crochet-sling-bag';
       if (name.includes('sweetheart')) return 'product.html?id=sweetheart-crochet-pouch';
       if (name.includes('dual-tone')) return 'product.html?id=gray-cream-beanie';
@@ -541,6 +542,6 @@
     }
   </script>
   
-  <script src="script.js?v=1.30"></script>
+  <script src="script.js?v=1.31"></script>
 </body>
 </html>
