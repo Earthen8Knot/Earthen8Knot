@@ -106,27 +106,54 @@ function addToCart(name, price, img, url) {
   showCartToast(itemName);
 }
 
-function requestRemake(productName) {
+function requestRemake(productName, productUrl) {
   let name = typeof productName === 'string' && productName ? productName : '';
+  let prodUrl = typeof productUrl === 'string' && productUrl ? productUrl : '';
 
-  if (!name && window.event && window.event.target) {
+  if (window.event && window.event.target) {
     const card = window.event.target.closest('.product-card');
     if (card) {
-      name = card.querySelector('h3')?.textContent?.trim() || '';
+      if (!name) name = card.querySelector('h3')?.textContent?.trim() || '';
+      if (!prodUrl) {
+        const link = card.querySelector('a')?.getAttribute('href');
+        if (link) {
+          const origin = (window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file://')) ? window.location.origin : 'https://earthenknot.in';
+          prodUrl = `${origin}/${link.replace(/^\//, '')}`;
+        }
+      }
     }
   }
 
-  if (!name && window.location.pathname.includes('product.html')) {
+  if (window.location.pathname.includes('product.html')) {
     const params = new URLSearchParams(window.location.search);
     const pid = params.get('id');
     if (pid && typeof productsData !== 'undefined' && productsData[pid]) {
-      name = productsData[pid].name;
+      if (!name) name = productsData[pid].name;
+    }
+    if (!prodUrl) {
+      const origin = (window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file://')) ? window.location.origin : 'https://earthenknot.in';
+      if (pid) {
+        prodUrl = `${origin}/product.html?id=${pid}`;
+      } else {
+        prodUrl = window.location.href;
+      }
+    }
+  }
+
+  if (!prodUrl && name && typeof resolveProductUrl === 'function') {
+    const rel = resolveProductUrl(name);
+    if (rel && rel !== 'collections.html') {
+      const origin = (window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file://')) ? window.location.origin : 'https://earthenknot.in';
+      prodUrl = `${origin}/${rel.replace(/^\//, '')}`;
     }
   }
 
   let text = 'I want to request a remake this product';
   if (name) {
     text += `: ${name}`;
+  }
+  if (prodUrl) {
+    text += `\n${prodUrl}`;
   }
 
   const phone = '918468937613';
