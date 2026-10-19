@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taken Collections - EarthenKnot</title>
+  <meta name="description" content="Explore handcrafted crochet creations from EarthenKnot that have found their forever homes. Loved a design? Request a custom remake.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=1.23">
+  <style>
+    .product-card {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+    .product-image-container {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      aspect-ratio: 1;
+      position: relative;
+    }
+    .product-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .product-card:hover img {
+      transform: scale(1.03);
+    }
+    .multi-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(43, 49, 36, 0.75);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 4rem;
+      color: var(--text-light);
+      font-size: 1.2rem;
+      display: none;
+      grid-column: 1 / -1;
+    }
+  </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+</head>
+<body>
+  <nav class="navbar" id="main-nav">
+    <a href="index.html" class="logo" aria-label="Earthen Knot Home">
+      <img src="assets/logo.png" alt="EarthenKnot Logo">
+      <span class="logo-brand-text">Earthen<span class="logo-accent-text">Knot</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="dropdown">
+        <a href="collections.html" class="dropbtn active">Collections ▾</a>
+        <div class="dropdown-content">
+          <a href="collections.html">All Collections</a>
+          <a href="home-decor.html">Home Decor</a>
+          <a href="pillows.html">Pillows</a>
+          <a href="tops.html">Tops</a>
+          <a href="hair-accessories.html">Hair Accessories</a>
+          <a href="bags.html">Bags</a>
+          <a href="scarves.html">Scarves</a>
+          <a href="taken-collections.html" style="font-weight: 700; color: var(--primary);">Taken Collections</a>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+      <a href="contact.html">Get in Touch</a>
+    </div>
+    <div class="nav-actions">
+      <div class="user-auth-container" style="position: relative;">
+        <button class="user-btn" id="user-auth-btn" aria-label="Account" onclick="window.location.href='auth.html'">
+          <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2;">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span class="user-btn-label">Sign In</span>
+        </button>
+        <div class="user-dropdown" id="user-dropdown"></div>
+      </div>
+      <button class="cart-btn" onclick="window.location.href='checkout.html'" aria-label="View Cart">
+        <svg viewBox="0 0 24 24">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-badge" id="cart-count">0</span>
+      </button>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu">
+        <svg viewBox="0 0 24 24">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-wrapper">
+    <section class="container" style="padding: 4rem 5% 5rem 5%;">
+      <h1 class="fade-in" style="font-size: 3rem; margin-bottom: 0.8rem; text-align: center; color: var(--primary-dark);">Taken Collections</h1>
+      <p class="fade-in delay-1" style="text-align: center; color: var(--text-light); font-size: 1.15rem; max-width: 680px; margin: 0 auto 3rem auto; line-height: 1.6;">
+        Handcrafted slow-made pieces that have found their forever homes. Loved a design that's taken? Click <strong>"Request a Remake"</strong> on any piece to request a re-order.
+      </p>
+
+      <div id="product-grid" class="fade-in delay-2" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 2.5rem;">
+        
+        <!-- Product -->
+        <div class="product-card glass-panel" data-name="lavender fringe crochet wrap scarf handmade sold out" data-category="scarves" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=lavender-fringe-crochet-scarf" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container" style="position: relative;">
+              <img src="assets/lavender-fringe-crochet-scarf.jpg" alt="Lavender Fringe Crochet Scarf" style="opacity: 0.75;">
+              <div class="sold-out-badge" style="position: absolute; top: 12px; left: 12px; z-index: 10;">Sold Out</div>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Lavender Fringe Crochet Scarf</h3>
+            <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span style="color: var(--text-light); text-decoration: line-through; font-size: 0.95rem; opacity: 0.75;">₹1,899.00</span><span class="discount-price" style="color: var(--primary-dark); font-weight: 700; font-size: 1.18rem;">₹1,299.00</span></p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass-panel" data-name="midnight mesh crochet crop top black sleeveless multi image sold out" data-category="tops" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=midnight-mesh-crochet-top" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container" style="position: relative;">
+              <img src="assets/black-crochet-top-1.jpg" alt="Midnight Mesh Crochet Top" style="opacity: 0.75;">
+              <div class="multi-badge" style="z-index: 10;">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                2 Photos
+              </div>
+              <div class="sold-out-badge" style="position: absolute; top: 12px; left: 12px; z-index: 10;">Sold Out</div>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Midnight Mesh Crochet Top</h3>
+            <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span style="color: var(--text-light); text-decoration: line-through; font-size: 0.95rem; opacity: 0.75;">₹1,899.00</span><span class="discount-price" style="color: var(--primary-dark); font-weight: 700; font-size: 1.18rem;">₹1,299.00</span></p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass-panel" data-name="blossom striped crochet sweater pink white long sleeve pullover multi image sold out" data-category="tops" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=blossom-striped-crochet-sweater" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container">
+              <img src="assets/pink-striped-sweater-1.jpg" alt="Blossom Striped Crochet Sweater" style="opacity: 0.75;">
+              <div class="multi-badge" style="z-index: 10;">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                2 Photos
+              </div>
+              <div class="sold-out-badge" style="position: absolute; top: 12px; left: 12px; z-index: 10;">Sold Out</div>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Blossom Striped Crochet Sweater</h3>
+            <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span style="color: var(--text-light); text-decoration: line-through; font-size: 0.95rem; opacity: 0.75;">₹1,899.00</span><span class="discount-price" style="color: var(--primary-dark); font-weight: 700; font-size: 1.18rem;">₹1,299.00</span></p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass-panel" data-name="sweetheart crochet pouch purple cream love heart button sold out" data-category="bags" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=sweetheart-crochet-pouch" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container">
+              <img src="assets/heart-pouch.jpg" alt="Sweetheart Crochet Pouch" style="opacity: 0.75;">
+              <div class="sold-out-badge" style="position: absolute; top: 12px; left: 12px; z-index: 10;">Sold Out</div>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Sweetheart Crochet Pouch</h3>
+            <p style="color: var(--primary-dark); font-weight: 600; font-size: 1.15rem; margin-bottom: 1.2rem; flex-grow: 1;">₹899.00</p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass-panel" data-name="dual-tone ribbed beanie gray cream wool hat winter sold out" data-category="hair-accessories" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=gray-cream-beanie" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container">
+              <img src="assets/gray-cream-beanie.jpg" alt="Dual-Tone Ribbed Beanie" style="opacity: 0.75;">
+              <div class="sold-out-badge" style="position: absolute; top: 12px; left: 12px; z-index: 10;">Sold Out</div>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Dual-Tone Ribbed Beanie</h3>
+            <p style="color: var(--primary-dark); font-weight: 600; font-size: 1.15rem; margin-bottom: 1.2rem; flex-grow: 1;">₹899.00</p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass-panel" data-name="artisan ribbed knit beanie gray wool hat winter sold out" data-category="hair-accessories" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=gray-ribbed-beanie" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container">
+              <img src="assets/gray-ribbed-beanie.jpg" alt="Artisan Ribbed Knit Beanie" style="opacity: 0.75;">
+              <div class="sold-out-badge" style="position: absolute; top: 12px; left: 12px; z-index: 10;">Sold Out</div>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Artisan Ribbed Knit Beanie</h3>
+            <p style="color: var(--primary-dark); font-weight: 600; font-size: 1.15rem; margin-bottom: 1.2rem; flex-grow: 1;">₹899.00</p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass-panel" data-name="ivory ribbed knit beanie vanilla cream wool hat winter sold out" data-category="hair-accessories" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=ivory-beanie" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container">
+              <img src="assets/ivory-beanie.jpg" alt="Ivory Ribbed Knit Beanie" style="opacity: 0.75;">
+              <div class="sold-out-badge" style="position: absolute; top: 12px; left: 12px; z-index: 10;">Sold Out</div>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Ivory Ribbed Knit Beanie</h3>
+            <p style="color: var(--primary-dark); font-weight: 600; font-size: 1.15rem; margin-bottom: 1.2rem; flex-grow: 1;">₹899.00</p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
+        </div>
+
+        <!-- Product -->
+        <div class="product-card glass-panel" data-name="artisan crochet scrunchies set trio hair tie mauve cream vanilla sold out" data-category="hair-accessories" style="padding: 1.5rem; text-align: center;">
+          <a href="product.html?id=scrunchies-set" style="display: flex; flex-direction: column; flex-grow: 1; color: inherit; text-decoration: none;">
+            <div class="product-image-container">
+              <img src="assets/scrunchies-set.jpg" alt="Artisan Crochet Scrunchies Set" style="opacity: 0.75;">
+              <div class="sold-out-badge" style="position: absolute; top: 12px; left: 12px; z-index: 10;">Sold Out</div>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Artisan Crochet Scrunchies Set</h3>
+            <p style="color: var(--primary-dark); font-weight: 600; font-size: 1.15rem; margin-bottom: 1.2rem; flex-grow: 1;">₹899.00</p>
+          </a>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Request a Remake</button>
+        </div>
+
+      </div>
+
+      <div class="collection-note" style="margin-top: 3.5rem; text-align: center;">
+        <span class="collection-note-title">Looking for available pieces?</span> Explore our currently in-stock handcrafted creations in <a href="collections.html" style="text-decoration: underline; color: inherit; font-weight: 600;">All Collections</a>.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">EarthenKnot<svg class="logo-leaf" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 12"/></svg></div>
+      <div class="social-links">
+        <a href="https://wa.me/918468937613" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp">
+          <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;">
+            <path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.127.55 4.195 1.59 6.015L.302 22.78l4.871-1.278A11.968 11.968 0 0 0 12.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm0 21.986c-1.8 0-3.565-.483-5.116-1.4l-.367-.217-3.619.948.966-3.528-.239-.381A9.974 9.974 0 0 1 2.045 12.03c0-5.513 4.488-10.001 10.001-10.001 5.513 0 10.001 4.488 10.001 10.001 0 5.513-4.488 10.001-10.001 10.001zm5.492-7.502c-.302-.151-1.782-.879-2.059-.979-.277-.101-.479-.151-.68.151-.202.302-.779.979-.955 1.18-.176.201-.352.227-.654.076-2.106-.926-3.488-2.121-4.321-4.045-.075-.151-.002-.278.075-.378.076-.1.202-.226.302-.377.101-.151.126-.252.202-.428.076-.176.025-.327-.051-.478-.076-.151-.68-1.637-.932-2.241-.244-.591-.493-.51-.68-.521h-.579c-.202 0-.528.076-.805.378-.277.302-1.057 1.032-1.057 2.518 0 1.486 1.082 2.921 1.233 3.123.151.201 2.127 3.245 5.157 4.555.72.311 1.282.497 1.721.636.723.23 1.381.197 1.9.119.58-.088 1.782-.729 2.034-1.433.252-.704.252-1.308.176-1.433-.075-.126-.277-.202-.579-.353z"/>
+          </svg>
+        </a>
+        <a href="https://www.instagram.com/earthenknot" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+        </a>
+        <a href="https://www.youtube.com/@earthenknot.in_crochet" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93-.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <!-- Policy Links in Footer for Compliance -->
+    <div class="footer-policy-links">
+      <a href="policies.html#shipping">Shipping & Delivery</a>
+      <span class="policy-dot">•</span>
+      <a href="policies.html#refunds">Refunds & Cancellations</a>
+      <span class="policy-dot">•</span>
+      <a href="policies.html#terms">Terms & Conditions</a>
+      <span class="policy-dot">•</span>
+      <a href="policies.html#privacy">Privacy Policy</a>
+      <span class="policy-dot">•</span>
+      <a href="policies.html#contact">Contact & Grievances</a>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem; color: var(--text-light); font-size: 0.9rem;">
+      &copy; 2026 EarthenKnot. Handcrafted with love.
+    </div>
+  </footer>
+
+  <script src="script.js?v=1.25"></script>
+  <script type="module" src="firebase-config.js"></script>
+</body>
+</html>
