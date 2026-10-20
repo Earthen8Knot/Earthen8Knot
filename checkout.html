@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.26">
+  <link rel="stylesheet" href="styles.css?v=1.27">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -186,10 +186,11 @@
               <span>Subtotal</span>
               <span id="checkout-subtotal">₹0.00</span>
             </div>
-            <div class="summary-row" style="color: var(--primary-dark); font-weight: 600; margin-bottom: 0.8rem;">
+            <div class="summary-row" style="color: var(--primary-dark); font-weight: 600; margin-bottom: 0.6rem;">
               <span>Shipping Charges</span>
-              <span>FREE</span>
+              <span id="checkout-shipping-charges">FREE</span>
             </div>
+            <div id="shipping-nudge" style="display: none; font-size: 0.82rem; margin-bottom: 0.8rem; padding: 0.4rem 0.75rem; border-radius: 6px; line-height: 1.4;"></div>
             <div style="border-top: 1.5px solid rgba(0,0,0,0.08); padding-top: 0.8rem;">
               <div class="summary-row" id="discount-row" style="display: none; color: #2e7d32; font-weight: 600; margin-bottom: 0.8rem;">
                 <span>Points Discount</span>
@@ -524,7 +525,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.36"></script>
+  <script src="script.js?v=1.37"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window.selectPaymentMethod = function(method) {
@@ -787,10 +788,43 @@
       document.getElementById('checkout-cart-count').textContent = count;
       document.getElementById('checkout-subtotal').textContent = '₹' + total.toLocaleString('en-IN');
       
+      // Shipping rule: Free for orders >= 1000, ₹220 for orders < 1000
+      const shippingFee = (total === 0 || total >= 1000) ? 0 : 220;
+      window._currentShippingFee = shippingFee;
+      window._currentCartSubtotal = total;
+
+      const shippingEl = document.getElementById('checkout-shipping-charges');
+      const nudgeEl = document.getElementById('shipping-nudge');
+      if (shippingEl) {
+        if (total === 0) {
+          shippingEl.textContent = 'FREE';
+          if (nudgeEl) nudgeEl.style.display = 'none';
+        } else if (shippingFee === 0) {
+          shippingEl.innerHTML = '<span style="color: #2e7d32; font-weight: 700;">FREE</span>';
+          if (nudgeEl) {
+            nudgeEl.style.display = 'block';
+            nudgeEl.style.color = '#2e7d32';
+            nudgeEl.style.background = 'rgba(46, 125, 50, 0.08)';
+            nudgeEl.style.border = '1px solid rgba(46, 125, 50, 0.2)';
+            nudgeEl.innerHTML = '🎉 You unlocked <strong>FREE Shipping</strong> (Order is ₹1,000+)';
+          }
+        } else {
+          shippingEl.innerHTML = '<span style="color: var(--primary-dark); font-weight: 700;">₹220.00</span>';
+          if (nudgeEl) {
+            const needed = 1000 - total;
+            nudgeEl.style.display = 'block';
+            nudgeEl.style.color = 'var(--secondary)';
+            nudgeEl.style.background = 'rgba(144, 118, 97, 0.08)';
+            nudgeEl.style.border = '1px solid rgba(144, 118, 97, 0.2)';
+            nudgeEl.innerHTML = `Add <strong>₹${needed.toLocaleString('en-IN')}</strong> more for <strong>FREE Shipping</strong> (₹220 under ₹1,000)`;
+          }
+        }
+      }
+      
       const appliedPts = window._appliedPoints || 0;
-      const finalTotal = total - appliedPts;
+      const finalTotal = Math.max(0, total + shippingFee - appliedPts);
       document.getElementById('checkout-final-total').textContent = '₹' + finalTotal.toLocaleString('en-IN');
-      window._currentCartTotal = total;
+      window._currentCartTotal = finalTotal;
 
       const pointsToEarn = Math.floor(finalTotal / 100);
       const pointsEl = document.getElementById('points-to-earn');
@@ -808,7 +842,7 @@
           submitBtn.disabled = false;
           submitBtn.style.opacity = '1';
           submitBtn.style.cursor = 'pointer';
-          const totalFormatted = '₹' + total.toLocaleString('en-IN');
+          const totalFormatted = '₹' + finalTotal.toLocaleString('en-IN');
           submitBtn.textContent = `Pay ${totalFormatted} via Razorpay 🤎`;
         }
       }
@@ -930,6 +964,8 @@
                   orderId: orderId,
                   customer: customer,
                   items: items,
+                  subtotal: window._currentCartSubtotal || totalAmount,
+                  shippingFee: window._currentShippingFee || 0,
                   totalAmount: totalAmount,
                   paymentMethod: `Online (Razorpay: ${response.razorpay_payment_id})`,
                   upiTransactionId: response.razorpay_payment_id,
@@ -1011,6 +1047,8 @@
                 orderId: orderId,
                 customer: customer,
                 items: items,
+                subtotal: window._currentCartSubtotal || totalAmount,
+                shippingFee: window._currentShippingFee || 0,
                 totalAmount: totalAmount,
                 paymentMethod: `Online (Razorpay Simulated: ${simId})`,
                 upiTransactionId: simId,
@@ -1040,6 +1078,8 @@
         timestamp: Date.now(),
         customer: payload.customer,
         items: payload.items,
+        subtotal: payload.subtotal !== undefined ? payload.subtotal : (payload.totalAmount - (payload.shippingFee || 0)),
+        shippingFee: payload.shippingFee || 0,
         total: payload.totalAmount,
         paymentMethod: payload.paymentMethod,
         upiTransactionId: payload.upiTransactionId || 'N/A',
@@ -1184,6 +1224,10 @@
         "ProductList": itemsText,
         Product_List: itemsText,
         
+        subtotal: '₹' + Number(order.subtotal || (order.total - (order.shippingFee || 0))).toLocaleString('en-IN'),
+        shipping_fee: (order.shippingFee && order.shippingFee > 0) ? '₹' + Number(order.shippingFee).toLocaleString('en-IN') : 'FREE',
+        shipping_charges: (order.shippingFee && order.shippingFee > 0) ? '₹' + Number(order.shippingFee).toLocaleString('en-IN') : 'FREE',
+        "Shipping Charges": (order.shippingFee && order.shippingFee > 0) ? '₹' + Number(order.shippingFee).toLocaleString('en-IN') : 'FREE',
         order_total: '₹' + order.total.toLocaleString('en-IN'),
         total: '₹' + order.total.toLocaleString('en-IN'),
         total_amount: '₹' + order.total.toLocaleString('en-IN'),
@@ -1302,7 +1346,8 @@
       const itemsList = (order.items || []).map(i => `• ${i.name} (Qty: ${i.qty}) - ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('\n');
       const paymentStatusText = order.status && order.status.includes('Paid') 
         ? (order.razorpayPaymentId ? `Paid via Razorpay (Ref: ${order.razorpayPaymentId})` : `Paid (${order.paymentMethod})`) 
-        : (order.status || 'Received');
+      const shippingText = (order.shippingFee && order.shippingFee > 0) ? `₹${Number(order.shippingFee).toLocaleString('en-IN')}` : 'FREE (Order ₹1,000+)';
+      const subtotalText = `₹${Number(order.subtotal || (order.total - (order.shippingFee || 0))).toLocaleString('en-IN')}`;
 
       return `✨ *Thank You for Ordering with EarthenKnot!* 🧶\n\n` +
         `Dear *${order.customer.name}*,\n` +
@@ -1310,6 +1355,8 @@
         `📋 *Order Summary:*\n` +
         `• *Order Number / ID:* ${order.id}\n` +
         `• *Products Ordered:*\n${itemsList}\n` +
+        `• *Subtotal:* ${subtotalText}\n` +
+        `• *Shipping Charges:* ${shippingText}\n` +
         `• *Total Order Amount:* ₹${Number(order.total).toLocaleString('en-IN')}\n` +
         `• *Payment Status:* ${paymentStatusText}\n\n` +
         `📍 *Delivery Details:*\n` +
@@ -1360,13 +1407,18 @@
         notesDetail = `• *Special Instructions / Notes:*\n${notesDetail}`;
       }
 
+      const shippingText = (order.shippingFee && order.shippingFee > 0) ? `₹${Number(order.shippingFee).toLocaleString('en-IN')}` : 'FREE';
+      const subtotalText = `₹${Number(order.subtotal || (order.total - (order.shippingFee || 0))).toLocaleString('en-IN')}`;
+
       return `🚨 *NEW ORDER NOTIFICATION - EarthenKnot* 🛍️\n` +
         tourHeader +
         `\n📋 *Order Information:*\n` +
         `• *Order Number / ID:* ${order.id}\n` +
         `• *Order Date:* ${order.date}\n` +
-        `• *Payment Status:* ${paymentStatusText}\n` +
-        `• *Total Order Amount:* ₹${Number(order.total).toLocaleString('en-IN')}\n\n` +
+        `• *Subtotal:* ${subtotalText}\n` +
+        `• *Shipping Charges:* ${shippingText}\n` +
+        `• *Total Order Amount:* ₹${Number(order.total).toLocaleString('en-IN')}\n` +
+        `• *Payment Status:* ${paymentStatusText}\n\n` +
         `👤 *Customer Contact Details:*\n` +
         `• *Customer Name:* ${order.customer.name}\n` +
         `• *Phone:* ${order.customer.phone}\n` +
@@ -1453,9 +1505,19 @@
 
         <h4 style="font-size:0.95rem; color:var(--primary-dark); margin:0 0 0.5rem 0;">Ordered Items Summary</h4>
         ${itemsHtml}
-        <div style="display:flex; justify-content:space-between; padding-top:0.8rem; font-size:1.2rem; font-weight:700; color:var(--primary-dark);">
-          <span>Total Payable</span>
-          <span>₹${Number(order.total).toLocaleString('en-IN')}</span>
+        <div style="border-top:1px solid rgba(0,0,0,0.06); margin-top:0.8rem; padding-top:0.6rem;">
+          <div style="display:flex; justify-content:space-between; font-size:0.92rem; color:var(--text-light); margin-bottom:0.35rem;">
+            <span>Subtotal</span>
+            <span>₹${Number(order.subtotal || (order.total - (order.shippingFee || 0))).toLocaleString('en-IN')}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.92rem; color:var(--text-light); margin-bottom:0.5rem;">
+            <span>Shipping Charges</span>
+            <span>${(order.shippingFee && order.shippingFee > 0) ? '₹' + Number(order.shippingFee).toLocaleString('en-IN') : '<strong style="color:#2e7d32;">FREE</strong>'}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding-top:0.6rem; border-top:1.5px solid rgba(0,0,0,0.08); font-size:1.2rem; font-weight:700; color:var(--primary-dark);">
+            <span>Total Paid</span>
+            <span>₹${Number(order.total).toLocaleString('en-IN')}</span>
+          </div>
         </div>
       `;
 
@@ -2103,8 +2165,9 @@
     // Listen to points application
     document.getElementById('apply-points-btn').addEventListener('click', () => {
       let pts = parseInt(document.getElementById('points-to-redeem').value) || 0;
+      const subtotalPlusShipping = (window._currentCartSubtotal || 0) + (window._currentShippingFee || 0);
       if (pts > maxPoints) pts = maxPoints;
-      if (pts > window._currentCartTotal) pts = window._currentCartTotal;
+      if (pts > subtotalPlusShipping) pts = subtotalPlusShipping;
       if (pts < 0) pts = 0;
       
       window._appliedPoints = pts;
@@ -2125,7 +2188,8 @@
         msg.style.display = 'none';
       }
       
-      const finalTotal = (window._currentCartTotal || 0) - pts;
+      const finalTotal = Math.max(0, subtotalPlusShipping - pts);
+      window._currentCartTotal = finalTotal;
       finalTotalEl.textContent = '₹' + finalTotal.toLocaleString('en-IN');
       if (submitBtn) {
         submitBtn.textContent = `Pay ₹${finalTotal.toLocaleString('en-IN')} via Razorpay 🤎`;
