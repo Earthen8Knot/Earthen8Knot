@@ -107,6 +107,23 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
+/* Custom Terracotta Brand Heart Icon (#c9783c) */
+.heart-terracotta {
+  display: inline-block;
+  vertical-align: -0.1em;
+  margin-left: 0.22em;
+  fill: var(--secondary); /* #c9783c Warm Terracotta */
+  color: var(--secondary);
+  width: 0.88em;
+  height: 0.88em;
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.heart-terracotta:hover {
+  transform: scale(1.18);
+}
+
 h2 {
   font-size: clamp(1.6rem, 5vw, 2.2rem);
 }

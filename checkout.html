@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.34">
+  <link rel="stylesheet" href="styles.css?v=1.35">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -396,7 +396,7 @@
     </div>
   </nav>  <main class="main-wrapper" style="padding: 4rem 5%;">
     <section class="container" style="max-width: 1200px; margin: 0 auto;">
-      <h1 class="fade-in" style="font-size: 2.8rem; margin-bottom: 2.5rem; color: var(--primary-dark); text-align: center; font-family: 'Playfair Display', serif;">Let's wrap up your order 🤎</h1>
+      <h1 class="fade-in" style="font-size: 2.8rem; margin-bottom: 2.5rem; color: var(--primary-dark); text-align: center; font-family: 'Playfair Display', serif;">Let's wrap up your order <svg class="heart-terracotta" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></h1>
       
       <!-- Checkout Stepper Progress Indicator -->
       <div class="checkout-stepper-container" id="checkout-stepper-container">
@@ -760,7 +760,7 @@
               <line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
             <p style="margin: 0; font-size: 0.84rem; color: var(--secondary); line-height: 1.45; font-weight: 500;">
-              Just a friendly note: Since each of our items is lovingly hand-stitched by artisans, all orders are final (non-refundable & non-exchangeable). Thank you for supporting slow, handmade craft! 🤎
+              Just a friendly note: Since each of our items is lovingly hand-stitched by artisans, all orders are final (non-refundable & non-exchangeable). Thank you for supporting slow, handmade craft! <svg class="heart-terracotta" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </p>
           </div>
 
@@ -771,7 +771,7 @@
               <span>Back to Address</span>
             </button>
             <button type="button" id="checkout-submit-btn" class="btn btn-primary" onclick="processOrderSubmission()" style="flex: 1; min-width: 260px; font-size: 1.15rem; font-weight: 600; padding: 1.15rem; border-radius: 14px; box-shadow: 0 4px 18px rgba(114, 132, 101, 0.3);">
-              Pay via Razorpay 🤎
+              Pay via Razorpay <svg class="heart-terracotta" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
           </div>
         </div>
@@ -785,7 +785,7 @@
             <div style="width: 70px; height: 70px; background: #e8f5e9; color: #2e7d32; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem auto;">
               <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; stroke: currentColor; fill: none; stroke-width: 2.5;"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <h2 style="font-size: 2.4rem; color: var(--primary-dark); margin: 0.8rem 0 0.4rem 0; font-family: 'Playfair Display', serif;">Thank you for adopting our handmade craft! 🤎</h2>
+            <h2 style="font-size: 2.4rem; color: var(--primary-dark); margin: 0.8rem 0 0.4rem 0; font-family: 'Playfair Display', serif;">Thank you for adopting our handmade craft! <svg class="heart-terracotta" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></h2>
             <p style="color: var(--text-light); font-size: 1.05rem;" id="confirm-order-id-label">Order Code: #EK-XXXXXX</p>
           </div>
 
@@ -900,10 +900,11 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.44"></script>
+  <script src="script.js?v=1.45"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window._currentStep = 1;
+    const TERRACOTTA_HEART_HTML = '<svg class="heart-terracotta" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
 
     window.selectPaymentMethod = function(method) {
       window.currentPaymentMethod = 'razorpay';
@@ -912,7 +913,7 @@
       if (submitBtn && getCheckoutItems().length > 0) {
         const total = window._currentCartTotal || 0;
         const totalFormatted = '₹' + total.toLocaleString('en-IN');
-        submitBtn.textContent = `Pay ${totalFormatted} via Razorpay 🤎`;
+        submitBtn.innerHTML = `Pay ${totalFormatted} via Razorpay ${TERRACOTTA_HEART_HTML}`;
       }
     };
 
@@ -1432,7 +1433,7 @@
 
       const submitBtn = document.getElementById('checkout-submit-btn');
       if (submitBtn) {
-        submitBtn.textContent = `Pay ₹${total.toLocaleString('en-IN')} via Razorpay 🤎`;
+        submitBtn.innerHTML = `Pay ₹${total.toLocaleString('en-IN')} via Razorpay ${TERRACOTTA_HEART_HTML}`;
       }
     }
 
@@ -1610,7 +1611,7 @@
           submitBtn.style.opacity = '1';
           submitBtn.style.cursor = 'pointer';
           const totalFormatted = '₹' + finalTotal.toLocaleString('en-IN');
-          submitBtn.textContent = `Pay ${totalFormatted} via Razorpay 🤎`;
+          submitBtn.innerHTML = `Pay ${totalFormatted} via Razorpay ${TERRACOTTA_HEART_HTML}`;
         }
       }
     }
@@ -2474,7 +2475,7 @@
       window._currentCartTotal = finalTotal;
       finalTotalEl.textContent = '₹' + finalTotal.toLocaleString('en-IN');
       if (submitBtn) {
-        submitBtn.textContent = `Pay ₹${finalTotal.toLocaleString('en-IN')} via Razorpay 🤎`;
+        submitBtn.innerHTML = `Pay ₹${finalTotal.toLocaleString('en-IN')} via Razorpay ${TERRACOTTA_HEART_HTML}`;
       }
 
       const s3DiscountRow = document.getElementById('step3-discount-row');

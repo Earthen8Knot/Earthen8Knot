@@ -202,7 +202,7 @@ function showCartWarningToast(message) {
     <div style="display:flex;align-items:center;gap:0.75rem;">
       <div style="background:var(--secondary);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:0.9rem;">!</div>
       <div>
-        <strong style="display:block;font-size:0.88rem;color:var(--secondary);">Slow-Made Limit 🤎</strong>
+        <strong style="display:block;font-size:0.88rem;color:var(--secondary);">Slow-Made Limit <svg class="heart-terracotta" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></strong>
         <span style="font-size:0.8rem;color:var(--text-light);">${message}</span>
       </div>
     </div>
