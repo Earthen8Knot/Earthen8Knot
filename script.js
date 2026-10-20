@@ -35,6 +35,9 @@ function resolveProductUrl(itemName, passedUrl) {
   if (lower.includes('phone') || (lower.includes('pearl') && lower.includes('pouch'))) {
     return 'product.html?id=pearl-crochet-phone-pouch';
   }
+  if (lower.includes('tablet') || lower.includes('ipad') || (lower.includes('striped') && lower.includes('sleeve'))) {
+    return 'product.html?id=striped-crochet-tablet-sleeve';
+  }
   if (lower.includes('rose') || lower.includes('pearl') || lower.includes('sling')) {
     return 'product.html?id=rose-pearl-crochet-sling-bag';
   }
@@ -550,6 +553,20 @@ const productsData = {
     fiberType: '100% Acrylic Yarn & Faux Pearl Beads',
     size: '7.5" × 4.5" (19 × 11.5 cm)',
     sizeDetails: 'Artisan handcrafted ribbed vertical sling pouch designed to snugly fit smartphones, cards, and daily essentials. Features a fold-over flap with a pearl-clustered toggle loop closure, and a delicate crochet crossbody shoulder strap intertwined with lustrous pearls (strap drop: ~20" / 50 cm). Handcrafted with 100% acrylic yarn.'
+  },
+  'striped-crochet-tablet-sleeve': {
+    name: 'Striped Crochet Tablet Sleeve',
+    price: '₹849.00',
+    originalPrice: '',
+    image: 'assets/striped-tablet-sleeve-1.jpg',
+    images: ['assets/striped-tablet-sleeve-1.jpg', 'assets/striped-tablet-sleeve-2.jpg'],
+    soldOut: false,
+    stitchCount: '12,800 hand loops',
+    stitchTime: '10 hours of craft',
+    hookSize: '3.0mm crochet hook',
+    fiberType: '100% Acrylic Yarn',
+    size: '10.5" × 8" (26.5 × 20 cm)',
+    sizeDetails: 'Artisan handcrafted ribbed tablet sleeve featuring blue and cream vertical stripes, dual metal snap button closures, and a secure fold-over flap. Hand-stitched with 100% acrylic yarn using a 3.0mm hook. Fits standard iPads, Kindles, and tablets up to 11 inches with cushioned scratch protection.'
   },
   'lavender-fringe-crochet-scarf': {
     name: 'Lavender Fringe Crochet Scarf',
