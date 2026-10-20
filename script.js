@@ -516,16 +516,17 @@ document.addEventListener('DOMContentLoaded', () => {
 const productsData = {
   'striped-crochet-sweatshirt': {
     name: 'White-Blue Striped Sweatshirt',
-    price: '₹1,999.00',
+    price: '₹2,899.00',
     originalPrice: '',
     image: 'assets/sweatshirt-1.jpg',
     images: ['assets/sweatshirt-1.jpg', 'assets/sweatshirt-2.jpg'],
+    soldOut: false,
     stitchCount: '34,500 hand loops',
     stitchTime: '15 Hours',
     hookSize: '4.0mm bamboo hook',
     fiberType: '8 ply cotton yarn, 3 mm thick',
-    size: 'Free Size / Relaxed Fit',
-    sizeDetails: 'Relaxed drop-shoulder silhouette. Chest: 40"–42" | Total Length: 22" | Sleeve Length: 21". Easily accommodates sizes S through L with an effortless, comfortable drape.'
+    size: 'Size M (Medium Top)',
+    sizeDetails: 'Handcrafted relaxed drop-shoulder crochet top in Size M (Medium). Chest: 38"–40" | Total Length: 22" | Sleeve Length: 21". Comfortably tailored for standard size M with a breathable, flattering drape.'
   },
   'rose-pearl-crochet-sling-bag': {
     name: 'Rose & Pearl Crochet Sling Bag',
