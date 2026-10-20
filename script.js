@@ -702,10 +702,10 @@ function renderProductPage() {
     container.innerHTML = `
       <div style="max-width: 720px; margin: 0 auto; margin-bottom: 4rem;">
         <div class="product-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-          <h1 style="font-size: 2.2rem; color: var(--text); font-family: 'Quicksand', sans-serif; font-weight: 500; margin: 0;">${product.name}</h1>
+          <h1 style="font-size: 2.2rem; color: var(--primary-dark); font-family: 'Quicksand', sans-serif; font-weight: 600; margin: 0;">${product.name}</h1>
           <div style="display:flex; gap:0.5rem; align-items:center;">
             
-            <button id="zoom-toggle-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 8px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm);">🔍 Enable Zoom</button>
+            <button id="zoom-toggle-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 8px; border: 1.5px solid var(--secondary); background: transparent; color: var(--secondary); cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow-sm); font-weight: 600;">🔍 Enable Zoom</button>
           </div>
         </div>
         <div class="product-gallery" style="margin-bottom: 3rem;">
@@ -719,14 +719,14 @@ function renderProductPage() {
         <div class="product-action-bar-responsive" style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); text-align: left;">
           <div style="display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
             ${product.originalPrice ? `<span style="font-size: 1.25rem; color: var(--text-light); text-decoration: line-through; opacity: 0.75;">${product.originalPrice}</span>` : ''}
-            <p style="font-size: 1.8rem; color: var(--primary); font-weight: 700; margin: 0;">${product.price}</p>
-            ${product.originalPrice ? `<span style="background: rgba(163, 177, 138, 0.25); color: var(--primary-dark); font-size: 0.85rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 6px; border: 1px solid rgba(163, 177, 138, 0.4);">Save ₹600</span>` : ''}
+            <p style="font-size: 1.8rem; color: var(--secondary); font-weight: 700; margin: 0;">${product.price}</p>
+            ${product.originalPrice ? `<span style="background: rgba(201, 120, 60, 0.12); color: var(--secondary-dark); font-size: 0.85rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 6px; border: 1px solid rgba(201, 120, 60, 0.3);">Save ₹600</span>` : ''}
             ${product.soldOut ? `<span class="sold-out-badge" style="font-size: 0.8rem; padding: 0.25rem 0.75rem;">Sold Out</span>` : ''}
           </div>
           ${product.soldOut ? `
             <button class="btn btn-secondary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 30px; white-space: nowrap; cursor: pointer; transition: all 0.3s;" onclick="requestRemake('${product.name}')">Request a Remake</button>
           ` : `
-            <button class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 30px; box-shadow: 0 4px 10px rgba(108, 120, 92, 0.2); white-space: nowrap;" onclick="addToCart()">Add to Cart</button>
+            <button class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 30px; box-shadow: 0 4px 10px rgba(114, 132, 101, 0.2); white-space: nowrap;" onclick="addToCart()">Add to Cart</button>
           `}
         </div>
         ${product.soldOut ? `
@@ -744,9 +744,9 @@ function renderProductPage() {
           </svg>
           Size Info
         </h2>
-        <div class="size-info-card" style="background: var(--surface); border: 1px solid rgba(108, 120, 92, 0.18); border-radius: 16px; padding: 2rem 2.5rem; text-align: left; box-shadow: var(--shadow-sm); max-width: 650px; margin: 0 auto;">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(108, 120, 92, 0.12); padding-bottom: 0.85rem;">
-            <span style="font-size: 0.8rem; color: var(--primary-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(108, 120, 92, 0.1); padding: 0.3rem 0.8rem; border-radius: 20px;">Dimensions & Fit</span>
+        <div class="size-info-card" style="background: var(--surface); border: 1px solid rgba(114, 132, 101, 0.18); border-radius: 16px; padding: 2rem 2.5rem; text-align: left; box-shadow: var(--shadow-sm); max-width: 650px; margin: 0 auto;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(114, 132, 101, 0.12); padding-bottom: 0.85rem;">
+            <span style="font-size: 0.8rem; color: var(--primary-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: rgba(114, 132, 101, 0.1); padding: 0.3rem 0.8rem; border-radius: 20px;">Dimensions & Fit</span>
           </div>
           <p style="font-size: 1.3rem; font-weight: 700; color: var(--primary-dark); margin: 0 0 0.6rem 0; font-family: 'Quicksand', sans-serif;">${product.size || 'Standard Size'}</p>
           <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text); margin: 0;">${product.sizeDetails || ''}</p>

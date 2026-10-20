@@ -16,8 +16,8 @@ window.RAZORPAY_CONFIG = {
   description: 'Handcrafted Modern Crochet',
   logo: 'assets/logo.png',
   
-  // Branding color (Matching EarthenKnot theme)
-  themeColor: '#6c785c',
+  // Branding color (Matching EarthenKnot brand theme)
+  themeColor: '#728465',
   
   // Currency
   currency: 'INR',

@@ -1,16 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&family=Quicksand:wght@400;500;600;700&family=Ribeye&display=swap');
 
 :root {
-  /* Earthy Color Palette - Warmed up for cozy ambiance */
-  --primary: #6c785c; /* Muted olive/sage green */
-  --primary-dark: #4a543e;
-  --secondary: #907661; /* Warm mocha brown */
-  --secondary-light: #bbaa9c;
-  --accent: #d2bba0; /* Soft beige/sand */
+  /* Brand Logo Color Palette */
+  --primary: #728465; /* Earthen Sage/Olive Green from Logo */
+  --primary-dark: #4d5c43; /* Deep forest sage for bold headings & text */
+  --primary-light: #8fa082; /* Soft sage green tint */
+  --secondary: #c9783c; /* Knot Warm Terracotta / Clay Rust from Logo */
+  --secondary-light: #dba274; /* Soft warm terracotta tint */
+  --secondary-dark: #a95e26; /* Deep terracotta for hover states */
+  --accent: #f2d9b3; /* Soft warm wheat / sand from logo artwork */
   --bg: #faf7f2; /* Warm cream background */
   --bg-secondary: #f3ede2; /* Warm sand secondary background */
-  --text: #332d29; /* Dark brown/black for text */
-  --text-light: #706863;
+  --text: #2f362a; /* Deep forest-charcoal text for crisp, comfortable readability (>11:1 contrast) */
+  --text-light: #646a5d; /* Earthy muted sage-slate for subtitles and captions */
   --surface: #ffffff;
   
   /* Utilities */
@@ -62,7 +64,7 @@ body::after {
   max-width: 1200px;
   height: 24px;
   margin: 3.5rem auto;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,5 C5,9 10,9 15,5 C20,1 25,1 30,5 C35,9 40,9 45,5 C50,1 55,1 60,5 C65,9 70,9 75,5 C80,1 85,1 90,5 C95,9 100,9 105,5' fill='none' stroke='%236c785c' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,5 C5,9 10,9 15,5 C20,1 25,1 30,5 C35,9 40,9 45,5 C50,1 55,1 60,5 C65,9 70,9 75,5 C80,1 85,1 90,5 C95,9 100,9 105,5' fill='none' stroke='%23728465' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: repeat-x;
   background-size: 80px 24px;
   opacity: 0.35;
@@ -92,8 +94,17 @@ body::after {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Quicksand', sans-serif;
-  font-weight: 500;
-  color: var(--text);
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+/* Accents & Price Highlights in Warm Terracotta */
+.discount-price,
+.price,
+.product-card p .discount-price,
+.price-highlight {
+  color: var(--secondary) !important;
+  font-weight: 700;
 }
 
 h2 {
@@ -147,21 +158,21 @@ a {
   width: 76px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 4px 12px rgba(108, 120, 92, 0.15);
+  box-shadow: 0 4px 12px rgba(114, 132, 101, 0.15);
   transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease, box-shadow 0.3s ease;
   flex-shrink: 0;
 }
 
 .logo:hover img {
   transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(108, 120, 92, 0.25);
+  box-shadow: 0 6px 16px rgba(114, 132, 101, 0.25);
 }
 
 .logo-brand-text {
   font-family: 'Ribeye', cursive, serif;
   font-size: 2.15rem;
   font-weight: 400;
-  color: #728465; /* Matches 'Earthen' in the logo */
+  color: var(--primary); /* #728465 Matches 'Earthen' in the logo */
   letter-spacing: -0.3px;
   line-height: 1;
   display: inline-flex;
@@ -172,7 +183,7 @@ a {
 }
 
 .logo-brand-text .logo-accent-text {
-  color: #c9783c; /* Matches 'Knot' warm terracotta in the logo */
+  color: var(--secondary); /* #c9783c Matches 'Knot' warm terracotta in the logo */
 }
 
 .logo:hover .logo-brand-text {
@@ -279,7 +290,7 @@ a {
 }
 
 .dropdown-content a:hover {
-  background-color: rgba(108, 120, 92, 0.1);
+  background-color: rgba(114, 132, 101, 0.1);
   color: var(--primary-dark);
 }
 
@@ -372,13 +383,13 @@ a {
 .btn-primary {
   background-color: var(--primary);
   color: white;
-  box-shadow: 0 4px 10px rgba(108, 120, 92, 0.3);
+  box-shadow: 0 4px 10px rgba(114, 132, 101, 0.3);
 }
 
 .btn-primary:hover {
   background-color: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(108, 120, 92, 0.4);
+  box-shadow: 0 6px 12px rgba(114, 132, 101, 0.4);
 }
 
 .btn-secondary {
@@ -800,7 +811,7 @@ footer {
 }
 
 .user-btn:hover {
-  background: rgba(108, 120, 92, 0.1);
+  background: rgba(114, 132, 101, 0.1);
   color: var(--primary);
 }
 
@@ -873,7 +884,7 @@ footer {
 }
 
 .user-dropdown-logout:hover {
-  background: rgba(144, 118, 97, 0.1);
+  background: rgba(201, 120, 60, 0.1);
   color: var(--primary-dark);
 }
 
@@ -893,7 +904,7 @@ footer {
 }
 
 .user-dropdown-item:hover {
-  background: rgba(108, 120, 92, 0.08);
+  background: rgba(114, 132, 101, 0.08);
   color: var(--primary-dark);
 }
 
@@ -1040,8 +1051,8 @@ footer {
 }
 
 .input-wrapper input:focus {
-  border-color: rgba(108, 120, 92, 0.5);
-  box-shadow: 0 0 0 3px rgba(108, 120, 92, 0.1);
+  border-color: rgba(114, 132, 101, 0.5);
+  box-shadow: 0 0 0 3px rgba(114, 132, 101, 0.1);
 }
 
 .input-wrapper input:focus + .input-icon,
@@ -1141,8 +1152,8 @@ footer {
 /* Mobile Hamburger Toggle Button */
 .mobile-menu-btn {
   display: none;
-  background: rgba(108, 120, 92, 0.08);
-  border: 1px solid rgba(108, 120, 92, 0.24);
+  background: rgba(114, 132, 101, 0.08);
+  border: 1px solid rgba(114, 132, 101, 0.24);
   border-radius: 10px;
   cursor: pointer;
   padding: 0;
@@ -1160,7 +1171,7 @@ footer {
 
 .mobile-menu-btn:hover,
 .mobile-menu-btn:focus-visible {
-  background: rgba(108, 120, 92, 0.16);
+  background: rgba(114, 132, 101, 0.16);
   border-color: var(--primary);
   outline: none;
   transform: scale(1.03);
@@ -1291,7 +1302,7 @@ body.nav-menu-open {
     padding: 1.25rem 1.4rem 2.5rem;
     gap: 0.4rem;
     box-shadow: -8px 0 32px rgba(0, 0, 0, 0.18);
-    border-left: 1px solid rgba(108, 120, 92, 0.2);
+    border-left: 1px solid rgba(114, 132, 101, 0.2);
     transform: translateX(100%);
     transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
     overflow-y: auto;
@@ -1318,7 +1329,7 @@ body.nav-menu-open {
 
   .nav-links a:hover,
   .nav-links a.active {
-    background: rgba(108, 120, 92, 0.1);
+    background: rgba(114, 132, 101, 0.1);
     color: var(--primary-dark);
   }
 
@@ -1344,7 +1355,7 @@ body.nav-menu-open {
     display: none;
     box-shadow: none;
     border: none;
-    background: rgba(108, 120, 92, 0.05);
+    background: rgba(114, 132, 101, 0.05);
     transform: none;
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
@@ -1365,7 +1376,7 @@ body.nav-menu-open {
   }
 
   .dropdown-content a:hover {
-    background: rgba(108, 120, 92, 0.1);
+    background: rgba(114, 132, 101, 0.1);
     color: var(--primary-dark) !important;
   }
 
@@ -1376,7 +1387,7 @@ body.nav-menu-open {
     justify-content: space-between;
     padding-bottom: 1rem;
     margin-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(108, 120, 92, 0.15);
+    border-bottom: 1px solid rgba(114, 132, 101, 0.15);
   }
 
   .mobile-drawer-brand {
@@ -1397,8 +1408,8 @@ body.nav-menu-open {
   }
 
   .mobile-drawer-close {
-    background: rgba(108, 120, 92, 0.08);
-    border: 1px solid rgba(108, 120, 92, 0.2);
+    background: rgba(114, 132, 101, 0.08);
+    border: 1px solid rgba(114, 132, 101, 0.2);
     width: 34px;
     height: 34px;
     border-radius: 8px;
@@ -1412,7 +1423,7 @@ body.nav-menu-open {
   }
 
   .mobile-drawer-close:hover {
-    background: rgba(108, 120, 92, 0.18);
+    background: rgba(114, 132, 101, 0.18);
   }
 
   .mobile-drawer-close svg {
@@ -1436,7 +1447,7 @@ body.nav-menu-open {
 
   .mobile-drawer-divider {
     height: 1px;
-    background: rgba(108, 120, 92, 0.15);
+    background: rgba(114, 132, 101, 0.15);
     margin: 0.75rem 0;
   }
 
@@ -1467,7 +1478,7 @@ body.nav-menu-open {
   }
 
   .mobile-drawer-link:hover {
-    background: rgba(108, 120, 92, 0.08);
+    background: rgba(114, 132, 101, 0.08);
     color: var(--primary-dark) !important;
   }
 }
@@ -1507,7 +1518,7 @@ body.nav-menu-open {
 
   .user-btn {
     padding: 0.45rem !important;
-    border: 1px solid rgba(108, 120, 92, 0.2);
+    border: 1px solid rgba(114, 132, 101, 0.2);
     border-radius: 50% !important;
     width: 36px;
     height: 36px;
@@ -1729,7 +1740,7 @@ body.nav-menu-open {
   max-width: 650px;
   margin: 0 auto 3rem auto;
   padding: 1.2rem 1.8rem;
-  background: rgba(144, 118, 97, 0.06);
+  background: rgba(201, 120, 60, 0.06);
   border-left: 4px solid var(--secondary);
   border-radius: 12px;
   text-align: center;
@@ -1913,7 +1924,7 @@ section,
   background: var(--surface);
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(108, 120, 92, 0.25);
+  border: 1px solid rgba(114, 132, 101, 0.25);
   max-height: 280px;
   overflow-y: auto;
   z-index: 2500;
@@ -1930,7 +1941,7 @@ section,
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  border-bottom: 1px solid rgba(108, 120, 92, 0.08);
+  border-bottom: 1px solid rgba(114, 132, 101, 0.08);
   transition: background 0.2s ease;
   user-select: none;
 }
@@ -1941,7 +1952,7 @@ section,
 
 .suggestion-item:hover,
 .suggestion-item.active {
-  background: rgba(108, 120, 92, 0.12);
+  background: rgba(114, 132, 101, 0.12);
 }
 
 .suggestion-item .sugg-icon {
