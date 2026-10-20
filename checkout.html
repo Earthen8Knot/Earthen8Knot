@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.29">
+  <link rel="stylesheet" href="styles.css?v=1.30">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -172,7 +172,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 1rem;">
             <h2 style="font-size: 1.5rem; color: var(--primary-dark); margin: 0; display: flex; align-items: center; gap: 0.75rem; font-family: 'Playfair Display', serif;">
               <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              <span>Your Treasures</span>
+              <span id="checkout-order-title">Your Order</span>
             </h2>
             <span style="background: rgba(108, 120, 92, 0.12); color: var(--primary-dark); font-weight: 600; font-size: 0.82rem; padding: 0.35rem 0.9rem; border-radius: 20px; letter-spacing: 0.5px;">
               <span id="checkout-cart-count">0</span> ITEMS
@@ -528,7 +528,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.39"></script>
+  <script src="script.js?v=1.40"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window.selectPaymentMethod = function(method) {
@@ -789,6 +789,10 @@
       }
 
       document.getElementById('checkout-cart-count').textContent = count;
+      const orderTitleEl = document.getElementById('checkout-order-title');
+      if (orderTitleEl) {
+        orderTitleEl.textContent = count > 1 ? 'Your Orders' : 'Your Order';
+      }
       document.getElementById('checkout-subtotal').textContent = '₹' + total.toLocaleString('en-IN');
       
       // Shipping rule: Free for orders >= 1000, ₹220 for orders < 1000
