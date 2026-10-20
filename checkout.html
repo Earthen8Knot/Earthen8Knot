@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.30">
+  <link rel="stylesheet" href="styles.css?v=1.31">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -528,7 +528,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.40"></script>
+  <script src="script.js?v=1.41"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window.selectPaymentMethod = function(method) {
@@ -620,7 +620,7 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function initCheckout() {
       // 1. Check if an order confirmation receipt should be restored on refresh
       const urlParams = new URLSearchParams(window.location.search);
       const urlOrderId = urlParams.get('order_id');
@@ -692,13 +692,22 @@
           saveCheckoutFormData();
         });
       }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCheckout);
+    } else {
+      initCheckout();
+    }
 
     function getCheckoutItems() {
       let items = [];
       try {
         const saved = localStorage.getItem('earthenknot_cart');
-        if (saved) items = JSON.parse(saved);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) items = parsed;
+        }
       } catch (e) {}
 
       // Auto-cap quantity of all items to 1 as a safety guard
@@ -1353,6 +1362,7 @@
       const itemsList = (order.items || []).map(i => `• ${i.name} (Qty: ${i.qty}) - ₹${(i.price * i.qty).toLocaleString('en-IN')}`).join('\n');
       const paymentStatusText = order.status && order.status.includes('Paid') 
         ? (order.razorpayPaymentId ? `Paid via Razorpay (Ref: ${order.razorpayPaymentId})` : `Paid (${order.paymentMethod})`) 
+        : (order.status || 'Received');
       const shippingText = (order.shippingFee && order.shippingFee > 0) ? `₹${Number(order.shippingFee).toLocaleString('en-IN')}` : 'FREE (Order ₹1,000+)';
       const subtotalText = `₹${Number(order.subtotal || (order.total - (order.shippingFee || 0))).toLocaleString('en-IN')}`;
 

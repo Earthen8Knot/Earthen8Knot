@@ -6,7 +6,10 @@
 function getCartItems() {
   try {
     const saved = localStorage.getItem('earthenknot_cart');
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) return parsed;
+    }
   } catch (e) {}
   return [];
 }
