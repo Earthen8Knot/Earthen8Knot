@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.32">
+  <link rel="stylesheet" href="styles.css?v=1.33">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -89,6 +89,243 @@
         gap: 2rem;
       }
     }
+
+    /* Checkout Progress Stepper */
+    .checkout-stepper-container {
+      width: 100%;
+      margin: 0 auto 2.5rem auto;
+      max-width: 860px;
+    }
+    .checkout-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(108, 120, 92, 0.22);
+      border-radius: 20px;
+      padding: 1.15rem 2rem;
+      box-shadow: 0 4px 20px rgba(108, 120, 92, 0.08);
+    }
+    .stepper-step {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      position: relative;
+      z-index: 2;
+      cursor: default;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .stepper-step.completed {
+      cursor: pointer;
+    }
+    .stepper-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #f1ede7;
+      color: var(--text-light);
+      border: 2px solid rgba(108, 120, 92, 0.25);
+    }
+    .stepper-step.active .stepper-circle {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 5px rgba(108, 120, 92, 0.2);
+      transform: scale(1.05);
+    }
+    .stepper-step.completed .stepper-circle {
+      background: var(--primary-dark);
+      color: #ffffff;
+      border-color: var(--primary-dark);
+    }
+    .stepper-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .stepper-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      color: var(--text-light);
+      transition: color 0.3s;
+    }
+    .stepper-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text);
+      font-family: 'Quicksand', sans-serif;
+      transition: color 0.3s;
+    }
+    .stepper-step.active .stepper-label {
+      color: var(--primary);
+    }
+    .stepper-step.active .stepper-title {
+      color: var(--primary-dark);
+    }
+    .stepper-step.completed .stepper-title {
+      color: var(--primary-dark);
+    }
+    .stepper-connector {
+      flex: 1;
+      height: 3px;
+      background: #e5ded4;
+      margin: 0 1.25rem;
+      position: relative;
+      z-index: 1;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .stepper-connector-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stepper-connector.active .stepper-connector-fill {
+      width: 100%;
+    }
+
+    /* Quantity Stepper Group */
+    .qty-stepper-btn-group {
+      display: inline-flex;
+      align-items: center;
+      border: 1.5px solid rgba(108, 120, 92, 0.3);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2px 6px;
+      gap: 6px;
+    }
+    .qty-btn {
+      background: none;
+      border: none;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      line-height: 1;
+    }
+    .qty-btn:hover {
+      background: rgba(108, 120, 92, 0.15);
+      color: var(--primary-dark);
+    }
+    .qty-display {
+      font-size: 0.92rem;
+      font-weight: 700;
+      min-width: 20px;
+      text-align: center;
+      color: var(--text);
+    }
+
+    /* Remove item button */
+    .item-remove-btn {
+      background: none;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .item-remove-btn:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: #b91c1c;
+    }
+
+    /* Form Validation Errors */
+    .form-group input.input-error {
+      border-color: #ef4444 !important;
+      background-color: #fff8f8 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+    }
+    .field-error {
+      display: none;
+      color: #dc2626;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-top: 0.35rem;
+    }
+    .field-error.visible {
+      display: block;
+    }
+
+    /* Edit Section Button */
+    .edit-section-btn {
+      background: rgba(108, 120, 92, 0.1);
+      border: 1px solid rgba(108, 120, 92, 0.25);
+      color: var(--primary-dark);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.35rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: inherit;
+    }
+    .edit-section-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    @media (max-width: 720px) {
+      .checkout-stepper {
+        padding: 0.85rem 1rem;
+      }
+      .stepper-circle {
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+      }
+      .stepper-label {
+        display: none;
+      }
+      .stepper-title {
+        font-size: 0.82rem;
+      }
+      .stepper-connector {
+        margin: 0 0.5rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .stepper-step {
+        flex-direction: column;
+        gap: 0.25rem;
+        text-align: center;
+      }
+      .stepper-title {
+        font-size: 0.72rem;
+        white-space: nowrap;
+      }
+      .stepper-connector {
+        margin: 0 0.25rem;
+        margin-bottom: 1.1rem;
+      }
+    }
   </style>
 
   <!-- EmailJS SDK Integration -->
@@ -161,26 +398,79 @@
     <section class="container" style="max-width: 1200px; margin: 0 auto;">
       <h1 class="fade-in" style="font-size: 2.8rem; margin-bottom: 2.5rem; color: var(--primary-dark); text-align: center; font-family: 'Playfair Display', serif;">Let's wrap up your order 🤎</h1>
       
+      <!-- Checkout Stepper Progress Indicator -->
+      <div class="checkout-stepper-container" id="checkout-stepper-container">
+        <div class="checkout-stepper" role="navigation" aria-label="Checkout Progress">
+          
+          <!-- Step 1 Indicator -->
+          <div class="stepper-step active" id="stepper-step-1" onclick="if(window._currentStep > 1) goToStep(1)" role="button" tabindex="0" title="Click to view cart orders">
+            <div class="stepper-circle" id="stepper-circle-1">
+              <span class="stepper-num">1</span>
+            </div>
+            <div class="stepper-text">
+              <span class="stepper-label">Step 1</span>
+              <span class="stepper-title">Cart Orders</span>
+            </div>
+          </div>
+
+          <!-- Connector 1-2 -->
+          <div class="stepper-connector" id="stepper-connector-1">
+            <div class="stepper-connector-fill"></div>
+          </div>
+
+          <!-- Step 2 Indicator -->
+          <div class="stepper-step upcoming" id="stepper-step-2" onclick="if(window._currentStep > 2) goToStep(2)" role="button" tabindex="0" title="Click to edit shipping address">
+            <div class="stepper-circle" id="stepper-circle-2">
+              <span class="stepper-num">2</span>
+            </div>
+            <div class="stepper-text">
+              <span class="stepper-label">Step 2</span>
+              <span class="stepper-title">Shipping Address</span>
+            </div>
+          </div>
+
+          <!-- Connector 2-3 -->
+          <div class="stepper-connector" id="stepper-connector-2">
+            <div class="stepper-connector-fill"></div>
+          </div>
+
+          <!-- Step 3 Indicator -->
+          <div class="stepper-step upcoming" id="stepper-step-3" role="button" tabindex="0">
+            <div class="stepper-circle" id="stepper-circle-3">
+              <span class="stepper-num">3</span>
+            </div>
+            <div class="stepper-text">
+              <span class="stepper-label">Step 3</span>
+              <span class="stepper-title">Order Summary</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <div class="checkout-vertical-stack" id="checkout-main-grid" style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
         
-        <!-- STEP 1: ORDER SUMMARY ON THE TOP -->
-        <div class="glass-panel fade-in delay-1" style="padding: 2.5rem; border: 1px solid rgba(108, 120, 92, 0.25); background: rgba(255, 255, 255, 0.9);">
+        <!-- ============================================== -->
+        <!-- STEP 1: CART ORDERS                            -->
+        <!-- ============================================== -->
+        <div id="checkout-step-1" class="glass-panel fade-in delay-1" style="padding: 2.5rem; border: 1px solid rgba(108, 120, 92, 0.25); background: rgba(255, 255, 255, 0.92); border-radius: 20px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 1rem;">
             <h2 style="font-size: 1.5rem; color: var(--primary-dark); margin: 0; display: flex; align-items: center; gap: 0.75rem; font-family: 'Playfair Display', serif;">
-              <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8;"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
               <span id="checkout-order-title">Your Order</span>
             </h2>
             <span style="background: rgba(108, 120, 92, 0.12); color: var(--primary-dark); font-weight: 600; font-size: 0.82rem; padding: 0.35rem 0.9rem; border-radius: 20px; letter-spacing: 0.5px;">
               <span id="checkout-cart-count">0</span> ITEMS
             </span>
           </div>
- 
-          <!-- Dynamic Cart List -->
-          <div id="checkout-cart-items" style="max-height: 280px; overflow-y: auto; margin-bottom: 1.25rem; padding-right: 0.5rem;">
+
+          <!-- Dynamic Cart List with Quantities & Remove -->
+          <div id="checkout-cart-items" style="max-height: 340px; overflow-y: auto; margin-bottom: 1.25rem; padding-right: 0.5rem;">
             <!-- Rendered via JS -->
           </div>
- 
-          <div style="background: rgba(144, 118, 97, 0.05); border-radius: 12px; padding: 1.25rem;">
+
+          <!-- Price & Shipping Breakdown -->
+          <div style="background: rgba(144, 118, 97, 0.05); border-radius: 14px; padding: 1.25rem; border: 1px solid rgba(144, 118, 97, 0.12);">
             <div class="summary-row" style="margin-bottom: 0.6rem;">
               <span>Subtotal</span>
               <span id="checkout-subtotal">₹0.00</span>
@@ -189,7 +479,7 @@
               <span>Shipping Charges</span>
               <span id="checkout-shipping-charges"></span>
             </div>
-            <div id="shipping-nudge" style="display: none; font-size: 0.82rem; margin-bottom: 0.8rem; padding: 0.4rem 0.75rem; border-radius: 6px; line-height: 1.4;"></div>
+            <div id="shipping-nudge" style="display: none; font-size: 0.84rem; margin-bottom: 0.8rem; padding: 0.5rem 0.85rem; border-radius: 8px; line-height: 1.4;"></div>
             <div style="border-top: 1.5px solid rgba(0,0,0,0.08); padding-top: 0.8rem;">
               <div class="summary-row" id="discount-row" style="display: none; color: #2e7d32; font-weight: 600; margin-bottom: 0.8rem;">
                 <span>Points Discount</span>
@@ -222,137 +512,270 @@
               ✨ You will earn <strong id="points-to-earn">0</strong> points on this order!
             </div>
           </div>
+
+          <!-- Step 1 Action Buttons -->
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+            <a href="collections.html" class="btn btn-secondary" style="border-radius: 12px; padding: 0.9rem 1.6rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+              ← Continue Shopping
+            </a>
+            <button type="button" id="step1-continue-btn" class="btn btn-primary" onclick="validateStep1AndProceed()" style="border-radius: 12px; padding: 0.95rem 2.2rem; font-weight: 600; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(108, 120, 92, 0.25); display: inline-flex; align-items: center; gap: 0.5rem;">
+              <span>Continue to Shipping Address</span>
+              <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.2;"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
         </div>
- 
-        <!-- FORM WRAPPER FOR DELIVERY & PAYMENT -->
-        <form id="checkout-order-form" style="display: flex; flex-direction: column; gap: 2rem;">
-          <!-- STEP 2: CUSTOMER DELIVERY DETAILS -->
-          <div class="glass-panel fade-in delay-2" style="padding: 2.5rem;">
-            <div style="border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.5rem; margin: 0; color: var(--primary-dark); display: flex; align-items: center; gap: 0.75rem; font-family: 'Playfair Display', serif;">
-                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <span>Where should we send your parcel?</span>
-              </h2>
-            </div>
-            <div class="form-grid-2">
-              <div class="form-group">
-                <label>Your Name *</label>
-                <input type="text" id="cust-name" placeholder="Enter your name" required>
-              </div>
-              <div class="form-group">
-                <label>Email Address * <span style="font-size:0.75rem; color:var(--primary); font-weight:600;">(Confirmation details sent here)</span></label>
-                <input type="email" id="cust-email" placeholder="you@example.com" required>
-              </div>
-            </div>
-            <div class="form-group" style="margin-bottom: 1.5rem;">
-              <label for="cust-phone">WhatsApp Contact Number * <span style="font-size:0.75rem; color:var(--primary); font-weight:600;">(Order tracking & updates sent here)</span></label>
-              <input type="tel" id="cust-phone" placeholder="+91 98765 43210" required>
-            </div>
 
-            <!-- Structured Address Details -->
-            <div style="border-top: 1px dashed rgba(108,120,92,0.25); padding-top: 1.25rem;">
-              <h3 style="font-size: 1.05rem; color: var(--primary-dark); font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                <span>🏠 Delivery Address Details</span>
-                <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-light);">(House, Area, City, State, PIN)</span>
-              </h3>
+        <!-- ============================================== -->
+        <!-- STEP 2: SHIPPING ADDRESS                       -->
+        <!-- ============================================== -->
+        <div id="checkout-step-2" class="glass-panel fade-in delay-1" style="display: none; padding: 2.5rem; border: 1px solid rgba(108, 120, 92, 0.25); background: rgba(255, 255, 255, 0.92); border-radius: 20px;">
+          <div style="border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.5rem; margin: 0; color: var(--primary-dark); display: flex; align-items: center; gap: 0.75rem; font-family: 'Playfair Display', serif;">
+              <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Where should we send your parcel?</span>
+            </h2>
+            <p style="margin: 0.35rem 0 0 0; color: var(--text-light); font-size: 0.88rem;">Please enter your delivery destination details carefully for smooth dispatch.</p>
+          </div>
 
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label for="cust-house">House / Flat / Floor / Building No. *</label>
-                  <input type="text" id="cust-house" placeholder="e.g. Flat 402, Sunshine Heights, Wing B" required>
-                </div>
-                <div class="form-group">
-                  <label for="cust-area">Area / Locality / Street Name *</label>
-                  <input type="text" id="cust-area" placeholder="e.g. Hill Road, Bandra West, Near St. Peter's" required>
+          <!-- Saved Address Available Banner -->
+          <div id="saved-address-banner" style="display: none; background: rgba(108, 120, 92, 0.08); border: 1.5px dashed var(--primary); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <span style="font-size: 1.25rem;">✨</span>
+                <div>
+                  <strong style="color: var(--primary-dark); font-size: 0.92rem; display: block;">Saved Address Found</strong>
+                  <span id="saved-address-preview-text" style="font-size: 0.85rem; color: var(--text-light);"></span>
                 </div>
               </div>
-
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label for="cust-city">City / Town *</label>
-                  <input type="text" id="cust-city" placeholder="e.g. Mumbai" required>
-                </div>
-                <div class="form-group">
-                  <label for="cust-state">State *</label>
-                  <input type="text" id="cust-state" placeholder="e.g. Maharashtra" required>
-                </div>
-              </div>
-
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label for="cust-pincode">PIN / Postal Code *</label>
-                  <input type="text" id="cust-pincode" placeholder="400050" required>
-                </div>
-                <div class="form-group">
-                  <label for="cust-country">Country *</label>
-                  <input type="text" id="cust-country" value="India" placeholder="India" required>
-                </div>
-              </div>
-
-              <!-- Complete Confirmed Delivery Address (Kept in Sync for Orders) -->
-              <input type="hidden" id="cust-address" name="cust-address" required>
-
-              <!-- Confirmed Address Live Card -->
-              <div id="confirmed-address-card" style="display: none; background: rgba(108,120,92,0.08); border-left: 4px solid var(--primary); border-radius: 8px; padding: 0.85rem 1.1rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">
-                <div style="font-size: 0.72rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Confirmed Delivery Address:</div>
-                <div id="confirmed-address-preview" style="font-size: 0.95rem; color: var(--text); font-weight: 600; line-height: 1.45;"></div>
-              </div>
-            </div>
-            <!-- Quality Tour Request Checkbox Option -->
-            <div style="padding: 1rem; border-radius: 12px; background: rgba(108, 120, 92, 0.05); border: 1.5px solid rgba(108, 120, 92, 0.12); margin-top: 1.25rem;">
-              <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; user-select: none;">
-                <input type="checkbox" id="request-order-tour" style="margin-top: 0.25rem; width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer;">
-                <span style="font-size: 0.88rem; color: var(--text); line-height: 1.45; font-weight: 500;">
-                  <strong style="color: var(--primary-dark); font-size: 0.92rem; display: block; margin-bottom: 0.15rem;">See my items before dispatch (WhatsApp Tour) 📸</strong>
-                  Check this box if you'd like us to send you a quick photo or video of your exact items on WhatsApp before we ship! We want to make sure you absolutely love the quality.
-                </span>
-              </label>
-            </div>
-
-            <!-- Gifting & Personalization Option -->
-            <div style="padding: 1.25rem 1rem; border-radius: 12px; background: rgba(144, 118, 97, 0.05); border: 1.5px solid rgba(144, 118, 97, 0.15); margin-top: 1rem; text-align: left;">
-              <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; user-select: none;">
-                <input type="checkbox" id="order-is-gift" style="margin-top: 0.25rem; width: 16px; height: 16px; accent-color: var(--secondary); cursor: pointer;">
-                <span style="font-size: 0.88rem; color: var(--text); line-height: 1.45; font-weight: 500; width: 100%;">
-                  <strong style="color: var(--secondary); font-size: 0.92rem; display: block; margin-bottom: 0.15rem;">🎁 Send as a cozy gift to someone special?</strong>
-                  Check this box if this is a gift. We will hide the pricing invoice sheet and wrap it with extra decorative jute twine. You can also write a warm message below to be handwritten on our premium kraft card stock (free).
-                </span>
-              </label>
-              
-              <!-- Gift message text area, slides open when checked -->
-              <div id="gift-message-container" style="display: none; margin-top: 1rem; border-top: 1px dashed rgba(144, 118, 97, 0.25); padding-top: 1rem;">
-                <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem;">Your Handwritten Card Message (Free):</label>
-                <textarea id="order-gift-message" rows="3" placeholder="Dear Emma, hope this cozy hand-knitted wrap keeps you warm on cold evenings! Love, David." style="width: 100%; padding: 0.75rem; border: 1px solid var(--secondary-light); border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 0.9rem; background: var(--surface); resize: vertical; outline: none; transition: border 0.3s;" onfocus="this.style.borderColor='var(--secondary)'" onblur="this.style.borderColor='var(--secondary-light)'"></textarea>
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="button" onclick="loadSavedAddress()" class="btn btn-primary" style="padding: 0.45rem 1rem; font-size: 0.82rem; border-radius: 8px; font-weight: 600;">Use Saved Address</button>
+                <button type="button" onclick="clearSavedAddress()" class="btn btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.82rem; border-radius: 8px;">Clear</button>
               </div>
             </div>
           </div>
- 
-          <!-- STEP 3: SECURE CHECKOUT -->
-          <div class="glass-panel fade-in delay-3" style="padding: 2.5rem;">
-            <div style="border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.5rem; margin: 0; color: var(--primary-dark); display: flex; align-items: center; gap: 0.75rem; font-family: 'Playfair Display', serif;">
-                <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                <span>Secure Checkout</span>
-              </h2>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="cust-name">Your Full Name *</label>
+              <input type="text" id="cust-name" placeholder="Enter your full name" required>
+              <div class="field-error" id="err-cust-name">Please enter your full name.</div>
+            </div>
+            <div class="form-group">
+              <label for="cust-phone">WhatsApp Contact Number * <span style="font-size:0.75rem; color:var(--primary); font-weight:600;">(For dispatch tracking)</span></label>
+              <input type="tel" id="cust-phone" placeholder="+91 98765 43210" required>
+              <div class="field-error" id="err-cust-phone">Please enter a valid 10-digit mobile number.</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cust-email">Email Address * <span style="font-size:0.75rem; color:var(--primary); font-weight:600;">(Confirmation details sent here)</span></label>
+            <input type="email" id="cust-email" placeholder="you@example.com" required>
+            <div class="field-error" id="err-cust-email">Please enter a valid email address.</div>
+          </div>
+
+          <!-- Structured Address Details -->
+          <div style="border-top: 1px dashed rgba(108,120,92,0.25); padding-top: 1.25rem;">
+            <h3 style="font-size: 1.05rem; color: var(--primary-dark); font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <span>🏠 Delivery Address Details</span>
+              <span style="font-size: 0.75rem; font-weight: 500; color: var(--text-light);">(House, Area, City, State, PIN)</span>
+            </h3>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="cust-house">House / Flat / Floor / Building No. *</label>
+                <input type="text" id="cust-house" placeholder="e.g. Flat 402, Sunshine Heights, Wing B" required>
+                <div class="field-error" id="err-cust-house">Please enter house/flat/building details.</div>
+              </div>
+              <div class="form-group">
+                <label for="cust-area">Area / Locality / Street Name *</label>
+                <input type="text" id="cust-area" placeholder="e.g. Hill Road, Bandra West" required>
+                <div class="field-error" id="err-cust-area">Please enter area/locality/street.</div>
+              </div>
             </div>
 
-            <!-- Return / Exchange Policy Note -->
-            <div style="margin-top: 1.5rem; padding: 1rem; border-radius: 10px; background: rgba(144, 118, 97, 0.08); border: 1px dashed rgba(144, 118, 97, 0.3); display: flex; align-items: flex-start; gap: 0.6rem;">
-              <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: var(--secondary); stroke-width: 2; flex-shrink: 0; margin-top: 0.1rem;">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-              <p style="margin: 0; font-size: 0.85rem; color: var(--secondary); line-height: 1.45; font-weight: 500;">
-                Just a friendly note: Since each of our items is lovingly hand-stitched by artisans, all orders are final (non-refundable & non-exchangeable). Thank you for supporting slow, handmade craft! 🤎
-              </p>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="cust-landmark">Landmark <span style="font-size:0.75rem; color:var(--text-light); font-weight:normal;">(Optional)</span></label>
+                <input type="text" id="cust-landmark" placeholder="e.g. Near St. Peter's Church / Opp. Metro Pillar">
+              </div>
+              <div class="form-group">
+                <label for="cust-city">City / Town *</label>
+                <input type="text" id="cust-city" placeholder="e.g. Mumbai" required>
+                <div class="field-error" id="err-cust-city">Please enter your city/town.</div>
+              </div>
             </div>
 
-            <button type="submit" id="checkout-submit-btn" class="btn btn-primary" style="width: 100%; font-size: 1.15rem; font-weight: 600; padding: 1.15rem; border-radius: 14px; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(108, 120, 92, 0.25);">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="cust-state">State *</label>
+                <input type="text" id="cust-state" placeholder="e.g. Maharashtra" required>
+                <div class="field-error" id="err-cust-state">Please enter your state.</div>
+              </div>
+              <div class="form-group">
+                <label for="cust-pincode">PIN / Postal Code *</label>
+                <input type="text" id="cust-pincode" placeholder="400050" required>
+                <div class="field-error" id="err-cust-pincode">Please enter a valid 6-digit PIN code.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cust-country">Country *</label>
+              <input type="text" id="cust-country" value="India" placeholder="India" required>
+            </div>
+
+            <!-- Complete Confirmed Delivery Address (Kept in Sync for Orders) -->
+            <input type="hidden" id="cust-address" name="cust-address" required>
+
+            <!-- Confirmed Address Live Card -->
+            <div id="confirmed-address-card" style="display: none; background: rgba(108,120,92,0.08); border-left: 4px solid var(--primary); border-radius: 8px; padding: 0.85rem 1.1rem; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+              <div style="font-size: 0.72rem; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.2rem;">Confirmed Delivery Address:</div>
+              <div id="confirmed-address-preview" style="font-size: 0.95rem; color: var(--text); font-weight: 600; line-height: 1.45;"></div>
+            </div>
+          </div>
+
+          <!-- Unchecked Checkbox: Save Address for Future Orders -->
+          <div style="padding: 1.1rem; border-radius: 12px; background: rgba(108, 120, 92, 0.05); border: 1.5px solid rgba(108, 120, 92, 0.18); margin-top: 1.25rem;">
+            <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; user-select: none;">
+              <input type="checkbox" id="save-address-checkbox" style="margin-top: 0.2rem; width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer;">
+              <span style="font-size: 0.92rem; color: var(--text); line-height: 1.45; font-weight: 500;">
+                <strong style="color: var(--primary-dark); font-size: 0.95rem; display: block; margin-bottom: 0.15rem;">Would you like us to save this address for future orders?</strong>
+                Check this box if you want us to remember your address on this device for faster checkout on your next visit.
+              </span>
+            </label>
+          </div>
+
+          <!-- Quality Tour Request Checkbox Option -->
+          <div style="padding: 1rem; border-radius: 12px; background: rgba(108, 120, 92, 0.05); border: 1.5px solid rgba(108, 120, 92, 0.12); margin-top: 1rem;">
+            <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; user-select: none;">
+              <input type="checkbox" id="request-order-tour" style="margin-top: 0.25rem; width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer;">
+              <span style="font-size: 0.88rem; color: var(--text); line-height: 1.45; font-weight: 500;">
+                <strong style="color: var(--primary-dark); font-size: 0.92rem; display: block; margin-bottom: 0.15rem;">See my items before dispatch (WhatsApp Tour) 📸</strong>
+                Check this box if you'd like us to send you a quick photo or video of your exact items on WhatsApp before we ship!
+              </span>
+            </label>
+          </div>
+
+          <!-- Gifting & Personalization Option -->
+          <div style="padding: 1.25rem 1rem; border-radius: 12px; background: rgba(144, 118, 97, 0.05); border: 1.5px solid rgba(144, 118, 97, 0.15); margin-top: 1rem; text-align: left;">
+            <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; user-select: none;">
+              <input type="checkbox" id="order-is-gift" style="margin-top: 0.25rem; width: 16px; height: 16px; accent-color: var(--secondary); cursor: pointer;">
+              <span style="font-size: 0.88rem; color: var(--text); line-height: 1.45; font-weight: 500; width: 100%;">
+                <strong style="color: var(--secondary); font-size: 0.92rem; display: block; margin-bottom: 0.15rem;">🎁 Send as a cozy gift to someone special?</strong>
+                Check this box if this is a gift. We will hide the pricing invoice and include your handwritten note on kraft card stock (free).
+              </span>
+            </label>
+            
+            <div id="gift-message-container" style="display: none; margin-top: 1rem; border-top: 1px dashed rgba(144, 118, 97, 0.25); padding-top: 1rem;">
+              <label style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem;">Your Handwritten Card Message (Free):</label>
+              <textarea id="order-gift-message" rows="3" placeholder="Dear friend, hope this cozy hand-knitted piece keeps you warm! Love, David." style="width: 100%; padding: 0.75rem; border: 1px solid var(--secondary-light); border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 0.9rem; background: var(--surface); resize: vertical; outline: none; transition: border 0.3s;" onfocus="this.style.borderColor='var(--secondary)'" onblur="this.style.borderColor='var(--secondary-light)'"></textarea>
+            </div>
+          </div>
+
+          <!-- Step 2 Navigation Buttons -->
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+            <button type="button" id="step2-back-btn" class="btn btn-secondary" onclick="goToStep(1)" style="border-radius: 12px; padding: 0.95rem 1.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+              <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.2;"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>Back to Cart</span>
+            </button>
+            <button type="button" id="step2-continue-btn" class="btn btn-primary" onclick="validateStep2AndProceed()" style="border-radius: 12px; padding: 0.95rem 2.2rem; font-weight: 600; font-size: 1.05rem; box-shadow: 0 4px 15px rgba(108, 120, 92, 0.25); display: inline-flex; align-items: center; gap: 0.5rem;">
+              <span>Continue to Order Summary</span>
+              <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.2;"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- STEP 3: ORDER SUMMARY & CHECKOUT               -->
+        <!-- ============================================== -->
+        <div id="checkout-step-3" class="glass-panel fade-in delay-1" style="display: none; padding: 2.5rem; border: 1px solid rgba(108, 120, 92, 0.25); background: rgba(255, 255, 255, 0.92); border-radius: 20px;">
+          <div style="border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.5rem; margin: 0; color: var(--primary-dark); display: flex; align-items: center; gap: 0.75rem; font-family: 'Playfair Display', serif;">
+              <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.8;"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              <span>Review Your Order & Checkout</span>
+            </h2>
+            <p style="margin: 0.35rem 0 0 0; color: var(--text-light); font-size: 0.88rem;">Please double-check your order and address details before proceeding to payment.</p>
+          </div>
+
+          <!-- Section 1: Formatted Shipping Address Review with Edit Button -->
+          <div style="background: rgba(108, 120, 92, 0.06); border: 1.5px solid rgba(108, 120, 92, 0.2); border-radius: 14px; padding: 1.35rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(108, 120, 92, 0.15); padding-bottom: 0.5rem;">
+              <span style="font-weight: 700; color: var(--primary-dark); font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Shipping Address
+              </span>
+              <button type="button" onclick="goToStep(2)" class="edit-section-btn" title="Edit shipping address">
+                <span>Edit Shipping Address</span>
+                <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </button>
+            </div>
+            <div id="step3-address-review">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Section 2: Cart Items Review with Edit Button -->
+          <div style="background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 1.35rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 0.5rem;">
+              <span style="font-weight: 700; color: var(--primary-dark); font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                Cart Items
+              </span>
+              <button type="button" onclick="goToStep(1)" class="edit-section-btn" title="Edit cart items">
+                <span>Edit Cart</span>
+                <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </button>
+            </div>
+            <div id="step3-items-summary" style="max-height: 220px; overflow-y: auto; padding-right: 0.35rem;">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Section 3: Pricing Summary Breakdown -->
+          <div style="background: rgba(144, 118, 97, 0.05); border-radius: 14px; padding: 1.25rem; border: 1px solid rgba(144, 118, 97, 0.12);">
+            <div class="summary-row" style="margin-bottom: 0.6rem;">
+              <span>Subtotal</span>
+              <span id="step3-subtotal">₹0.00</span>
+            </div>
+            <div class="summary-row" style="color: var(--primary-dark); font-weight: 600; margin-bottom: 0.6rem;">
+              <span>Shipping Charges</span>
+              <span id="step3-shipping">FREE</span>
+            </div>
+            <div class="summary-row" id="step3-discount-row" style="display: none; color: #2e7d32; font-weight: 600; margin-bottom: 0.6rem;">
+              <span>Points Discount</span>
+              <span id="step3-discount">-₹0.00</span>
+            </div>
+            <div style="border-top: 1.5px solid rgba(0,0,0,0.08); padding-top: 0.8rem;">
+              <div class="summary-row" style="font-weight: 700; font-size: 1.35rem; color: var(--primary-dark); margin: 0;">
+                <span>Total Payable</span>
+                <span id="step3-final-total">₹0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Return / Exchange Policy Note -->
+          <div style="margin-top: 1.25rem; padding: 0.9rem 1.1rem; border-radius: 10px; background: rgba(144, 118, 97, 0.08); border: 1px dashed rgba(144, 118, 97, 0.3); display: flex; align-items: flex-start; gap: 0.6rem;">
+            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: none; stroke: var(--secondary); stroke-width: 2; flex-shrink: 0; margin-top: 0.15rem;">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <p style="margin: 0; font-size: 0.84rem; color: var(--secondary); line-height: 1.45; font-weight: 500;">
+              Just a friendly note: Since each of our items is lovingly hand-stitched by artisans, all orders are final (non-refundable & non-exchangeable). Thank you for supporting slow, handmade craft! 🤎
+            </p>
+          </div>
+
+          <!-- Step 3 Action Navigation Buttons -->
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+            <button type="button" id="step3-back-btn" class="btn btn-secondary" onclick="goToStep(2)" style="border-radius: 12px; padding: 0.95rem 1.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+              <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.2;"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>Back to Address</span>
+            </button>
+            <button type="button" id="checkout-submit-btn" class="btn btn-primary" onclick="processOrderSubmission()" style="flex: 1; min-width: 260px; font-size: 1.15rem; font-weight: 600; padding: 1.15rem; border-radius: 14px; box-shadow: 0 4px 18px rgba(108, 120, 92, 0.3);">
               Pay via Razorpay 🤎
             </button>
           </div>
-        </form>
+        </div>
+
       </div>
 
       <!-- Order Confirmation Receipt Screen (Hidden until order is placed) -->
@@ -477,9 +900,11 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.42"></script>
+  <script src="script.js?v=1.43"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
+    window._currentStep = 1;
+
     window.selectPaymentMethod = function(method) {
       window.currentPaymentMethod = 'razorpay';
 
@@ -502,13 +927,15 @@
         phone: document.getElementById('cust-phone')?.value || '',
         house: document.getElementById('cust-house')?.value || '',
         area: document.getElementById('cust-area')?.value || '',
+        landmark: document.getElementById('cust-landmark')?.value || '',
         city: document.getElementById('cust-city')?.value || '',
         state: document.getElementById('cust-state')?.value || '',
         pincode: document.getElementById('cust-pincode')?.value || '',
         country: document.getElementById('cust-country')?.value || 'India',
         requestTour: document.getElementById('request-order-tour')?.checked || false,
         isGift: document.getElementById('order-is-gift')?.checked || false,
-        giftMessage: document.getElementById('order-gift-message')?.value || ''
+        giftMessage: document.getElementById('order-gift-message')?.value || '',
+        saveAddress: document.getElementById('save-address-checkbox')?.checked || false
       };
 
       try {
@@ -527,6 +954,7 @@
         if (data.phone && document.getElementById('cust-phone')) document.getElementById('cust-phone').value = data.phone;
         if (data.house && document.getElementById('cust-house')) document.getElementById('cust-house').value = data.house;
         if (data.area && document.getElementById('cust-area')) document.getElementById('cust-area').value = data.area;
+        if (data.landmark && document.getElementById('cust-landmark')) document.getElementById('cust-landmark').value = data.landmark;
         if (data.city && document.getElementById('cust-city')) document.getElementById('cust-city').value = data.city;
         if (data.state && document.getElementById('cust-state')) document.getElementById('cust-state').value = data.state;
         if (data.pincode && document.getElementById('cust-pincode')) document.getElementById('cust-pincode').value = data.pincode;
@@ -548,13 +976,6 @@
               giftMsgTextarea.required = true;
               if (data.giftMessage) giftMsgTextarea.value = data.giftMessage;
             }
-          }
-        }
-
-        if (data.coordinates) {
-          window._confirmedLocationCoordinates = data.coordinates;
-          if (typeof updatePinDisplay === 'function') {
-            updatePinDisplay(data.coordinates.lat, data.coordinates.lng, 'Restored Doorstep Pin');
           }
         }
 
@@ -584,7 +1005,6 @@
           const latest = JSON.parse(localStorage.getItem('earthenknot_latest_confirmed_order') || 'null');
           if (latest && latest.timestamp && (Date.now() - latest.timestamp < 24 * 60 * 60 * 1000)) {
             const cartItems = getCheckoutItems();
-            // If cart is empty and a recently placed order exists, show order confirmation screen
             if (cartItems.length === 0 || urlOrderId) {
               orderToRestore = latest;
             }
@@ -597,21 +1017,18 @@
       } else {
         renderCheckoutCart();
         restoreCheckoutFormData();
+        checkSavedAddressBanner();
+        goToStep(1);
       }
 
       // Default to automated online payment (Razorpay)
       selectPaymentMethod('razorpay');
 
-      const orderForm = document.getElementById('checkout-order-form');
-      if (orderForm) {
-        orderForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          processOrderSubmission();
-        });
-
-        // Listen for input changes to automatically persist form data across reloads
-        orderForm.addEventListener('input', saveCheckoutFormData);
-        orderForm.addEventListener('change', saveCheckoutFormData);
+      // Listen for input changes across checkout containers
+      const mainGrid = document.getElementById('checkout-main-grid');
+      if (mainGrid) {
+        mainGrid.addEventListener('input', saveCheckoutFormData);
+        mainGrid.addEventListener('change', saveCheckoutFormData);
       }
 
       // Gift options form interaction logic
@@ -641,6 +1058,384 @@
       initCheckout();
     }
 
+    // ==========================================
+    // MULTI-STEP WIZARD & STEPPER CONTROLLER
+    // ==========================================
+    function goToStep(step) {
+      const items = getCheckoutItems();
+      if (step > 1 && items.length === 0) {
+        alert('Your cart is empty. Please add items before proceeding.');
+        step = 1;
+      }
+      if (step === 3 && !validateStep2(false)) {
+        validateStep2(true);
+        return;
+      }
+
+      window._currentStep = step;
+
+      const s1 = document.getElementById('checkout-step-1');
+      const s2 = document.getElementById('checkout-step-2');
+      const s3 = document.getElementById('checkout-step-3');
+
+      if (s1) s1.style.display = (step === 1 ? 'block' : 'none');
+      if (s2) s2.style.display = (step === 2 ? 'block' : 'none');
+      if (s3) s3.style.display = (step === 3 ? 'block' : 'none');
+
+      updateStepperUI(step);
+
+      if (step === 3) {
+        renderStep3Summary();
+      }
+
+      const stepperEl = document.getElementById('checkout-stepper-container');
+      if (stepperEl) {
+        stepperEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function updateStepperUI(step) {
+      for (let i = 1; i <= 3; i++) {
+        const stepEl = document.getElementById(`stepper-step-${i}`);
+        const circleEl = document.getElementById(`stepper-circle-${i}`);
+        if (!stepEl || !circleEl) continue;
+
+        stepEl.classList.remove('completed', 'active', 'upcoming');
+
+        if (i < step) {
+          stepEl.classList.add('completed');
+          circleEl.innerHTML = `
+            <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.8;">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `;
+        } else if (i === step) {
+          stepEl.classList.add('active');
+          circleEl.innerHTML = `<span class="stepper-num">${i}</span>`;
+        } else {
+          stepEl.classList.add('upcoming');
+          circleEl.innerHTML = `<span class="stepper-num">${i}</span>`;
+        }
+      }
+
+      const conn1 = document.getElementById('stepper-connector-1');
+      const conn2 = document.getElementById('stepper-connector-2');
+      if (conn1) {
+        if (step >= 2) conn1.classList.add('active');
+        else conn1.classList.remove('active');
+      }
+      if (conn2) {
+        if (step >= 3) conn2.classList.add('active');
+        else conn2.classList.remove('active');
+      }
+    }
+
+    function validateStep1AndProceed() {
+      const items = getCheckoutItems();
+      if (items.length === 0) {
+        alert('Your cart is empty. Please add items before proceeding.');
+        return;
+      }
+      goToStep(2);
+    }
+
+    function clearAllAddressErrors() {
+      const inputs = ['cust-name', 'cust-phone', 'cust-email', 'cust-house', 'cust-area', 'cust-city', 'cust-state', 'cust-pincode'];
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('input-error');
+        const err = document.getElementById('err-' + id);
+        if (err) {
+          err.classList.remove('visible');
+        }
+      });
+    }
+
+    function setFieldError(id, msg) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('input-error');
+      const err = document.getElementById('err-' + id);
+      if (err) {
+        if (msg) err.textContent = msg;
+        err.classList.add('visible');
+      }
+    }
+
+    function clearFieldError(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('input-error');
+      const err = document.getElementById('err-' + id);
+      if (err) {
+        err.classList.remove('visible');
+      }
+    }
+
+    function validateStep2(showErrors) {
+      let isValid = true;
+      let firstInvalidEl = null;
+
+      if (showErrors) clearAllAddressErrors();
+
+      const nameVal = (document.getElementById('cust-name')?.value || '').trim();
+      const phoneVal = (document.getElementById('cust-phone')?.value || '').trim();
+      const emailVal = (document.getElementById('cust-email')?.value || '').trim();
+      const houseVal = (document.getElementById('cust-house')?.value || '').trim();
+      const areaVal = (document.getElementById('cust-area')?.value || '').trim();
+      const cityVal = (document.getElementById('cust-city')?.value || '').trim();
+      const stateVal = (document.getElementById('cust-state')?.value || '').trim();
+      const pinVal = (document.getElementById('cust-pincode')?.value || '').trim();
+
+      if (!nameVal || nameVal.length < 2) {
+        isValid = false;
+        if (showErrors) {
+          setFieldError('cust-name', 'Please enter your full name.');
+          if (!firstInvalidEl) firstInvalidEl = document.getElementById('cust-name');
+        }
+      }
+
+      const cleanPhone = phoneVal.replace(/[^0-9]/g, '');
+      if (cleanPhone.length < 10) {
+        isValid = false;
+        if (showErrors) {
+          setFieldError('cust-phone', 'Please enter a valid 10-digit mobile number.');
+          if (!firstInvalidEl) firstInvalidEl = document.getElementById('cust-phone');
+        }
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailVal || !emailRegex.test(emailVal)) {
+        isValid = false;
+        if (showErrors) {
+          setFieldError('cust-email', 'Please enter a valid email address.');
+          if (!firstInvalidEl) firstInvalidEl = document.getElementById('cust-email');
+        }
+      }
+
+      if (!houseVal) {
+        isValid = false;
+        if (showErrors) {
+          setFieldError('cust-house', 'Please enter house/flat/building details.');
+          if (!firstInvalidEl) firstInvalidEl = document.getElementById('cust-house');
+        }
+      }
+
+      if (!areaVal) {
+        isValid = false;
+        if (showErrors) {
+          setFieldError('cust-area', 'Please enter area/locality/street.');
+          if (!firstInvalidEl) firstInvalidEl = document.getElementById('cust-area');
+        }
+      }
+
+      if (!cityVal) {
+        isValid = false;
+        if (showErrors) {
+          setFieldError('cust-city', 'Please enter your city/town.');
+          if (!firstInvalidEl) firstInvalidEl = document.getElementById('cust-city');
+        }
+      }
+
+      if (!stateVal) {
+        isValid = false;
+        if (showErrors) {
+          setFieldError('cust-state', 'Please enter your state.');
+          if (!firstInvalidEl) firstInvalidEl = document.getElementById('cust-state');
+        }
+      }
+
+      const cleanPin = pinVal.replace(/\s+/g, '');
+      if (!/^\d{6}$/.test(cleanPin)) {
+        isValid = false;
+        if (showErrors) {
+          setFieldError('cust-pincode', 'Please enter a valid 6-digit PIN code.');
+          if (!firstInvalidEl) firstInvalidEl = document.getElementById('cust-pincode');
+        }
+      }
+
+      if (showErrors && firstInvalidEl) {
+        firstInvalidEl.focus();
+        firstInvalidEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      return isValid;
+    }
+
+    function validateStep2AndProceed() {
+      if (!validateStep2(true)) {
+        return;
+      }
+
+      // Check if user requested saving this address for future visits
+      const saveCheckbox = document.getElementById('save-address-checkbox');
+      if (saveCheckbox && saveCheckbox.checked) {
+        const addressToSave = {
+          name: (document.getElementById('cust-name')?.value || '').trim(),
+          phone: (document.getElementById('cust-phone')?.value || '').trim(),
+          email: (document.getElementById('cust-email')?.value || '').trim(),
+          house: (document.getElementById('cust-house')?.value || '').trim(),
+          area: (document.getElementById('cust-area')?.value || '').trim(),
+          landmark: (document.getElementById('cust-landmark')?.value || '').trim(),
+          city: (document.getElementById('cust-city')?.value || '').trim(),
+          state: (document.getElementById('cust-state')?.value || '').trim(),
+          pincode: (document.getElementById('cust-pincode')?.value || '').trim(),
+          country: (document.getElementById('cust-country')?.value || 'India').trim()
+        };
+        try {
+          localStorage.setItem('earthenknot_saved_address', JSON.stringify(addressToSave));
+        } catch(e) {}
+      }
+
+      saveCheckoutFormData();
+      syncConfirmedAddress();
+      renderStep3Summary();
+      goToStep(3);
+    }
+
+    function checkSavedAddressBanner() {
+      try {
+        const saved = localStorage.getItem('earthenknot_saved_address');
+        const banner = document.getElementById('saved-address-banner');
+        const textEl = document.getElementById('saved-address-preview-text');
+        if (saved && banner && textEl) {
+          const data = JSON.parse(saved);
+          if (data && data.name && data.house) {
+            textEl.textContent = `${data.name} • ${data.house}, ${data.area || ''}, ${data.city || ''} (${data.pincode || ''})`;
+            banner.style.display = 'block';
+            return;
+          }
+        }
+        if (banner) banner.style.display = 'none';
+      } catch(e) {}
+    }
+
+    window.loadSavedAddress = function() {
+      try {
+        const saved = localStorage.getItem('earthenknot_saved_address');
+        if (!saved) return;
+        const data = JSON.parse(saved);
+        if (data.name && document.getElementById('cust-name')) document.getElementById('cust-name').value = data.name;
+        if (data.phone && document.getElementById('cust-phone')) document.getElementById('cust-phone').value = data.phone;
+        if (data.email && document.getElementById('cust-email')) document.getElementById('cust-email').value = data.email;
+        if (data.house && document.getElementById('cust-house')) document.getElementById('cust-house').value = data.house;
+        if (data.area && document.getElementById('cust-area')) document.getElementById('cust-area').value = data.area;
+        if (data.landmark && document.getElementById('cust-landmark')) document.getElementById('cust-landmark').value = data.landmark;
+        if (data.city && document.getElementById('cust-city')) document.getElementById('cust-city').value = data.city;
+        if (data.state && document.getElementById('cust-state')) document.getElementById('cust-state').value = data.state;
+        if (data.pincode && document.getElementById('cust-pincode')) document.getElementById('cust-pincode').value = data.pincode;
+        if (data.country && document.getElementById('cust-country')) document.getElementById('cust-country').value = data.country || 'India';
+        
+        clearAllAddressErrors();
+        syncConfirmedAddress();
+        saveCheckoutFormData();
+      } catch(e) {}
+    };
+
+    window.clearSavedAddress = function() {
+      try {
+        localStorage.removeItem('earthenknot_saved_address');
+        const banner = document.getElementById('saved-address-banner');
+        if (banner) banner.style.display = 'none';
+      } catch(e) {}
+    };
+
+    function renderStep3Summary() {
+      const items = getCheckoutItems();
+      const container = document.getElementById('step3-items-summary');
+      if (container) {
+        container.innerHTML = '';
+        items.forEach(item => {
+          const qty = Number(item.qty) || 1;
+          const sub = (Number(item.price) || 0) * qty;
+          const row = document.createElement('div');
+          row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:0.65rem 0; border-bottom:1px solid rgba(0,0,0,0.06); gap:0.75rem;';
+          row.innerHTML = `
+            <div style="display:flex; align-items:center; gap:0.75rem; flex:1; min-width:0;">
+              <div style="width:44px; height:44px; border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0;">
+                <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${escapeHTML(item.name)}" style="width:100%; height:100%; object-fit:cover;">
+              </div>
+              <div style="overflow:hidden;">
+                <strong style="font-size:0.9rem; color:var(--primary-dark); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHTML(item.name)}</strong>
+                <span style="font-size:0.78rem; color:var(--text-light); display:block;">Qty: ${qty} × ₹${Number(item.price).toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+            <strong style="font-size:0.92rem; color:var(--primary-dark); min-width:65px; text-align:right;">₹${sub.toLocaleString('en-IN')}</strong>
+          `;
+          container.appendChild(row);
+        });
+      }
+
+      const name = (document.getElementById('cust-name')?.value || '').trim();
+      const phone = (document.getElementById('cust-phone')?.value || '').trim();
+      const email = (document.getElementById('cust-email')?.value || '').trim();
+      const house = (document.getElementById('cust-house')?.value || '').trim();
+      const area = (document.getElementById('cust-area')?.value || '').trim();
+      const landmark = (document.getElementById('cust-landmark')?.value || '').trim();
+      const city = (document.getElementById('cust-city')?.value || '').trim();
+      const state = (document.getElementById('cust-state')?.value || '').trim();
+      const pincode = (document.getElementById('cust-pincode')?.value || '').trim();
+      const country = (document.getElementById('cust-country')?.value || 'India').trim();
+      const isTour = document.getElementById('request-order-tour')?.checked;
+      const isGift = document.getElementById('order-is-gift')?.checked;
+      const giftMsg = (document.getElementById('order-gift-message')?.value || '').trim();
+
+      const addressReviewEl = document.getElementById('step3-address-review');
+      if (addressReviewEl) {
+        let fullAddr = `${house}, ${area}`;
+        if (landmark) fullAddr += `, Near ${landmark}`;
+        fullAddr += `, ${city}, ${state} - ${pincode}, ${country}`;
+
+        addressReviewEl.innerHTML = `
+          <div style="font-size:0.92rem; line-height:1.5; color:var(--text);">
+            <strong style="color:var(--primary-dark); font-size:1rem;">${escapeHTML(name)}</strong><br>
+            <span style="color:var(--text-light); font-size:0.85rem;">📞 ${escapeHTML(phone)} • ✉️ ${escapeHTML(email)}</span>
+            <div style="margin-top:0.4rem; padding-top:0.4rem; border-top:1px dashed rgba(108,120,92,0.2);">
+              <span>🏠 ${escapeHTML(fullAddr)}</span>
+            </div>
+            ${isTour ? '<div style="margin-top:0.4rem; font-size:0.82rem; color:var(--primary); font-weight:600;">📸 WhatsApp Product Tour Requested</div>' : ''}
+            ${isGift ? `<div style="margin-top:0.4rem; font-size:0.82rem; color:var(--secondary); font-weight:600;">🎁 Gift Wrapped: "${escapeHTML(giftMsg)}"</div>` : ''}
+          </div>
+        `;
+      }
+
+      const subtotal = window._currentCartSubtotal || 0;
+      const shippingFee = window._currentShippingFee || 0;
+      const appliedPts = window._appliedPoints || 0;
+      const total = window._currentCartTotal || 0;
+
+      const subtotalEl = document.getElementById('step3-subtotal');
+      if (subtotalEl) subtotalEl.textContent = '₹' + subtotal.toLocaleString('en-IN');
+
+      const shippingEl = document.getElementById('step3-shipping');
+      if (shippingEl) {
+        if (subtotal === 0) {
+          shippingEl.textContent = '';
+        } else if (shippingFee === 0) {
+          shippingEl.innerHTML = '<span style="color:#2e7d32; font-weight:700;">FREE</span>';
+        } else {
+          shippingEl.innerHTML = '<span style="color:var(--primary-dark); font-weight:700;">₹220.00</span>';
+        }
+      }
+
+      const discountRow = document.getElementById('step3-discount-row');
+      const discountEl = document.getElementById('step3-discount');
+      if (discountRow && discountEl) {
+        if (appliedPts > 0) {
+          discountRow.style.display = 'flex';
+          discountEl.textContent = `-₹${appliedPts.toLocaleString('en-IN')}`;
+        } else {
+          discountRow.style.display = 'none';
+        }
+      }
+
+      const totalEl = document.getElementById('step3-final-total');
+      if (totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+
+      const submitBtn = document.getElementById('checkout-submit-btn');
+      if (submitBtn) {
+        submitBtn.textContent = `Pay ₹${total.toLocaleString('en-IN')} via Razorpay 🤎`;
+      }
+    }
+
     function getCheckoutItems() {
       let items = [];
       try {
@@ -651,19 +1446,11 @@
         }
       } catch (e) {}
 
-      // Auto-cap quantity of all items to 1 as a safety guard
-      let modified = false;
-      if (items && items.length > 0) {
-        items.forEach(item => {
-          if (item.qty > 1) {
-            item.qty = 1;
-            modified = true;
-          }
-        });
-        if (modified) {
-          localStorage.setItem('earthenknot_cart', JSON.stringify(items));
-        }
-      }
+      // Preserve items and ensure valid quantity >= 1
+      items.forEach(item => {
+        item.qty = Number(item.qty) || 1;
+        if (item.qty < 1) item.qty = 1;
+      });
 
       return items;
     }
@@ -701,7 +1488,7 @@
             <svg viewBox="0 0 24 24" style="width: 48px; height: 48px; fill: none; stroke: var(--text-light); stroke-width: 1.5; margin-bottom: 1rem; opacity: 0.7; display: inline-block;">
               <circle cx="9" cy="21" r="1"></circle>
               <circle cx="20" cy="21" r="1"></circle>
-              <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"></path>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
             </svg>
             <p style="margin: 0 0 1.2rem 0; font-size: 0.95rem; font-weight: 500;">Your cart is empty.</p>
             <a href="collections.html" class="btn btn-secondary" style="font-size: 0.88rem; padding: 0.5rem 1.5rem; border-radius: 8px; text-decoration: none; display: inline-block;">Browse Collections</a>
@@ -709,43 +1496,52 @@
         `;
       } else {
         items.forEach((item, index) => {
-          const sub = (Number(item.price) || 0) * (Number(item.qty) || 1);
+          const qty = Number(item.qty) || 1;
+          const sub = (Number(item.price) || 0) * qty;
           total += sub;
-          count += (Number(item.qty) || 1);
+          count += qty;
           const itemHref = resolveItemLink(item);
 
           const row = document.createElement('div');
-          row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding: 0.8rem 0; border-bottom: 1px solid rgba(0,0,0,0.06); gap: 0.75rem;';
+          row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding: 0.85rem 0; border-bottom: 1px solid rgba(0,0,0,0.06); gap: 0.75rem;';
           row.innerHTML = `
             <div style="display:flex; align-items:center; gap:0.75rem; flex:1; min-width:0;">
-              <a href="${itemHref}" title="View ${item.name}" style="display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:inherit; transition:opacity 0.2s; overflow:hidden;" onmouseover="this.style.opacity='0.78'" onmouseout="this.style.opacity='1'">
-                <div style="width:48px; height:48px; border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0;">
-                  <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${item.name}" style="width:100%; height:100%; object-fit:cover;">
+              <a href="${itemHref}" title="View ${escapeHTML(item.name)}" style="display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:inherit; transition:opacity 0.2s; overflow:hidden;" onmouseover="this.style.opacity='0.78'" onmouseout="this.style.opacity='1'">
+                <div style="width:52px; height:52px; border-radius:10px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0;">
+                  <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${escapeHTML(item.name)}" style="width:100%; height:100%; object-fit:cover;">
                 </div>
                 <div style="overflow:hidden;">
-                  <strong style="font-size:0.92rem; color:var(--primary-dark); display:block; text-decoration:underline; text-underline-offset:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.name}</strong>
+                  <strong style="font-size:0.92rem; color:var(--primary-dark); display:block; text-decoration:underline; text-underline-offset:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHTML(item.name)}</strong>
                   <span style="font-size:0.8rem; color:var(--text-light); display:block;">₹${Number(item.price).toLocaleString('en-IN')} each</span>
                 </div>
               </a>
             </div>
             <div style="display:flex; align-items:center; gap:0.75rem;">
-              <span style="font-size:0.88rem; color:var(--text-light); font-weight:500;">Qty: 1</span>
-              <button type="button" onclick="removeItemFromCheckout(${index})" style="background:none; border:none; color:#f87171; cursor:pointer; font-size:0.82rem; font-weight:600; padding:0.2rem 0.4rem; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Remove</button>
-              <strong style="font-size:0.95rem; color:var(--primary-dark); min-width:70px; text-align:right;">₹${sub.toLocaleString('en-IN')}</strong>
+              <div class="qty-stepper-btn-group">
+                <button type="button" class="qty-btn" onclick="updateItemQty(${index}, ${qty - 1})" aria-label="Decrease quantity">−</button>
+                <span class="qty-display">${qty}</span>
+                <button type="button" class="qty-btn" onclick="updateItemQty(${index}, ${qty + 1})" aria-label="Increase quantity">+</button>
+              </div>
+              <button type="button" onclick="removeItemFromCheckout(${index})" class="item-remove-btn" title="Remove item" aria-label="Remove item">
+                <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span>Remove</span>
+              </button>
+              <strong style="font-size:0.95rem; color:var(--primary-dark); min-width:75px; text-align:right;">₹${sub.toLocaleString('en-IN')}</strong>
             </div>
           `;
           container.appendChild(row);
         });
       }
 
-      document.getElementById('checkout-cart-count').textContent = count;
+      const cartBadge = document.getElementById('checkout-cart-count');
+      if (cartBadge) cartBadge.textContent = count;
       const orderTitleEl = document.getElementById('checkout-order-title');
       if (orderTitleEl) {
         orderTitleEl.textContent = count > 1 ? 'Your Orders' : 'Your Order';
       }
       document.getElementById('checkout-subtotal').textContent = '₹' + total.toLocaleString('en-IN');
       
-      // Shipping rule: Free for orders >= 1000, ₹220 for orders < 1000
+      // Shipping rule: Free for orders >= 1000, ₹220 for orders < 1000, empty if cart is empty
       const shippingFee = (total === 0 || total >= 1000) ? 0 : 220;
       window._currentShippingFee = shippingFee;
       window._currentCartSubtotal = total;
@@ -787,6 +1583,20 @@
       const pointsEl = document.getElementById('points-to-earn');
       if (pointsEl) pointsEl.textContent = pointsToEarn;
 
+      // Update Step 1 Continue button state
+      const s1Btn = document.getElementById('step1-continue-btn');
+      if (s1Btn) {
+        if (items.length === 0) {
+          s1Btn.disabled = true;
+          s1Btn.style.opacity = '0.5';
+          s1Btn.style.cursor = 'not-allowed';
+        } else {
+          s1Btn.disabled = false;
+          s1Btn.style.opacity = '1';
+          s1Btn.style.cursor = 'pointer';
+        }
+      }
+
       // Update submit button states
       const submitBtn = document.getElementById('checkout-submit-btn');
       if (submitBtn) {
@@ -805,24 +1615,79 @@
       }
     }
 
+    window.updateItemQty = function(index, newQty) {
+      let items = getCheckoutItems();
+      if (index < 0 || index >= items.length) return;
+      if (newQty < 1) {
+        if (confirm(`Remove "${items[index].name}" from your order?`)) {
+          items.splice(index, 1);
+        } else {
+          return;
+        }
+      } else {
+        items[index].qty = newQty;
+      }
+      localStorage.setItem('earthenknot_cart', JSON.stringify(items));
+      const totalQty = items.reduce((sum, it) => sum + (Number(it.qty) || 1), 0);
+      sessionStorage.setItem('cartCount', totalQty);
+      const badge = document.getElementById('cart-count');
+      if (badge) badge.textContent = totalQty;
+      renderCheckoutCart();
+      if (items.length === 0 && window._currentStep > 1) {
+        goToStep(1);
+      } else if (window._currentStep === 3) {
+        renderStep3Summary();
+      }
+    };
+
     window.removeItemFromCheckout = function(index) {
       let items = getCheckoutItems();
+      if (index < 0 || index >= items.length) return;
       items.splice(index, 1);
       localStorage.setItem('earthenknot_cart', JSON.stringify(items));
+      const totalQty = items.reduce((sum, it) => sum + (Number(it.qty) || 1), 0);
+      sessionStorage.setItem('cartCount', totalQty);
+      const badge = document.getElementById('cart-count');
+      if (badge) badge.textContent = totalQty;
       renderCheckoutCart();
+      if (items.length === 0 && window._currentStep > 1) {
+        goToStep(1);
+      } else if (window._currentStep === 3) {
+        renderStep3Summary();
+      }
     };
 
     function processOrderSubmission() {
-      const form = document.getElementById('checkout-order-form');
-      if (form && !form.checkValidity()) {
-        form.reportValidity();
+      if (!validateStep2(true)) {
+        goToStep(2);
         return;
       }
 
       const items = getCheckoutItems();
       if (items.length === 0) {
         alert('Your cart is empty. Please add items before checking out.');
+        goToStep(1);
         return;
+      }
+
+      // Check if user requested saving this address
+      const saveCheckbox = document.getElementById('save-address-checkbox');
+      if (saveCheckbox && saveCheckbox.checked) {
+        const addressToSave = {
+          name: (document.getElementById('cust-name')?.value || '').trim(),
+          phone: (document.getElementById('cust-phone')?.value || '').trim(),
+          email: (document.getElementById('cust-email')?.value || '').trim(),
+          house: (document.getElementById('cust-house')?.value || '').trim(),
+          area: (document.getElementById('cust-area')?.value || '').trim(),
+          landmark: (document.getElementById('cust-landmark')?.value || '').trim(),
+          city: (document.getElementById('cust-city')?.value || '').trim(),
+          state: (document.getElementById('cust-state')?.value || '').trim(),
+          pincode: (document.getElementById('cust-pincode')?.value || '').trim(),
+          country: (document.getElementById('cust-country')?.value || 'India').trim()
+        };
+        try {
+          localStorage.setItem('earthenknot_saved_address', JSON.stringify(addressToSave));
+        } catch(e) {}
       }
 
       const btn = document.getElementById('checkout-submit-btn');
@@ -831,19 +1696,15 @@
       const orderId = '#EK-' + Math.floor(100000 + Math.random() * 900000);
       const finalAddress = (typeof syncConfirmedAddress === 'function') 
         ? syncConfirmedAddress() 
-        : document.getElementById('cust-address').value.trim();
+        : (document.getElementById('cust-address')?.value || '').trim();
 
       const houseVal = (document.getElementById('cust-house')?.value || '').trim();
       const areaVal = (document.getElementById('cust-area')?.value || '').trim();
+      const landmarkVal = (document.getElementById('cust-landmark')?.value || '').trim();
       const cityVal = (document.getElementById('cust-city')?.value || '').trim();
       const stateVal = (document.getElementById('cust-state')?.value || '').trim();
       const pincodeVal = (document.getElementById('cust-pincode')?.value || '').trim();
       const countryVal = (document.getElementById('cust-country')?.value || 'India').trim();
-
-      if (!houseVal || !areaVal || !cityVal || !stateVal || !pincodeVal) {
-        alert('Please complete all delivery address fields (House/Building, Area/Locality, City, State, and PIN code).');
-        return;
-      }
 
       const customer = {
         name: document.getElementById('cust-name').value.trim(),
@@ -853,6 +1714,7 @@
         address: finalAddress,
         house: houseVal,
         area: areaVal,
+        landmark: landmarkVal,
         city: cityVal,
         state: stateVal,
         country: countryVal,
@@ -1420,7 +2282,10 @@
     }
 
     function showConfirmationReceipt(order) {
-      document.getElementById('checkout-main-grid').style.display = 'none';
+      const stepper = document.getElementById('checkout-stepper-container');
+      if (stepper) stepper.style.display = 'none';
+      const mainGrid = document.getElementById('checkout-main-grid');
+      if (mainGrid) mainGrid.style.display = 'none';
       const screen = document.getElementById('order-confirmation-screen');
       screen.style.display = 'block';
 
@@ -1497,18 +2362,14 @@
     }
 
     // ==========================================
-    // GOOGLE MAPS / PLACES AUTOCOMPLETE & PIN CONTROLLER
+    // ADDRESS SYNC & VALIDATION CONTROLLER
     // ==========================================
     window._confirmedLocationCoordinates = null;
-    let _mapInstance = null;
-    let _markerInstance = null;
-    let _googleMapsActive = false;
-    let _leafletMap = null;
-    let _leafletMarker = null;
 
     function syncConfirmedAddress() {
       const house = (document.getElementById('cust-house')?.value || '').trim();
       const area = (document.getElementById('cust-area')?.value || '').trim();
+      const landmark = (document.getElementById('cust-landmark')?.value || '').trim();
       const city = (document.getElementById('cust-city')?.value || '').trim();
       const state = (document.getElementById('cust-state')?.value || '').trim();
       const pincode = (document.getElementById('cust-pincode')?.value || '').trim();
@@ -1517,6 +2378,7 @@
       const parts = [];
       if (house) parts.push(house);
       if (area) parts.push(area);
+      if (landmark) parts.push('Near ' + landmark);
       if (city) parts.push(city);
       if (state) parts.push(state);
 
@@ -1541,11 +2403,19 @@
     }
 
     function initAddressFieldListeners() {
-      ['cust-house', 'cust-area', 'cust-city', 'cust-state', 'cust-pincode', 'cust-country'].forEach(id => {
+      ['cust-name', 'cust-phone', 'cust-email', 'cust-house', 'cust-area', 'cust-landmark', 'cust-city', 'cust-state', 'cust-pincode', 'cust-country'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          el.addEventListener('input', syncConfirmedAddress);
-          el.addEventListener('change', syncConfirmedAddress);
+          el.addEventListener('input', () => {
+            clearFieldError(id);
+            syncConfirmedAddress();
+            saveCheckoutFormData();
+          });
+          el.addEventListener('change', () => {
+            clearFieldError(id);
+            syncConfirmedAddress();
+            saveCheckoutFormData();
+          });
         }
       });
     }
@@ -1605,6 +2475,21 @@
       finalTotalEl.textContent = '₹' + finalTotal.toLocaleString('en-IN');
       if (submitBtn) {
         submitBtn.textContent = `Pay ₹${finalTotal.toLocaleString('en-IN')} via Razorpay 🤎`;
+      }
+
+      const s3DiscountRow = document.getElementById('step3-discount-row');
+      const s3DiscountEl = document.getElementById('step3-discount');
+      const s3TotalEl = document.getElementById('step3-final-total');
+      if (s3DiscountRow && s3DiscountEl) {
+        if (pts > 0) {
+          s3DiscountRow.style.display = 'flex';
+          s3DiscountEl.textContent = `-₹${pts.toLocaleString('en-IN')}`;
+        } else {
+          s3DiscountRow.style.display = 'none';
+        }
+      }
+      if (s3TotalEl) {
+        s3TotalEl.textContent = '₹' + finalTotal.toLocaleString('en-IN');
       }
     });
 
