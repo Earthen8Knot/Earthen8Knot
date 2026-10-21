@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.35">
+  <link rel="stylesheet" href="styles.css?v=1.36">
   <style>
     .order-card {
       background: var(--glass-bg);
@@ -154,12 +154,13 @@
           </div>
           <div>
             <h3 style="margin: 0; color: #8b6508; font-size: 1.25rem; font-family: 'Playfair Display', serif;">Earthen Points Balance</h3>
-            <p style="margin: 0.2rem 0 0 0; font-size: 0.85rem; color: #665014;">You earn 1 point for every ₹100 spent!</p>
+            <p style="margin: 0.2rem 0 0 0; font-size: 0.85rem; color: #665014;">You earn 1 point for every ₹100 spent! (1 pt = ₹100/- discount on future orders)</p>
           </div>
         </div>
         <div style="text-align: right;">
           <span id="points-banner-value" style="display: block; font-size: 2.2rem; font-weight: 700; color: #b8860b; line-height: 1;">0</span>
           <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #8b6508;">Points</span>
+          <span id="points-banner-worth" style="font-size: 0.82rem; font-weight: 600; color: #2e7d32; display: block; margin-top: 3px;">(Worth ₹0)</span>
         </div>
       </div>
       
@@ -330,6 +331,8 @@
           if (userDoc.exists()) {
             const pts = userDoc.data().earthenPoints || 0;
             document.getElementById('points-banner-value').textContent = pts.toLocaleString('en-IN');
+            const worthEl = document.getElementById('points-banner-worth');
+            if (worthEl) worthEl.textContent = `(Worth ₹${(pts * 100).toLocaleString('en-IN')})`;
             document.getElementById('points-banner').style.display = 'flex';
           }
         } catch (e) {
@@ -546,6 +549,6 @@
     }
   </script>
   
-  <script src="script.js?v=1.45"></script>
+  <script src="script.js?v=1.46"></script>
 </body>
 </html>

@@ -124,6 +124,45 @@ h1, h2, h3, h4, h5, h6 {
   transform: scale(1.18);
 }
 
+/* Quantity Stepper Group */
+.qty-stepper-btn-group {
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid rgba(114, 132, 101, 0.3);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2px 6px;
+  gap: 6px;
+}
+.qty-btn {
+  background: none;
+  border: none;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+.qty-btn:hover {
+  background: rgba(114, 132, 101, 0.15);
+  color: var(--primary-dark);
+}
+.qty-display {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  min-width: 18px;
+  text-align: center;
+  user-select: none;
+}
+
 h2 {
   font-size: clamp(1.6rem, 5vw, 2.2rem);
 }

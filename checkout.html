@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.35">
+  <link rel="stylesheet" href="styles.css?v=1.36">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -501,7 +501,7 @@
               </div>
               <span id="points-balance-display" style="font-weight: 600; color: #8b6508;">Balance: 0 pts</span>
             </div>
-            <p style="font-size: 0.82rem; color: #665014; margin: 0 0 1rem 0;">You can apply your points to get a discount on this order. (1 pt = ₹1)</p>
+            <p style="font-size: 0.82rem; color: #665014; margin: 0 0 1rem 0;">You can apply your points to get a discount on this order. (1 pt = ₹100/-)</p>
             <div style="display: flex; gap: 0.5rem;">
               <input type="number" id="points-to-redeem" min="0" placeholder="0" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.5); background: white; font-family: inherit; font-size: 0.95rem;">
               <button type="button" id="apply-points-btn" class="btn btn-secondary" style="padding: 0.6rem 1.2rem; border-color: #d4af37; color: #8b6508; border-radius: 8px; font-weight: 600;">Apply</button>
@@ -900,7 +900,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.45"></script>
+  <script src="script.js?v=1.46"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window._currentStep = 1;
@@ -1420,9 +1420,10 @@
       const discountRow = document.getElementById('step3-discount-row');
       const discountEl = document.getElementById('step3-discount');
       if (discountRow && discountEl) {
+        const discountAmount = appliedPts * 100;
         if (appliedPts > 0) {
           discountRow.style.display = 'flex';
-          discountEl.textContent = `-₹${appliedPts.toLocaleString('en-IN')}`;
+          discountEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
         } else {
           discountRow.style.display = 'none';
         }
@@ -1521,7 +1522,7 @@
               <div class="qty-stepper-btn-group">
                 <button type="button" class="qty-btn" onclick="updateItemQty(${index}, ${qty - 1})" aria-label="Decrease quantity">−</button>
                 <span class="qty-display">${qty}</span>
-                <button type="button" class="qty-btn" onclick="updateItemQty(${index}, ${qty + 1})" aria-label="Increase quantity">+</button>
+                <button type="button" class="qty-btn" onclick="updateItemQty(${index}, ${qty + 1})" aria-label="Increase quantity" ${qty >= 3 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''}>+</button>
               </div>
               <button type="button" onclick="removeItemFromCheckout(${index})" class="item-remove-btn" title="Remove item" aria-label="Remove item">
                 <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
@@ -1576,7 +1577,20 @@
       }
       
       const appliedPts = window._appliedPoints || 0;
-      const finalTotal = Math.max(0, total + shippingFee - appliedPts);
+      const discountAmount = appliedPts * 100;
+      const finalTotal = Math.max(0, total + shippingFee - discountAmount);
+
+      const discountRow = document.getElementById('discount-row');
+      const discountVal = document.getElementById('checkout-points-discount');
+      if (discountRow && discountVal) {
+        if (discountAmount > 0) {
+          discountRow.style.display = 'flex';
+          discountVal.textContent = '-₹' + discountAmount.toLocaleString('en-IN');
+        } else {
+          discountRow.style.display = 'none';
+        }
+      }
+
       document.getElementById('checkout-final-total').textContent = '₹' + finalTotal.toLocaleString('en-IN');
       window._currentCartTotal = finalTotal;
 
@@ -1619,6 +1633,10 @@
     window.updateItemQty = function(index, newQty) {
       let items = getCheckoutItems();
       if (index < 0 || index >= items.length) return;
+      if (newQty > 3) {
+        alert('You can order up to a maximum of 3 pieces of this product!');
+        return;
+      }
       if (newQty < 1) {
         if (confirm(`Remove "${items[index].name}" from your order?`)) {
           items.splice(index, 1);
@@ -1900,6 +1918,8 @@
         items: payload.items,
         subtotal: payload.subtotal !== undefined ? payload.subtotal : (payload.totalAmount - (payload.shippingFee || 0)),
         shippingFee: payload.shippingFee || 0,
+        pointsDiscount: (window._appliedPoints || 0) * 100,
+        appliedPoints: window._appliedPoints || 0,
         total: payload.totalAmount,
         paymentMethod: payload.paymentMethod,
         upiTransactionId: payload.upiTransactionId || 'N/A',
@@ -1956,7 +1976,7 @@
           }).catch(console.error);
 
           const userRef = doc(db, "users", auth.currentUser.uid);
-          const ptsEarned = Math.floor((payload.totalAmount - (window._appliedPoints || 0)) / 100);
+          const ptsEarned = Math.floor(payload.totalAmount / 100);
           const ptsSpent = window._appliedPoints || 0;
           const netPts = ptsEarned - ptsSpent;
           
@@ -2338,6 +2358,11 @@
             <span>Shipping Charges</span>
             <span>${(order.shippingFee && order.shippingFee > 0) ? '₹' + Number(order.shippingFee).toLocaleString('en-IN') : '<strong style="color:#2e7d32;">FREE</strong>'}</span>
           </div>
+          ${order.pointsDiscount ? `
+          <div style="display:flex; justify-content:space-between; font-size:0.92rem; color:#2e7d32; font-weight:600; margin-bottom:0.35rem;">
+            <span>Points Discount (${order.appliedPoints || (order.pointsDiscount / 100)} pts)</span>
+            <span>-₹${Number(order.pointsDiscount).toLocaleString('en-IN')}</span>
+          </div>` : ''}
           <div style="display:flex; justify-content:space-between; padding-top:0.6rem; border-top:1.5px solid rgba(0,0,0,0.08); font-size:1.2rem; font-weight:700; color:var(--primary-dark);">
             <span>Total Paid</span>
             <span>₹${Number(order.total).toLocaleString('en-IN')}</span>
@@ -2449,10 +2474,11 @@
     document.getElementById('apply-points-btn').addEventListener('click', () => {
       let pts = parseInt(document.getElementById('points-to-redeem').value) || 0;
       const subtotalPlusShipping = (window._currentCartSubtotal || 0) + (window._currentShippingFee || 0);
-      if (pts > maxPoints) pts = maxPoints;
-      if (pts > subtotalPlusShipping) pts = subtotalPlusShipping;
+      const maxRedeemablePts = Math.min(maxPoints, Math.ceil(subtotalPlusShipping / 100));
+      if (pts > maxRedeemablePts) pts = maxRedeemablePts;
       if (pts < 0) pts = 0;
       
+      const discountAmount = Math.min(pts * 100, subtotalPlusShipping);
       window._appliedPoints = pts;
       document.getElementById('points-to-redeem').value = pts;
       
@@ -2461,17 +2487,17 @@
       const submitBtn = document.getElementById('checkout-submit-btn');
       const msg = document.getElementById('points-applied-msg');
       
-      if (pts > 0) {
+      if (pts > 0 && discountAmount > 0) {
         discountRow.style.display = 'flex';
-        document.getElementById('checkout-points-discount').textContent = `-₹${pts.toLocaleString('en-IN')}`;
+        document.getElementById('checkout-points-discount').textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
         msg.style.display = 'block';
-        msg.textContent = `Applied ${pts} points (₹${pts} discount)!`;
+        msg.textContent = `Applied ${pts} ${pts === 1 ? 'point' : 'points'} (₹${discountAmount.toLocaleString('en-IN')} discount)!`;
       } else {
         discountRow.style.display = 'none';
         msg.style.display = 'none';
       }
       
-      const finalTotal = Math.max(0, subtotalPlusShipping - pts);
+      const finalTotal = Math.max(0, subtotalPlusShipping - discountAmount);
       window._currentCartTotal = finalTotal;
       finalTotalEl.textContent = '₹' + finalTotal.toLocaleString('en-IN');
       if (submitBtn) {
@@ -2482,9 +2508,9 @@
       const s3DiscountEl = document.getElementById('step3-discount');
       const s3TotalEl = document.getElementById('step3-final-total');
       if (s3DiscountRow && s3DiscountEl) {
-        if (pts > 0) {
+        if (pts > 0 && discountAmount > 0) {
           s3DiscountRow.style.display = 'flex';
-          s3DiscountEl.textContent = `-₹${pts.toLocaleString('en-IN')}`;
+          s3DiscountEl.textContent = `-₹${discountAmount.toLocaleString('en-IN')}`;
         } else {
           s3DiscountRow.style.display = 'none';
         }
@@ -2501,7 +2527,7 @@
           const userDoc = await getDoc(doc(db, "users", user.uid));
           if (userDoc.exists()) {
             maxPoints = userDoc.data().earthenPoints || 0;
-            document.getElementById('points-balance-display').textContent = `Balance: ${maxPoints} pts`;
+            document.getElementById('points-balance-display').textContent = `Balance: ${maxPoints} pts (Worth ₹${(maxPoints * 100).toLocaleString('en-IN')})`;
           }
         } catch (e) {
           console.error("Error fetching points:", e);

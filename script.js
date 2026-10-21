@@ -50,12 +50,13 @@ function resolveProductUrl(itemName, passedUrl) {
   return 'collections.html';
 }
 
-function addToCart(name, price, img, url) {
+function addToCart(name, price, img, url, quantityToAdd) {
   cartItems = getCartItems();
   let itemName = typeof name === 'string' && name ? name : null;
   let itemPrice = typeof price === 'number' ? price : null;
   let itemImg = typeof img === 'string' && img ? img : null;
   let itemUrl = typeof url === 'string' && url ? url : null;
+  const addQty = typeof quantityToAdd === 'number' && quantityToAdd > 0 ? Math.min(3, quantityToAdd) : 1;
 
   // Auto-detect from surrounding card if clicked inside a product card
   if (window.event && window.event.target) {
@@ -97,14 +98,24 @@ function addToCart(name, price, img, url) {
 
   const existing = cartItems.find(item => item.name === itemName);
   if (existing) {
-    showCartWarningToast(`Since each piece is hand-stitched one-by-one, you can only order 1 of this item! 🤎`);
+    const currentQty = Number(existing.qty) || 1;
+    if (currentQty >= 3) {
+      showCartWarningToast(`You can order up to a maximum of 3 pieces of "${itemName}"!`);
+      return;
+    }
+    const newQty = Math.min(3, currentQty + addQty);
+    existing.qty = newQty;
+    saveCartItems(cartItems);
+    animateCartBadge();
+    showCartToast(`${itemName} (Qty: ${newQty})`);
     return;
   } else {
+    const initialQty = Math.min(3, Math.max(1, addQty));
     cartItems.push({
       id: 'ek-' + Date.now().toString(36),
       name: itemName,
       price: itemPrice,
-      qty: 1,
+      qty: initialQty,
       img: itemImg,
       url: itemUrl
     });
@@ -112,7 +123,8 @@ function addToCart(name, price, img, url) {
 
   saveCartItems(cartItems);
   animateCartBadge();
-  showCartToast(itemName);
+  const addedItem = cartItems.find(item => item.name === itemName);
+  showCartToast(addedItem && addedItem.qty > 1 ? `${itemName} (Qty: ${addedItem.qty})` : itemName);
 }
 
 function requestRemake(productName, productUrl) {
@@ -202,7 +214,7 @@ function showCartWarningToast(message) {
     <div style="display:flex;align-items:center;gap:0.75rem;">
       <div style="background:var(--secondary);color:white;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:0.9rem;">!</div>
       <div>
-        <strong style="display:block;font-size:0.88rem;color:var(--secondary);">Slow-Made Limit <svg class="heart-terracotta" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></strong>
+        <strong style="display:block;font-size:0.88rem;color:var(--secondary);">Quantity Limit (Max 3) <svg class="heart-terracotta" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></strong>
         <span style="font-size:0.8rem;color:var(--text-light);">${message}</span>
       </div>
     </div>
@@ -676,6 +688,7 @@ const productsData = {
 };
 
 function renderProductPage() {
+  window._productDetailQty = 1;
   const container = document.getElementById('product-detail-container');
   if (!container) return;
 
@@ -726,7 +739,14 @@ function renderProductPage() {
           ${product.soldOut ? `
             <button class="btn btn-secondary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 30px; white-space: nowrap; cursor: pointer; transition: all 0.3s;" onclick="requestRemake('${product.name}')">Request a Remake</button>
           ` : `
-            <button class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 30px; box-shadow: 0 4px 10px rgba(114, 132, 101, 0.2); white-space: nowrap;" onclick="addToCart()">Add to Cart</button>
+            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+              <div class="qty-stepper-btn-group" style="padding: 4px 10px; gap: 8px;">
+                <button type="button" class="qty-btn" onclick="adjustProductDetailQty(-1)" aria-label="Decrease quantity" style="font-size: 1.15rem;">−</button>
+                <span id="detail-qty-display" class="qty-display" style="font-size: 1rem; min-width: 20px; text-align: center; font-weight: 700;">1</span>
+                <button type="button" class="qty-btn" onclick="adjustProductDetailQty(1)" aria-label="Increase quantity" style="font-size: 1.15rem;">+</button>
+              </div>
+              <button class="btn btn-primary" style="padding: 0.85rem 2.2rem; font-size: 1.05rem; border-radius: 30px; box-shadow: 0 4px 10px rgba(114, 132, 101, 0.2); white-space: nowrap; font-weight: 600;" onclick="addProductDetailToCart('${product.name}', ${Number(String(product.price).replace(/[^0-9.]/g, ''))}, '${imagesToUse[0]}')">Add to Cart</button>
+            </div>
           `}
         </div>
         ${product.soldOut ? `
@@ -865,6 +885,27 @@ function initGalleryZoom() {
     });
   }
 }
+
+window._productDetailQty = 1;
+window.adjustProductDetailQty = function(delta) {
+  let qty = window._productDetailQty || 1;
+  qty += delta;
+  if (qty < 1) qty = 1;
+  if (qty > 3) {
+    qty = 3;
+    if (typeof showCartWarningToast === 'function') {
+      showCartWarningToast('You can order up to a maximum of 3 pieces of this product!');
+    }
+  }
+  window._productDetailQty = qty;
+  const disp = document.getElementById('detail-qty-display');
+  if (disp) disp.textContent = qty;
+};
+
+window.addProductDetailToCart = function(name, price, img) {
+  const qty = window._productDetailQty || 1;
+  addToCart(name, price, img, null, qty);
+};
 
 // ----------------------------------------------------
 // FLOATING WHATSAPP BUTTON (Applies globally to all pages)
