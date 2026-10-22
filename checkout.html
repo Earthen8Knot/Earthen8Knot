@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.37">
+  <link rel="stylesheet" href="styles.css?v=1.38">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -900,7 +900,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.47"></script>
+  <script src="script.js?v=1.48"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window._currentStep = 1;
@@ -1469,7 +1469,7 @@
       if (name.includes('rose') || name.includes('pearl') || name.includes('sling')) {
         return 'product.html?id=rose-pearl-crochet-sling-bag';
       }
-      if (name.includes('ipod') || (name.includes('granny') && name.includes('square'))) {
+      if (name.includes('ipod') || name.includes('airpod') || (name.includes('granny') && name.includes('square'))) {
         return 'product.html?id=granny-square-ipod-bag';
       }
       if (name.includes('sweatshirt') || name.includes('striped') || name.includes('ocean')) {

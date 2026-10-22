@@ -44,7 +44,7 @@ function resolveProductUrl(itemName, passedUrl) {
   if (lower.includes('rose') || lower.includes('pearl') || lower.includes('sling')) {
     return 'product.html?id=rose-pearl-crochet-sling-bag';
   }
-  if (lower.includes('ipod') || (lower.includes('granny') && lower.includes('square'))) {
+  if (lower.includes('ipod') || lower.includes('airpod') || (lower.includes('granny') && lower.includes('square'))) {
     return 'product.html?id=granny-square-ipod-bag';
   }
   if (lower.includes('sweatshirt') || lower.includes('striped') || lower.includes('ocean')) {
@@ -588,7 +588,7 @@ const productsData = {
     sizeDetails: 'Artisan handcrafted ribbed tablet sleeve featuring blue and cream vertical stripes, dual metal snap button closures, and a secure fold-over flap. Hand-stitched with 100% acrylic yarn using a 3.0mm hook. Fits standard iPads, Kindles, and tablets up to 11 inches with cushioned scratch protection.'
   },
   'granny-square-ipod-bag': {
-    name: 'Granny Square Mini Bag for iPod',
+    name: 'Granny Square Mini Bag for Airpod',
     price: '₹499.00',
     originalPrice: '',
     image: 'assets/granny-square-ipod-bag-1.jpg',
@@ -599,7 +599,7 @@ const productsData = {
     hookSize: '3.5mm ergonomic hook',
     fiberType: '100% Cotton Yarn',
     size: '4.5" × 4.5" (11.5 × 11.5 cm)',
-    sizeDetails: 'Artisan handcrafted granny square mini bag featuring a floral motif in soft blush pink and ivory cream with a braided loop strap. Handcrafted from 100% cotton yarn. Designed to snugly protect your Apple iPod, AirPods, wired earphones, cards, keys, or small pocket accessories with soft, scratch-free cushioning.'
+    sizeDetails: 'Artisan handcrafted granny square mini bag featuring a floral motif in soft blush pink and ivory cream with a braided loop strap. Handcrafted from 100% cotton yarn. Designed to snugly protect your Apple AirPods, iPod, wired earphones, cards, keys, or small pocket accessories with soft, scratch-free cushioning.'
   },
   'lavender-fringe-crochet-scarf': {
     name: 'Lavender Fringe Crochet Scarf',
