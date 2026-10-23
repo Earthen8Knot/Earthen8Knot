@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.40">
+  <link rel="stylesheet" href="styles.css?v=1.41">
   <style>
     .product-card {
       transition: transform 0.4s ease, box-shadow 0.4s ease;
@@ -142,7 +142,7 @@
             <div style="margin-bottom: 0.5rem;"><span style="display: inline-block; font-size: 0.78rem; font-weight: 600; color: var(--primary-dark); background: rgba(114, 132, 101, 0.12); padding: 0.2rem 0.6rem; border-radius: 12px; letter-spacing: 0.3px;">Size M Top</span></div>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.22rem;">₹2,899.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(this); event.preventDefault();">Add to Cart</button>
         </div>
 
         <!-- Product -->
@@ -158,7 +158,7 @@
             <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Rose & Pearl Crochet Sling Bag</h3>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.22rem;">₹2,649.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(this); event.preventDefault();">Add to Cart</button>
         </div>
 
         <!-- Product -->
@@ -170,7 +170,7 @@
             <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Pearl Crochet Phone Sling Pouch</h3>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.22rem;">₹699.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(this); event.preventDefault();">Add to Cart</button>
         </div>
 
         <!-- Product -->
@@ -186,7 +186,7 @@
             <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Striped Crochet Tablet Sleeve</h3>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.22rem;">₹849.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(this); event.preventDefault();">Add to Cart</button>
         </div>
 
         <!-- Product -->
@@ -202,7 +202,7 @@
             <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Granny Square Mini Bag for Airpod</h3>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.22rem;">₹499.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(this); event.preventDefault();">Add to Cart</button>
         </div>
 
         <!-- Product -->
@@ -214,7 +214,7 @@
             <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Blush Crescent Crochet Sling Bag</h3>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.22rem;">₹1,650.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(this); event.preventDefault();">Add to Cart</button>
         </div>
 
         <!-- No Results -->
@@ -264,7 +264,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.50"></script>
+  <script src="script.js?v=1.51"></script>
   <script type="module" src="firebase-config.js"></script>
 </body>
 </html>

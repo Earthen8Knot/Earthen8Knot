@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.40">
+  <link rel="stylesheet" href="styles.css?v=1.41">
   <style>
     
     .product-card {
@@ -125,7 +125,7 @@
             <div style="margin-bottom: 0.5rem;"><span style="display: inline-block; font-size: 0.78rem; font-weight: 600; color: var(--primary-dark); background: rgba(114, 132, 101, 0.12); padding: 0.2rem 0.6rem; border-radius: 12px; letter-spacing: 0.3px;">Size M Top</span></div>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.22rem;">₹2,899.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(this); event.preventDefault();">Add to Cart</button>
         </div>
 
         <!-- Product -->
@@ -142,7 +142,7 @@
             <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Midnight Mesh Crochet Top</h3>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span style="color: var(--text-light); text-decoration: line-through; font-size: 0.95rem; opacity: 0.75;">₹1,899.00</span><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.18rem;">₹1,299.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="requestRemake(); event.preventDefault();">Request a Remake</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="requestRemake(this); event.preventDefault();">Request a Remake</button>
         </div>
 
         <!-- Product -->
@@ -159,7 +159,7 @@
             <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Blossom Striped Crochet Sweater</h3>
             <p style="margin-bottom: 1.2rem; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span style="color: var(--text-light); text-decoration: line-through; font-size: 0.95rem; opacity: 0.75;">₹1,899.00</span><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.18rem;">₹1,299.00</span></p>
           </a>
-          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="requestRemake(); event.preventDefault();">Request a Remake</button>
+          <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="requestRemake(this); event.preventDefault();">Request a Remake</button>
         </div>
 
       </div>
@@ -205,7 +205,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.50"></script>
+  <script src="script.js?v=1.51"></script>
   <script type="module" src="firebase-config.js"></script>
 </body>
 </html>

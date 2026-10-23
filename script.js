@@ -56,29 +56,66 @@ function resolveProductUrl(itemName, passedUrl) {
   return 'collections.html';
 }
 
-function addToCart(name, price, img, url, quantityToAdd) {
+// Track card clicks resiliently across mobile and desktop
+document.addEventListener('pointerdown', (e) => {
+  const card = e.target.closest('.product-card');
+  if (card) window._lastClickedCard = card;
+}, { passive: true });
+document.addEventListener('touchstart', (e) => {
+  const card = e.target.closest('.product-card');
+  if (card) window._lastClickedCard = card;
+}, { passive: true });
+document.addEventListener('click', (e) => {
+  const card = e.target.closest('.product-card');
+  if (card) window._lastClickedCard = card;
+}, { passive: true });
+
+function addToCart(nameOrBtn, price, img, url, quantityToAdd) {
   cartItems = getCartItems();
-  let itemName = typeof name === 'string' && name ? name : null;
+  let itemName = typeof nameOrBtn === 'string' && nameOrBtn ? nameOrBtn : null;
   let itemPrice = typeof price === 'number' ? price : null;
   let itemImg = typeof img === 'string' && img ? img : null;
   let itemUrl = typeof url === 'string' && url ? url : null;
   const addQty = typeof quantityToAdd === 'number' && quantityToAdd > 0 ? Math.min(3, quantityToAdd) : 1;
 
-  // Auto-detect from surrounding card if clicked inside a product card
-  if (window.event && window.event.target) {
-    const card = window.event.target.closest('.product-card');
-    if (card) {
-      if (!itemName) itemName = card.querySelector('h3')?.textContent?.trim();
-      if (itemPrice === null || itemPrice === undefined || isNaN(itemPrice)) {
-        const priceEl = card.querySelector('.discount-price') || card.querySelector('p');
-        const priceTxt = priceEl?.textContent?.trim();
-        if (priceTxt) {
-          const pVal = Number(priceTxt.replace(/[^0-9.]/g, ''));
-          if (!isNaN(pVal)) itemPrice = pVal;
-        }
+  // Resolve card element with multiple fallback strategies
+  let card = null;
+  if (nameOrBtn && typeof nameOrBtn === 'object' && nameOrBtn.nodeType === 1) {
+    card = nameOrBtn.closest('.product-card');
+  }
+  if (!card && typeof event !== 'undefined' && event && event.target) {
+    card = event.target.closest('.product-card');
+  }
+  if (!card && typeof window !== 'undefined' && window.event && window.event.target) {
+    card = window.event.target.closest('.product-card');
+  }
+  if (!card && document.activeElement && document.activeElement !== document.body) {
+    card = document.activeElement.closest('.product-card');
+  }
+  if (!card && window._lastClickedCard) {
+    card = window._lastClickedCard;
+  }
+
+  // Extract data from surrounding product-card
+  if (card) {
+    if (!itemName) {
+      const h3El = card.querySelector('h3');
+      itemName = h3El ? h3El.textContent.trim() : null;
+    }
+    if (itemPrice === null || isNaN(itemPrice)) {
+      const priceEl = card.querySelector('.discount-price') || card.querySelector('.price') || card.querySelector('p');
+      if (priceEl) {
+        const pVal = Number(priceEl.textContent.replace(/[^0-9.]/g, ''));
+        if (!isNaN(pVal) && pVal > 0) itemPrice = pVal;
       }
-      if (!itemImg) itemImg = card.querySelector('img')?.getAttribute('src');
-      if (!itemUrl) itemUrl = card.querySelector('a')?.getAttribute('href');
+    }
+    if (!itemImg) {
+      const imgEl = card.querySelector('img');
+      itemImg = imgEl ? (imgEl.getAttribute('src') || imgEl.currentSrc) : null;
+    }
+    if (!itemUrl) {
+      const aEl = card.querySelector('a');
+      itemUrl = aEl ? aEl.getAttribute('href') : null;
     }
   }
 
@@ -88,7 +125,7 @@ function addToCart(name, price, img, url, quantityToAdd) {
     const pid = params.get('id');
     if (pid && typeof productsData !== 'undefined' && productsData[pid]) {
       if (!itemName) itemName = productsData[pid].name;
-      if (itemPrice === null || itemPrice === undefined || isNaN(itemPrice)) {
+      if (itemPrice === null || isNaN(itemPrice)) {
         const pVal = Number(String(productsData[pid].price).replace(/[^0-9.]/g, ''));
         if (!isNaN(pVal)) itemPrice = pVal;
       }
@@ -111,9 +148,10 @@ function addToCart(name, price, img, url, quantityToAdd) {
     }
     const newQty = Math.min(3, currentQty + addQty);
     existing.qty = newQty;
+    if (itemImg && itemImg !== 'assets/hero-bag.jpg') existing.img = itemImg;
     saveCartItems(cartItems);
     animateCartBadge();
-    showCartToast(`${itemName} (Qty: ${newQty})`);
+    showCartToast(itemName, existing.img || itemImg, newQty);
     return;
   } else {
     const initialQty = Math.min(3, Math.max(1, addQty));
@@ -130,23 +168,37 @@ function addToCart(name, price, img, url, quantityToAdd) {
   saveCartItems(cartItems);
   animateCartBadge();
   const addedItem = cartItems.find(item => item.name === itemName);
-  showCartToast(addedItem && addedItem.qty > 1 ? `${itemName} (Qty: ${addedItem.qty})` : itemName);
+  showCartToast(itemName, itemImg, addedItem ? addedItem.qty : 1);
 }
 
-function requestRemake(productName, productUrl) {
-  let name = typeof productName === 'string' && productName ? productName : '';
+function requestRemake(productNameOrBtn, productUrl) {
+  let name = typeof productNameOrBtn === 'string' && productNameOrBtn ? productNameOrBtn : '';
   let prodUrl = typeof productUrl === 'string' && productUrl ? productUrl : '';
 
-  if (window.event && window.event.target) {
-    const card = window.event.target.closest('.product-card');
-    if (card) {
-      if (!name) name = card.querySelector('h3')?.textContent?.trim() || '';
-      if (!prodUrl) {
-        const link = card.querySelector('a')?.getAttribute('href');
-        if (link) {
-          const origin = (window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file://')) ? window.location.origin : 'https://earthenknot.in';
-          prodUrl = `${origin}/${link.replace(/^\//, '')}`;
-        }
+  let card = null;
+  if (productNameOrBtn && typeof productNameOrBtn === 'object' && productNameOrBtn.nodeType === 1) {
+    card = productNameOrBtn.closest('.product-card');
+  }
+  if (!card && typeof event !== 'undefined' && event && event.target) {
+    card = event.target.closest('.product-card');
+  }
+  if (!card && typeof window !== 'undefined' && window.event && window.event.target) {
+    card = window.event.target.closest('.product-card');
+  }
+  if (!card && document.activeElement && document.activeElement !== document.body) {
+    card = document.activeElement.closest('.product-card');
+  }
+  if (!card && window._lastClickedCard) {
+    card = window._lastClickedCard;
+  }
+
+  if (card) {
+    if (!name) name = card.querySelector('h3')?.textContent?.trim() || '';
+    if (!prodUrl) {
+      const link = card.querySelector('a')?.getAttribute('href');
+      if (link) {
+        const origin = (window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file://')) ? window.location.origin : 'https://earthenknot.in';
+        prodUrl = `${origin}/${link.replace(/^\//, '')}`;
       }
     }
   }
@@ -237,7 +289,7 @@ function showCartWarningToast(message) {
   }, 4000);
 }
 
-function showCartToast(itemName) {
+function showCartToast(itemName, itemImg, itemQty) {
   let toast = document.getElementById('cart-toast-msg');
   if (!toast) {
     toast = document.createElement('div');
@@ -246,37 +298,42 @@ function showCartToast(itemName) {
       position: fixed;
       bottom: 25px;
       right: 25px;
-      background: rgba(44, 53, 36, 0.95);
+      background: rgba(44, 53, 36, 0.96);
       color: #fff;
-      padding: 14px 22px;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      padding: 10px 16px;
+      border-radius: 16px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.28);
       font-family: 'Quicksand', sans-serif;
       font-size: 0.95rem;
       z-index: 10000;
       display: flex;
       align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.15);
+      gap: 12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.2);
       transform: translateY(100px);
       opacity: 0;
       transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-width: min(92vw, 420px);
     `;
     document.body.appendChild(toast);
   }
+
+  const imgSrc = itemImg || 'assets/hero-bag.jpg';
+  const qtySuffix = itemQty && itemQty > 1 ? ` (Qty: ${itemQty})` : '';
+
   toast.innerHTML = `
-    <svg class="toast-yarn-ball" viewBox="0 0 100 100" style="width:26px;height:26px;fill:none;stroke:#A3B18A;stroke-width:4;margin-right:4px;">
-      <circle cx="50" cy="50" r="30"/>
-      <path d="M25 35 Q40 60 70 35" />
-      <path d="M30 65 Q50 35 75 60" />
-      <path d="M50 20 Q50 50 50 80" />
-      <path d="M20 50 Q50 50 80 50" />
-      <path d="M78 60 Q90 65 95 80" stroke-width="2.5" />
-    </svg>
-    <span>Added <strong>${itemName}</strong> to cart!</span>
-    <a href="checkout.html" style="color:#A3B18A;font-weight:600;margin-left:8px;text-decoration:underline;">View Cart</a>
+    <div style="width: 46px; height: 46px; border-radius: 10px; overflow: hidden; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,0.3); background: white;">
+      <img src="${imgSrc}" alt="${itemName}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+    </div>
+    <div style="flex: 1; min-width: 0; line-height: 1.3;">
+      <div style="font-size: 0.72rem; color: #a3b18a; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Added to Cart ✓</div>
+      <strong style="display: block; font-size: 0.92rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${itemName}${qtySuffix}</strong>
+    </div>
+    <a href="checkout.html" style="padding: 0.45rem 0.9rem; font-size: 0.82rem; border-radius: 20px; text-decoration: none; white-space: nowrap; font-weight: 600; background: var(--secondary); color: white; border: none; box-shadow: 0 2px 8px rgba(201, 120, 60, 0.3); flex-shrink: 0;">View Cart</a>
   `;
+
   setTimeout(() => {
     toast.style.transform = 'translateY(0)';
     toast.style.opacity = '1';
@@ -286,7 +343,7 @@ function showCartToast(itemName) {
   window._cartToastTimer = setTimeout(() => {
     toast.style.transform = 'translateY(100px)';
     toast.style.opacity = '0';
-  }, 3500);
+  }, 4000);
 }
 
 function updateCartBadge() {
@@ -348,15 +405,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const animatedElements = document.querySelectorAll('.animate-on-scroll');
   animatedElements.forEach(el => observer.observe(el));
 
-  // Asynchronous image decoding and lazy loading for offscreen product images
+  // Asynchronous image decoding for snappy rendering
   document.querySelectorAll('img').forEach(img => {
     if (!img.getAttribute('decoding')) {
       img.setAttribute('decoding', 'async');
-    }
-  });
-  document.querySelectorAll('.product-card img, footer img').forEach(img => {
-    if (!img.getAttribute('loading')) {
-      img.setAttribute('loading', 'lazy');
     }
   });
 

@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.40">
+  <link rel="stylesheet" href="styles.css?v=1.41">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -900,7 +900,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.50"></script>
+  <script src="script.js?v=1.51"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window._currentStep = 1;
@@ -1511,20 +1511,20 @@
           const itemHref = resolveItemLink(item);
 
           const row = document.createElement('div');
-          row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding: 0.85rem 0; border-bottom: 1px solid rgba(0,0,0,0.06); gap: 0.75rem;';
+          row.className = 'checkout-cart-item-row';
           row.innerHTML = `
-            <div style="display:flex; align-items:center; gap:0.75rem; flex:1; min-width:0;">
-              <a href="${itemHref}" title="View ${escapeHTML(item.name)}" style="display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:inherit; transition:opacity 0.2s; overflow:hidden;" onmouseover="this.style.opacity='0.78'" onmouseout="this.style.opacity='1'">
-                <div style="width:52px; height:52px; border-radius:10px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0;">
-                  <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${escapeHTML(item.name)}" style="width:100%; height:100%; object-fit:cover;">
+            <div class="cart-item-product-info">
+              <a href="${itemHref}" title="View ${escapeHTML(item.name)}" style="display:flex; align-items:center; gap:0.85rem; text-decoration:none; color:inherit; flex:1; min-width:0;">
+                <div class="cart-item-img-container" style="width:58px; height:58px; border-radius:12px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0; background:var(--surface);">
+                  <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${escapeHTML(item.name)}" style="width:100%; height:100%; object-fit:cover; display:block;">
                 </div>
-                <div style="overflow:hidden;">
-                  <strong style="font-size:0.92rem; color:var(--primary-dark); display:block; text-decoration:underline; text-underline-offset:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHTML(item.name)}</strong>
-                  <span style="font-size:0.8rem; color:var(--text-light); display:block;">₹${Number(item.price).toLocaleString('en-IN')} each</span>
+                <div style="flex:1; min-width:0;">
+                  <strong class="cart-item-name" style="font-size:0.96rem; color:var(--primary-dark); display:block; text-decoration:underline; text-underline-offset:3px; word-break:break-word; line-height:1.35;">${escapeHTML(item.name)}</strong>
+                  <span style="font-size:0.82rem; color:var(--text-light); display:block; margin-top:0.2rem;">₹${Number(item.price).toLocaleString('en-IN')} each</span>
                 </div>
               </a>
             </div>
-            <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div class="cart-item-controls">
               <div class="qty-stepper-btn-group">
                 <button type="button" class="qty-btn" onclick="updateItemQty(${index}, ${qty - 1})" aria-label="Decrease quantity">−</button>
                 <span class="qty-display">${qty}</span>
@@ -1534,7 +1534,7 @@
                 <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2;"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                 <span>Remove</span>
               </button>
-              <strong style="font-size:0.95rem; color:var(--primary-dark); min-width:75px; text-align:right;">₹${sub.toLocaleString('en-IN')}</strong>
+              <strong class="cart-item-subtotal" style="font-size:1.05rem; color:var(--primary-dark); min-width:75px; text-align:right;">₹${sub.toLocaleString('en-IN')}</strong>
             </div>
           `;
           container.appendChild(row);
