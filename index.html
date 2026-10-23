@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.38">
+  <link rel="stylesheet" href="styles.css?v=1.39">
   <style>
       /* Hero specific animation */
     .hero {
@@ -220,6 +220,18 @@
             <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
           </div>
 
+          <!-- Product Card 6 -->
+          <div class="product-card glass-panel" style="padding: 1.5rem; text-align: center; overflow: hidden;">
+            <a href="product.html?id=blush-crescent-crochet-bag" style="display: block; color: inherit; text-decoration: none;">
+              <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; position: relative;">
+                <img src="assets/blush-crescent-sling-bag.jpg" alt="Blush Crescent Crochet Sling Bag" class="hero-product-img">
+              </div>
+              <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Blush Crescent Crochet Sling Bag</h3>
+              <p style="margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"><span class="discount-price" style="color: var(--secondary); font-weight: 700; font-size: 1.22rem;">₹1,650.00</span></p>
+            </a>
+            <button class="btn btn-secondary" style="width: 100%; border-radius: 8px; padding: 0.7rem;" onclick="addToCart(); event.preventDefault();">Add to Cart</button>
+          </div>
+
         </div>
       </div>
 
@@ -272,7 +284,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.48"></script>
+  <script src="script.js?v=1.49"></script>
   <script type="module" src="firebase-config.js"></script>
 </body>
 </html>

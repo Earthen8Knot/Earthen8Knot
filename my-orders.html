@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.38">
+  <link rel="stylesheet" href="styles.css?v=1.39">
   <style>
     .order-card {
       background: var(--glass-bg);
@@ -348,6 +348,7 @@
       if (name.includes('phone') || (name.includes('pearl') && name.includes('pouch'))) return 'product.html?id=pearl-crochet-phone-pouch';
       if (name.includes('tablet') || name.includes('ipad') || (name.includes('striped') && name.includes('sleeve'))) return 'product.html?id=striped-crochet-tablet-sleeve';
       if (name.includes('rose') || name.includes('pearl') || name.includes('sling')) return 'product.html?id=rose-pearl-crochet-sling-bag';
+      if (name.includes('crescent') || (name.includes('blush') && (name.includes('bag') || name.includes('sling')))) return 'product.html?id=blush-crescent-crochet-bag';
       if (name.includes('ipod') || name.includes('airpod') || (name.includes('granny') && name.includes('square'))) return 'product.html?id=granny-square-ipod-bag';
       if (name.includes('sweetheart')) return 'product.html?id=sweetheart-crochet-pouch';
       if (name.includes('dual-tone')) return 'product.html?id=gray-cream-beanie';
@@ -550,6 +551,6 @@
     }
   </script>
   
-  <script src="script.js?v=1.48"></script>
+  <script src="script.js?v=1.49"></script>
 </body>
 </html>

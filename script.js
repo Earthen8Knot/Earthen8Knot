@@ -44,6 +44,9 @@ function resolveProductUrl(itemName, passedUrl) {
   if (lower.includes('rose') || lower.includes('pearl') || lower.includes('sling')) {
     return 'product.html?id=rose-pearl-crochet-sling-bag';
   }
+  if (lower.includes('crescent') || (lower.includes('blush') && (lower.includes('bag') || lower.includes('sling')))) {
+    return 'product.html?id=blush-crescent-crochet-bag';
+  }
   if (lower.includes('ipod') || lower.includes('airpod') || (lower.includes('granny') && lower.includes('square'))) {
     return 'product.html?id=granny-square-ipod-bag';
   }
@@ -600,6 +603,20 @@ const productsData = {
     fiberType: '100% Cotton Yarn',
     size: '4.5" × 4.5" (11.5 × 11.5 cm)',
     sizeDetails: 'Artisan handcrafted granny square mini bag featuring a floral motif in soft blush pink and ivory cream with a braided loop strap. Handcrafted from 100% cotton yarn. Designed to snugly protect your Apple AirPods, iPod, wired earphones, cards, keys, or small pocket accessories with soft, scratch-free cushioning.'
+  },
+  'blush-crescent-crochet-bag': {
+    name: 'Blush Crescent Crochet Sling Bag',
+    price: '₹1,650.00',
+    originalPrice: '',
+    image: 'assets/blush-crescent-sling-bag.jpg',
+    images: ['assets/blush-crescent-sling-bag.jpg'],
+    soldOut: false,
+    stitchCount: '14,200 hand loops',
+    stitchTime: '12 hours of craft',
+    hookSize: '3.5mm ergonomic hook',
+    fiberType: '100% Cotton Yarn',
+    size: '8.5" × 7.5" (21.5 × 19 cm)',
+    sizeDetails: 'Artisan handcrafted crescent saddle sling bag featuring concentric arches in blush pink and ivory cream, a curved fold-over flap, and an intricately twisted two-tone crossbody strap (strap drop: ~20" / 50 cm). Handcrafted with 100% premium cotton yarn. Roomy interior comfortably holds your smartphone, sunglasses, cardholder, keys, lip gloss, and daily essentials.'
   },
   'lavender-fringe-crochet-scarf': {
     name: 'Lavender Fringe Crochet Scarf',
