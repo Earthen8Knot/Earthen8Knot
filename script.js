@@ -307,17 +307,24 @@ function animateCartBadge() {
   }
 }
 
-// Navbar scroll effect
+// Navbar scroll effect with requestAnimationFrame and passive listener
+let isNavbarTicking = false;
 window.addEventListener('scroll', () => {
-  const navbar = document.getElementById('main-nav');
-  if (navbar) {
-    if (window.scrollY > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
+  if (!isNavbarTicking) {
+    window.requestAnimationFrame(() => {
+      const navbar = document.getElementById('main-nav');
+      if (navbar) {
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      }
+      isNavbarTicking = false;
+    });
+    isNavbarTicking = true;
   }
-});
+}, { passive: true });
 
 // Simple fade-in intersection observer for scroll animations
 const observerOptions = {
@@ -341,16 +348,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const animatedElements = document.querySelectorAll('.animate-on-scroll');
   animatedElements.forEach(el => observer.observe(el));
 
-  // ===== Responsive Mobile Navigation Toggle & Drawer =====
+  // Asynchronous image decoding and lazy loading for offscreen product images
+  document.querySelectorAll('img').forEach(img => {
+    if (!img.getAttribute('decoding')) {
+      img.setAttribute('decoding', 'async');
+    }
+  });
+  document.querySelectorAll('.product-card img, footer img').forEach(img => {
+    if (!img.getAttribute('loading')) {
+      img.setAttribute('loading', 'lazy');
+    }
+  });
+
+  // ===== Responsive Mobile & Tablet Navigation Toggle & Drawer =====
   const navbar = document.getElementById('main-nav') || document.querySelector('.navbar');
   const navLinks = document.querySelector('.nav-links');
   const navActions = document.querySelector('.nav-actions');
 
   if (navbar && navLinks) {
-    // 0. Fix Stacking Context Bug on Mobile
-    // Move navLinks to body on mobile so it can overlay the navbar and backdrop correctly.
+    // 0. Fix Stacking Context Bug on Mobile & Tablets (up to 1024px)
+    // Move navLinks to body on mobile/tablet so it can overlay the navbar and backdrop correctly.
     const handleNavReparenting = () => {
-      if (window.innerWidth <= 850) {
+      if (window.innerWidth <= 1024) {
         if (navLinks.parentElement !== document.body) {
           document.body.appendChild(navLinks);
         }
@@ -361,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     handleNavReparenting();
-    window.addEventListener('resize', handleNavReparenting);
+    window.addEventListener('resize', handleNavReparenting, { passive: true });
     // 1. Ensure Backdrop exists in body
     let backdrop = document.querySelector('.mobile-nav-backdrop');
     if (!backdrop) {
@@ -503,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropBtns = document.querySelectorAll('.dropbtn');
     dropBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const isMobile = window.innerWidth <= 850;
+        const isMobile = window.innerWidth <= 1024;
         if (isMobile) {
           e.preventDefault();
           e.stopPropagation();
@@ -917,6 +936,27 @@ function initGalleryZoom() {
       mainImage.style.transformOrigin = 'center center';
       mainImage.style.transform = 'scale(1)';
     });
+
+    // Touch handling for mobile & iPad
+    mainContainer.addEventListener('touchmove', function (e) {
+      if (!zoomEnabled || !e.touches || e.touches.length === 0) return;
+      const touch = e.touches[0];
+      const rect = mainContainer.getBoundingClientRect();
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      const xPercent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      const yPercent = Math.max(0, Math.min(100, (y / rect.height) * 100));
+
+      mainImage.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+      mainImage.style.transform = 'scale(2.2)';
+    }, { passive: true });
+
+    mainContainer.addEventListener('touchend', function () {
+      if (!zoomEnabled) return;
+      mainImage.style.transformOrigin = 'center center';
+      mainImage.style.transform = 'scale(1)';
+    }, { passive: true });
   }
 }
 

@@ -33,6 +33,8 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
@@ -41,7 +43,16 @@ body {
   color: var(--text);
   line-height: 1.6;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
 }
 
 /* Tactile Paper/Linen Texture Overlay */
@@ -1273,7 +1284,7 @@ body.nav-menu-open {
 }
 
 /* Desktop styles: ensure mobile drawer specifics are hidden */
-@media (min-width: 851px) {
+@media (min-width: 1025px) {
   .mobile-drawer-header,
   .mobile-drawer-footer,
   .mobile-nav-backdrop,
@@ -1285,24 +1296,37 @@ body.nav-menu-open {
 /* Tablet Layout (max-width: 1024px) */
 @media (max-width: 1024px) {
   .navbar {
-    padding: 1.2rem 4%;
+    padding: 1rem 4%;
   }
   .navbar.scrolled {
-    padding: 0.8rem 4%;
-  }
-  .nav-links {
-    gap: 1.5rem;
+    padding: 0.75rem 4%;
   }
   .container {
     padding-left: 4% !important;
     padding-right: 4% !important;
   }
   #product-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
-    gap: 1.6rem !important;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)) !important;
+    gap: 1.5rem !important;
   }
   section {
-    padding: 4rem 4%;
+    padding: 3.5rem 4%;
+  }
+
+  /* GPU Rendering Optimizations for Tablets and Mobile */
+  body::after {
+    display: none !important; /* Disables heavy full-viewport SVG turbulence filter */
+  }
+
+  .product-card.glass-panel {
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .product-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 320px;
   }
 }
 
@@ -1334,10 +1358,39 @@ body.nav-menu-open {
   h1[style*="font-size: 3rem"] {
     font-size: 2.2rem !important;
   }
+
+  /* Prevent iOS Safari auto-zoom on input focus */
+  input,
+  select,
+  textarea,
+  .input-wrapper input,
+  .form-group input {
+    font-size: 16px !important;
+  }
+
+  .qty-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.15rem;
+  }
 }
 
-/* Mobile & Small Tablet Navigation Drawer (max-width: 850px) */
-@media (max-width: 850px) {
+/* Touchscreens: Prevent sticky hover states on cards while allowing tactile active press */
+@media (hover: none) and (pointer: coarse) {
+  .product-card:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+  .product-card:hover img {
+    transform: none !important;
+  }
+  .product-card:active {
+    transform: scale(0.98) !important;
+  }
+}
+
+/* Mobile & Tablet Navigation Drawer (max-width: 1024px) */
+@media (max-width: 1024px) {
   .mobile-menu-btn {
     display: inline-flex;
   }
@@ -1689,8 +1742,21 @@ body.nav-menu-open {
     justify-content: center !important;
   }
 
-  .product-action-bar-responsive button {
+  .product-action-bar-responsive .btn-primary,
+  .product-action-bar-responsive .btn-secondary {
     width: 100% !important;
+  }
+
+  .product-action-bar-responsive .qty-stepper-btn-group {
+    width: auto !important;
+    display: inline-flex !important;
+  }
+
+  .product-action-bar-responsive .qty-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    padding: 0 !important;
   }
 
   /* Checkout & Auth Layouts */
@@ -1833,10 +1899,11 @@ section,
   /* Inherits responsive margin-top from .main-wrapper */
 }
 
-/* === Mobile Menu Scrollbar Fix === */
-@media (max-width: 850px) {
+/* === Mobile & Tablet Menu Scrollbar Fix === */
+@media (max-width: 1024px) {
   .nav-links {
     max-height: calc(100vh - 80px);
+    max-height: calc(100dvh - 80px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }

@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.39">
+  <link rel="stylesheet" href="styles.css?v=1.40">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -503,7 +503,7 @@
             </div>
             <p style="font-size: 0.82rem; color: #665014; margin: 0 0 1rem 0;">You can apply your points to get a discount on this order. (1 pt = ₹100/-)</p>
             <div style="display: flex; gap: 0.5rem;">
-              <input type="number" id="points-to-redeem" min="0" placeholder="0" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.5); background: white; font-family: inherit; font-size: 0.95rem;">
+              <input type="number" id="points-to-redeem" min="0" placeholder="0" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.5); background: white; font-family: inherit; font-size: 16px;">
               <button type="button" id="apply-points-btn" class="btn btn-secondary" style="padding: 0.6rem 1.2rem; border-color: #d4af37; color: #8b6508; border-radius: 8px; font-weight: 600;">Apply</button>
             </div>
             <div id="points-applied-msg" style="display: none; font-size: 0.85rem; color: #2e7d32; margin-top: 0.6rem; font-weight: 600;"></div>
@@ -900,7 +900,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.49"></script>
+  <script src="script.js?v=1.50"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window._currentStep = 1;
