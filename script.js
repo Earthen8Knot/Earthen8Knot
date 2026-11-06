@@ -41,10 +41,13 @@ function resolveProductUrl(itemName, passedUrl) {
   if (lower.includes('tablet') || lower.includes('ipad') || (lower.includes('striped') && lower.includes('sleeve'))) {
     return 'product.html?id=striped-crochet-tablet-sleeve';
   }
-  if (lower.includes('rose') || lower.includes('pearl') || lower.includes('sling')) {
+  if (lower.includes('rose') || (lower.includes('pearl') && lower.includes('sling') && !lower.includes('granny'))) {
     return 'product.html?id=rose-pearl-crochet-sling-bag';
   }
-  if (lower.includes('crescent') || (lower.includes('blush') && (lower.includes('bag') || lower.includes('sling')))) {
+  if (lower.includes('granny') && (lower.includes('pearl') || lower.includes('sling') || (lower.includes('square') && !lower.includes('airpod') && !lower.includes('ipod')))) {
+    return 'product.html?id=blush-pearl-granny-square-bag';
+  }
+  if (lower.includes('crescent') || (lower.includes('blush') && (lower.includes('bag') || lower.includes('sling')) && !lower.includes('granny') && !lower.includes('pearl'))) {
     return 'product.html?id=blush-crescent-crochet-bag';
   }
   if (lower.includes('ipod') || lower.includes('airpod') || (lower.includes('granny') && lower.includes('square'))) {
@@ -688,6 +691,20 @@ const productsData = {
     fiberType: '100% Cotton Yarn',
     size: '8.5" × 7.5" (21.5 × 19 cm)',
     sizeDetails: 'Artisan handcrafted crescent saddle sling bag featuring concentric arches in blush pink and ivory cream, a curved fold-over flap, and an intricately twisted two-tone crossbody strap (strap drop: ~20" / 50 cm). Handcrafted with 100% premium cotton yarn. Roomy interior comfortably holds your smartphone, sunglasses, cardholder, keys, lip gloss, and daily essentials.'
+  },
+  'blush-pearl-granny-square-bag': {
+    name: 'Blush Pearl Granny Square Sling Bag',
+    price: '₹2,299.00',
+    originalPrice: '',
+    image: 'assets/blush-pearl-granny-bag-1.jpg',
+    images: ['assets/blush-pearl-granny-bag-1.jpg', 'assets/blush-pearl-granny-bag-2.jpg'],
+    soldOut: false,
+    stitchCount: '15,800 hand loops',
+    stitchTime: '14 hours of craft',
+    hookSize: '3.5mm ergonomic hook',
+    fiberType: '100% Cotton Yarn & Faux Pearl Beads',
+    size: '10.5" × 8.5" (27 × 22 cm)',
+    sizeDetails: 'Artisan handcrafted rectangular sling bag composed of 6 floral sunburst granny squares in blush pink and ivory cream. Features a row of lustrous faux pearls hand-stitched along the top scalloped trim, removable silver lobster clasp hardware, and a comfortable crochet crossbody strap dotted with pearl accents (strap drop: ~20" / 50 cm). Handcrafted with 100% premium cotton yarn. Spacious interior easily carries your wallet, phone, cosmetics, keys, and daily essentials.'
   },
   'lavender-fringe-crochet-scarf': {
     name: 'Lavender Fringe Crochet Scarf',
