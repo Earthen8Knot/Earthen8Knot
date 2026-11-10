@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.42">
+  <link rel="stylesheet" href="styles.css?v=1.45">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -900,7 +900,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.53"></script>
+  <script src="script.js?v=1.55"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window._currentStep = 1;
@@ -1351,8 +1351,8 @@
           row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:0.65rem 0; border-bottom:1px solid rgba(0,0,0,0.06); gap:0.75rem;';
           row.innerHTML = `
             <div style="display:flex; align-items:center; gap:0.75rem; flex:1; min-width:0;">
-              <div style="width:44px; height:44px; border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0;">
-                <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${escapeHTML(item.name)}" style="width:100%; height:100%; object-fit:cover;">
+              <div style="width:44px; height:44px; border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0; background:#fbf9f5; display:flex; align-items:center; justify-content:center;">
+                <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${escapeHTML(item.name)}" style="width:100%; height:100%; object-fit:contain; object-position:center; display:block;">
               </div>
               <div style="overflow:hidden;">
                 <strong style="font-size:0.9rem; color:var(--primary-dark); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHTML(item.name)}</strong>
