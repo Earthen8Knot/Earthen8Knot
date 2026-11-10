@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.41">
+  <link rel="stylesheet" href="styles.css?v=1.42">
   <!-- Razorpay Checkout Gateway SDK & Configuration -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="payment-config.js?v=1.9"></script>
@@ -900,7 +900,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.52"></script>
+  <script src="script.js?v=1.53"></script>
   <script type="module" src="firebase-config.js"></script>
   <script>
     window._currentStep = 1;
@@ -1518,8 +1518,8 @@
           row.innerHTML = `
             <div class="cart-item-product-info">
               <a href="${itemHref}" title="View ${escapeHTML(item.name)}" style="display:flex; align-items:center; gap:0.85rem; text-decoration:none; color:inherit; flex:1; min-width:0;">
-                <div class="cart-item-img-container" style="width:58px; height:58px; border-radius:12px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0; background:var(--surface);">
-                  <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${escapeHTML(item.name)}" style="width:100%; height:100%; object-fit:cover; display:block;">
+                <div class="cart-item-img-container" style="width:58px; height:58px; border-radius:12px; overflow:hidden; border:1px solid rgba(0,0,0,0.08); flex-shrink:0; background:#fbf9f5; display:flex; align-items:center; justify-content:center;">
+                  <img src="${item.img || 'assets/hero-bag.jpg'}" alt="${escapeHTML(item.name)}" style="width:100%; height:100%; object-fit:contain; object-position:center; display:block;">
                 </div>
                 <div style="flex:1; min-width:0;">
                   <strong class="cart-item-name" style="font-size:0.96rem; color:var(--primary-dark); display:block; text-decoration:underline; text-underline-offset:3px; word-break:break-word; line-height:1.35;">${escapeHTML(item.name)}</strong>

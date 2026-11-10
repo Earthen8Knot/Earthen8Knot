@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ribeye&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1.41">
+  <link rel="stylesheet" href="styles.css?v=1.42">
   <style>
       /* Hero specific animation */
     .hero {
@@ -33,15 +33,10 @@
     /* Hero card images */
     .hero-product-img {
       width: 100%;
-      height: 380px;
-      object-fit: cover;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
       display: block;
-    }
-    @media (max-width: 768px) {
-      .hero-product-img { height: 260px; }
-    }
-    @media (max-width: 480px) {
-      .hero-product-img { height: 200px; }
     }
   </style>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
@@ -154,7 +149,7 @@
           <!-- Product Card 1 -->
           <div class="product-card glass-panel" style="padding: 1.5rem; text-align: center; overflow: hidden;">
             <a href="product.html?id=striped-crochet-sweatshirt" style="display: block; color: inherit; text-decoration: none;">
-              <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; position: relative;">
+              <div class="product-image-container" style="position: relative;">
                 <img src="assets/sweatshirt-1.jpg" alt="White-Blue Striped Sweatshirt" class="hero-product-img">
               </div>
               <h3 style="margin-bottom: 0.35rem; font-size: 1.3rem;">White-Blue Striped Sweatshirt</h3>
@@ -167,7 +162,7 @@
           <!-- Product Card 2 -->
           <div class="product-card glass-panel" style="padding: 1.5rem; text-align: center; overflow: hidden;">
             <a href="product.html?id=rose-pearl-crochet-sling-bag" style="display: block; color: inherit; text-decoration: none;">
-              <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; position: relative;">
+              <div class="product-image-container" style="position: relative;">
                 <img src="assets/rose-pearl-bag-1-v2.jpg" alt="Rose & Pearl Crochet Sling Bag" class="hero-product-img">
               </div>
               <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Rose & Pearl Crochet Sling Bag</h3>
@@ -179,7 +174,7 @@
           <!-- Product Card 3 -->
           <div class="product-card glass-panel" style="padding: 1.5rem; text-align: center; overflow: hidden;">
             <a href="product.html?id=pearl-crochet-phone-pouch" style="display: block; color: inherit; text-decoration: none;">
-              <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; position: relative;">
+              <div class="product-image-container" style="position: relative;">
                 <img src="assets/pearl-phone-pouch.jpg" alt="Pearl Crochet Phone Sling Pouch" class="hero-product-img">
               </div>
               <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Pearl Crochet Phone Sling Pouch</h3>
@@ -191,7 +186,7 @@
           <!-- Product Card 4 -->
           <div class="product-card glass-panel" style="padding: 1.5rem; text-align: center; overflow: hidden;">
             <a href="product.html?id=striped-crochet-tablet-sleeve" style="display: block; color: inherit; text-decoration: none;">
-              <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; position: relative;">
+              <div class="product-image-container" style="position: relative;">
                 <img src="assets/striped-tablet-sleeve-1.jpg" alt="Striped Crochet Tablet Sleeve" class="hero-product-img">
                 <div class="multi-badge">
                   <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -207,7 +202,7 @@
           <!-- Product Card 5 -->
           <div class="product-card glass-panel" style="padding: 1.5rem; text-align: center; overflow: hidden;">
             <a href="product.html?id=granny-square-ipod-bag" style="display: block; color: inherit; text-decoration: none;">
-              <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; position: relative;">
+              <div class="product-image-container" style="position: relative;">
                 <img src="assets/granny-square-ipod-bag-1.jpg" alt="Granny Square Mini Bag for Airpod" class="hero-product-img">
                 <div class="multi-badge">
                   <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -223,7 +218,7 @@
           <!-- Product Card 6 -->
           <div class="product-card glass-panel" style="padding: 1.5rem; text-align: center; overflow: hidden;">
             <a href="product.html?id=blush-crescent-crochet-bag" style="display: block; color: inherit; text-decoration: none;">
-              <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; position: relative;">
+              <div class="product-image-container" style="position: relative;">
                 <img src="assets/blush-crescent-sling-bag.jpg" alt="Blush Crescent Crochet Sling Bag" class="hero-product-img">
               </div>
               <h3 style="margin-bottom: 0.5rem; font-size: 1.3rem;">Blush Crescent Crochet Sling Bag</h3>
@@ -235,7 +230,7 @@
           <!-- Product Card 7 -->
           <div class="product-card glass-panel" style="padding: 1.5rem; text-align: center; overflow: hidden;">
             <a href="product.html?id=blush-pearl-granny-square-bag" style="display: block; color: inherit; text-decoration: none;">
-              <div style="border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1.5rem; position: relative;">
+              <div class="product-image-container" style="position: relative;">
                 <img src="assets/blush-pearl-granny-bag-1.jpg" alt="Blush Pearl Granny Square Sling Bag" class="hero-product-img">
                 <div class="multi-badge">
                   <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -300,7 +295,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=1.52"></script>
+  <script src="script.js?v=1.53"></script>
   <script type="module" src="firebase-config.js"></script>
 </body>
 </html>
